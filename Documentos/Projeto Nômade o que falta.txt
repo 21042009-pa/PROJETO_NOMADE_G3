@@ -1,0 +1,9 @@
+Projeto Nômade o que falta:
+1- Back end funcionando
+2- font end funcionando
+3- Java Script funcionando4
+4- Atualizar alterações na ABNT (retiramos subcategoria e retiramos o auxiliar)
+5- Finalizar ABNT
+6- Rever READE-ME
+7- Checar código banco de dados
+8- Testes
