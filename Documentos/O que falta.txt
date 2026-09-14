@@ -7,3 +7,4 @@ Projeto Nômade o que falta:
 6- Rever READE-ME
 7- Checar código banco de dados
 8- Testes
+9- Atualizar logins de usuarios
