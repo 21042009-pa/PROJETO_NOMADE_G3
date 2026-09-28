@@ -2,9 +2,9 @@ CREATE DATABASE IF NOT EXISTS db_nomades_g3;
 
 USE db_nomades_g3;
 
--- ============================================
+-- =========================================
 -- FORNECEDOR
--- ============================================
+-- =========================================
 CREATE TABLE
     IF NOT EXISTS tbl_fornecedor (
         id_fornecedor INT PRIMARY KEY AUTO_INCREMENT,
@@ -13,18 +13,18 @@ CREATE TABLE
         endereco VARCHAR(200)
     );
 
--- ============================================
+-- =========================================
 -- CATEGORIA
--- ============================================
+-- =========================================
 CREATE TABLE
     IF NOT EXISTS tbl_categoria (
         id_categoria INT PRIMARY KEY AUTO_INCREMENT,
         nome_categoria VARCHAR(100) NOT NULL
     );
 
--- ============================================
+-- =========================================
 -- USUÁRIO
--- ============================================
+-- =========================================
 CREATE TABLE
     IF NOT EXISTS tbl_usuario (
         id_usuario INT PRIMARY KEY AUTO_INCREMENT,
@@ -35,9 +35,9 @@ CREATE TABLE
         setor VARCHAR(100)
     );
 
--- ============================================
+-- =========================================
 -- PRODUTO
--- ============================================
+-- =========================================
 CREATE TABLE
     IF NOT EXISTS tbl_produto (
         id_produto INT PRIMARY KEY AUTO_INCREMENT,
@@ -53,29 +53,33 @@ CREATE TABLE
         CONSTRAINT FK_id_categoria_tbl_produto FOREIGN KEY (id_categoria) REFERENCES tbl_categoria (id_categoria)
     );
 
--- ============================================
+-- =========================================
 -- LOTE
--- ============================================
+-- =========================================
 CREATE TABLE
     IF NOT EXISTS tbl_lote (
         id_lote INT PRIMARY KEY AUTO_INCREMENT,
         id_produto INT NOT NULL,
         codigo_lote VARCHAR(50),
-        quantidade_atual INT,
         validade DATE,
         CONSTRAINT FK_id_produto_tbl_lote FOREIGN KEY (id_produto) REFERENCES tbl_produto (id_produto)
     );
 
--- ============================================
+-- =========================================
 -- MOVIMENTAÇÃO DE ESTOQUE
--- ============================================
+-- =========================================
 CREATE TABLE
     IF NOT EXISTS tbl_movimentacao_estoque (
         id_movimentacao INT PRIMARY KEY AUTO_INCREMENT,
         id_produto INT NOT NULL,
         id_lote INT,
         id_usuario INT,
-        tipo ENUM ('Entrada', 'Saída') NOT NULL,
+        tipo ENUM (
+            'ENTRADA',
+            'SAIDA',
+            'AJUSTE_ENTRADA',
+            'AJUSTE_SAIDA'
+        ) NOT NULL,
         data_movimentacao DATE NOT NULL,
         quantidade INT NOT NULL,
         observacao TEXT,

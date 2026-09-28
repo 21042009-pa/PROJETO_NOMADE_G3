@@ -4,6 +4,7 @@ class ProdutoController {
   async listarProduto(req, res) {
     try {
       const resultado = await ProdutoService.listarProdutos();
+
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -17,6 +18,7 @@ class ProdutoController {
   async buscarProdutoPorId(req, res) {
     try {
       const resultado = await ProdutoService.buscarProduto(req.params.id);
+
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -98,6 +100,7 @@ class ProdutoController {
   async deletarProduto(req, res) {
     try {
       const resultado = await ProdutoService.excluirProduto(req.params.id);
+
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -110,14 +113,14 @@ class ProdutoController {
 
   async upload(req, res) {
     try {
-      res.status(200).json({
-        sucesso: true,
-        arquivo: req.file ? req.file.filename : null,
+      res.json({
+        mensagem: "Imagem enviada com sucesso",
+        arquivo: req.file,
       });
     } catch (erro) {
-      res.status(erro.status || 500).json({
+      res.status(500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: "Erro ao enviar imagem",
         erro: erro.stack || erro,
       });
     }
