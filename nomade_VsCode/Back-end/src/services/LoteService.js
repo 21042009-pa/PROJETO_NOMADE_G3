@@ -1,10 +1,9 @@
 const loteRepository = require("../repositories/LoteRepository");
 
-async function criarLote(id_produto, codigo_lote, quantidade_atual, validade) {
+async function criarLote(id_produto, codigo_lote, validade) {
   const dadosDoLote = {
     id_produto: id_produto,
     codigo_lote: codigo_lote,
-    quantidade_atual: quantidade_atual,
     validade: validade,
   };
 
@@ -25,17 +24,10 @@ async function buscarLote(id) {
   return lote;
 }
 
-async function atualizarLote(
-  id,
-  id_produto,
-  codigo_lote,
-  quantidade_atual,
-  validade,
-) {
+async function atualizarLote(id, id_produto, codigo_lote, validade) {
   const dadosDoLote = {
     id_produto: id_produto,
     codigo_lote: codigo_lote,
-    quantidade_atual: quantidade_atual,
     validade: validade,
   };
 

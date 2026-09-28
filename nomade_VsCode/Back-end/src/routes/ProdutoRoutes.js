@@ -1,10 +1,11 @@
 const express = require("express");
 const router = express.Router();
-
 const ProdutoController = require("../controllers/ProdutoController");
 const upload = require("../config/multer");
 
 router.get("/", ProdutoController.listarProduto);
+
+router.get("/:id/estoque", ProdutoController.consultarEstoque);
 
 router.get("/:id", ProdutoController.buscarProdutoPorId);
 

@@ -4,7 +4,6 @@ class ProdutoController {
   async listarProduto(req, res) {
     try {
       const resultado = await ProdutoService.listarProdutos();
-
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -18,8 +17,26 @@ class ProdutoController {
   async buscarProdutoPorId(req, res) {
     try {
       const resultado = await ProdutoService.buscarProduto(req.params.id);
-
       res.json(resultado);
+    } catch (erro) {
+      res.status(erro.status || 500).json({
+        sucesso: false,
+        mensagem: erro.mensagem || "Erro interno do servidor",
+        erro: erro.stack || erro,
+      });
+    }
+  }
+
+  async consultarEstoque(req, res) {
+    try {
+      const resultado = await ProdutoService.buscarEstoqueProduto(
+        req.params.id,
+      );
+
+      res.json({
+        id_produto: req.params.id,
+        estoque: resultado.estoque,
+      });
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
@@ -81,7 +98,6 @@ class ProdutoController {
   async deletarProduto(req, res) {
     try {
       const resultado = await ProdutoService.excluirProduto(req.params.id);
-
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({

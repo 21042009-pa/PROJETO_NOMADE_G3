@@ -4,7 +4,6 @@ class LoteController {
   async listarLote(req, res) {
     try {
       const resultado = await LoteService.listarLotes();
-
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -18,7 +17,6 @@ class LoteController {
   async buscarLotePorId(req, res) {
     try {
       const resultado = await LoteService.buscarLote(req.params.id);
-
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -34,7 +32,6 @@ class LoteController {
       const resultado = await LoteService.criarLote(
         req.body.id_produto,
         req.body.codigo_lote,
-        req.body.quantidade_atual,
         req.body.validade,
       );
 
@@ -54,7 +51,6 @@ class LoteController {
         req.params.id,
         req.body.id_produto,
         req.body.codigo_lote,
-        req.body.quantidade_atual,
         req.body.validade,
       );
 
@@ -71,7 +67,6 @@ class LoteController {
   async deletarLote(req, res) {
     try {
       const resultado = await LoteService.excluirLote(req.params.id);
-
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({

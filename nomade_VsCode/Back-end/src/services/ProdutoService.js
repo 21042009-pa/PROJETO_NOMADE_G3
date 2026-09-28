@@ -40,6 +40,12 @@ async function buscarProduto(id) {
   return produto;
 }
 
+async function buscarEstoqueProduto(id) {
+  const estoque = await produtoRepository.buscarEstoqueProduto(id);
+
+  return estoque;
+}
+
 async function atualizarProduto(
   id,
   id_fornecedor,
@@ -79,6 +85,7 @@ module.exports = {
   criarProduto,
   listarProdutos,
   buscarProduto,
+  buscarEstoqueProduto,
   atualizarProduto,
   excluirProduto,
 };

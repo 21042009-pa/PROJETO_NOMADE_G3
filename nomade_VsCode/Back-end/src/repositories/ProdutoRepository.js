@@ -41,10 +41,10 @@ class ProdutoRepository {
     valoresProduto.push(id);
 
     const query = `
-            UPDATE tbl_produto
-            SET ${camposProduto.join(", ")}
-            WHERE id_produto = ?
-        `;
+      UPDATE tbl_produto
+      SET ${camposProduto.join(", ")}
+      WHERE id_produto = ?
+    `;
 
     const [resultadoProduto] = await pool.query(query, valoresProduto);
 
@@ -55,6 +55,29 @@ class ProdutoRepository {
     await pool.query("DELETE FROM tbl_produto WHERE id_produto = ?", [id]);
 
     return true;
+  }
+
+  async buscarEstoqueProduto(id) {
+    const [resultado] = await pool.query(
+      `
+      SELECT
+        COALESCE(
+          SUM(
+            CASE
+              WHEN tipo = 'Entrada' THEN quantidade
+              WHEN tipo = 'Saída' THEN -quantidade
+              ELSE 0
+            END
+          ),
+          0
+        ) AS estoque
+      FROM tbl_movimentacao_estoque
+      WHERE id_produto = ?
+      `,
+      [id],
+    );
+
+    return resultado[0];
   }
 }
 
