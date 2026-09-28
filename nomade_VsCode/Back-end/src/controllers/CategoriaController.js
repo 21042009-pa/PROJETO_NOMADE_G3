@@ -1,7 +1,7 @@
 const CategoriaService = require("../services/CategoriaService");
 
 class CategoriaController {
-  async listarCategoria(req, res) {
+  async listarCategorias(req, res) {
     try {
       const resultado = await CategoriaService.listarCategorias();
 

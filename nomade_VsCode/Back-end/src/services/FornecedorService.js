@@ -1,6 +1,7 @@
 const fornecedorRepository = require("../repositories/FornecedorRepository");
 
-async function criarFornecedor(nome, contato, endereco) {
+class FornecedorService{
+  async criarFornecedor(nome, contato, endereco) {
   const dadosDoFornecedor = {
     nome: nome,
     contato: contato,
@@ -13,19 +14,19 @@ async function criarFornecedor(nome, contato, endereco) {
   return fornecedor;
 }
 
-async function listarFornecedores() {
+async listarFornecedores() {
   const fornecedores = await fornecedorRepository.listarFornecedores();
 
   return fornecedores;
 }
 
-async function buscarFornecedor(id) {
+async buscarFornecedor(id) {
   const fornecedor = await fornecedorRepository.buscarFornecedorId(id);
 
   return fornecedor;
 }
 
-async function atualizarFornecedor(id, nome, contato, endereco) {
+async atualizarFornecedor(id, nome, contato, endereco) {
   const dadosDoFornecedor = {
     nome: nome,
     contato: contato,
@@ -40,16 +41,10 @@ async function atualizarFornecedor(id, nome, contato, endereco) {
   return fornecedor;
 }
 
-async function excluirFornecedor(id) {
+async deletarFornecedor(id) {
   const fornecedor = await fornecedorRepository.apagarFornecedor(id);
 
   return fornecedor;
-}
+}}
 
-module.exports = {
-  criarFornecedor,
-  listarFornecedores,
-  buscarFornecedor,
-  atualizarFornecedor,
-  excluirFornecedor,
-};
+module.exports = new FornecedorService()

@@ -1,7 +1,7 @@
 const pool = require("../config/database");
 
 class MovimentacaoEstoqueRepository {
-  async listarMovimentacoesEstoque() {
+  async listarMovimentacoesEstoques() {
     const [listaMovimentacoes] = await pool.query(
       "SELECT * FROM tbl_movimentacao_estoque",
     );
@@ -57,7 +57,7 @@ class MovimentacaoEstoqueRepository {
     return resultadoMovimentacao.affectedRows;
   }
 
-  async apagarMovimentacaoEstoque(id) {
+  async deletarMovimentacaoEstoque(id) {
     await pool.query(
       "DELETE FROM tbl_movimentacao_estoque WHERE id_movimentacao = ?",
       [id],

@@ -51,7 +51,7 @@ class CategoriaRepository {
     return resultadoCategoria.affectedRows;
   }
 
-  async apagarCategoria(id) {
+  async deletarCategoria(id) {
     await pool.query("DELETE FROM tbl_categoria WHERE id_categoria = ?", [id]);
 
     return true;

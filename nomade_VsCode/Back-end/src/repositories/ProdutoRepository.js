@@ -51,7 +51,7 @@ class ProdutoRepository {
     return resultadoProduto.affectedRows;
   }
 
-  async apagarProduto(id) {
+  async deletarProduto(id) {
     await pool.query("DELETE FROM tbl_produto WHERE id_produto = ?", [id]);
 
     return true;

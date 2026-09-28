@@ -51,7 +51,7 @@ class UsuarioRepository {
     return resultadoUsuario.affectedRows;
   }
 
-  async apagarUsuario(id) {
+  async deletarUsuario(id) {
     await pool.query("DELETE FROM tbl_usuario WHERE id_usuario = ?", [id]);
 
     return true;

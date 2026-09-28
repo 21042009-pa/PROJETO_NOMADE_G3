@@ -1,6 +1,7 @@
 const loteRepository = require("../repositories/LoteRepository");
 
-async function criarLote(id_produto, codigo_lote, quantidade_atual, validade) {
+class LoteService {
+  async criarLote(id_produto, codigo_lote, quantidade_atual, validade) {
   const dadosDoLote = {
     id_produto: id_produto,
     codigo_lote: codigo_lote,
@@ -13,19 +14,19 @@ async function criarLote(id_produto, codigo_lote, quantidade_atual, validade) {
   return lote;
 }
 
-async function listarLotes() {
+async listarLotes() {
   const lotes = await loteRepository.listarLotes();
 
   return lotes;
 }
 
-async function buscarLote(id) {
+async buscarLote(id) {
   const lote = await loteRepository.buscarLoteId(id);
 
   return lote;
 }
 
-async function atualizarLote(
+async atualizarLote(
   id,
   id_produto,
   codigo_lote,
@@ -44,16 +45,10 @@ async function atualizarLote(
   return lote;
 }
 
-async function excluirLote(id) {
+async deletarLote(id) {
   const lote = await loteRepository.apagarLote(id);
 
   return lote;
-}
+}}
 
-module.exports = {
-  criarLote,
-  listarLotes,
-  buscarLote,
-  atualizarLote,
-  excluirLote,
-};
+module.exports = new LoteService()

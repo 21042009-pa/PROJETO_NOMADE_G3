@@ -1,6 +1,7 @@
+const MovimentacaoEstoqueRepository = require("../repositories/MovimentacaoEstoqueRepository");
 const movimentacaoEstoqueRepository = require("../repositories/MovimentacaoEstoqueRepository");
 
-async function criarMovimentacaoEstoque(
+class MovimentacaoEstoqueService {async criarMovimentacaoEstoque(
   id_produto,
   tipo,
   data_movimentacao,
@@ -23,21 +24,21 @@ async function criarMovimentacaoEstoque(
   return movimentacaoEstoque;
 }
 
-async function listarMovimentacoesEstoque() {
+async listarMovimentacoesEstoques() {
   const movimentacoesEstoque =
-    await movimentacaoEstoqueRepository.listarMovimentacoesEstoque();
+    await movimentacaoEstoqueRepository.listarMovimentacoesEstoques();
 
   return movimentacoesEstoque;
 }
 
-async function buscarMovimentacaoEstoque(id) {
+async buscarMovimentacaoEstoque(id) {
   const movimentacaoEstoque =
     await movimentacaoEstoqueRepository.buscarMovimentacaoEstoqueId(id);
 
   return movimentacaoEstoque;
 }
 
-async function atualizarMovimentacaoEstoque(
+async atualizarMovimentacaoEstoque(
   id,
   id_produto,
   tipo,
@@ -62,17 +63,11 @@ async function atualizarMovimentacaoEstoque(
   return movimentacaoEstoque;
 }
 
-async function excluirMovimentacaoEstoque(id) {
+async deletarMovimentacaoEstoque(id) {
   const movimentacaoEstoque =
     await movimentacaoEstoqueRepository.apagarMovimentacaoEstoque(id);
 
   return movimentacaoEstoque;
-}
+}}
 
-module.exports = {
-  criarMovimentacaoEstoque,
-  listarMovimentacoesEstoque,
-  buscarMovimentacaoEstoque,
-  atualizarMovimentacaoEstoque,
-  excluirMovimentacaoEstoque,
-};
+module.exports = new MovimentacaoEstoqueService()

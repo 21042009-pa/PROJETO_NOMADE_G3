@@ -1,7 +1,7 @@
 const FornecedorService = require("../services/FornecedorService");
 
 class FornecedorController {
-  async listarFornecedor(req, res) {
+  async listarFornecedores(req, res) {
     try {
       const resultado = await FornecedorService.listarFornecedores();
 

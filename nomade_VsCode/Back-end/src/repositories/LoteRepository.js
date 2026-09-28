@@ -50,7 +50,7 @@ class LoteRepository {
     return resultadoLote.affectedRows;
   }
 
-  async apagarLote(id) {
+  async deletarLote(id) {
     await pool.query("DELETE FROM tbl_lote WHERE id_lote = ?", [id]);
 
     return true;

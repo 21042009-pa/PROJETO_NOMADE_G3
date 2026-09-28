@@ -1,10 +1,10 @@
 const MovimentacaoEstoqueService = require("../services/MovimentacaoEstoqueService");
 
 class MovimentacaoEstoqueController {
-  async listarMovimentacoesEstoque(req, res) {
+  async listarMovimentacoesEstoques(req, res) {
     try {
       const resultado =
-        await MovimentacaoEstoqueService.listarMovimentacoesEstoque();
+        await MovimentacaoEstoqueService.listarMovimentacoesEstoques();
 
       res.json(resultado);
     } catch (erro) {

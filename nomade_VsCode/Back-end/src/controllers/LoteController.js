@@ -1,7 +1,7 @@
 const LoteService = require("../services/LoteService");
 
 class LoteController {
-  async listarLote(req, res) {
+  async listarLotes(req, res) {
     try {
       const resultado = await LoteService.listarLotes();
 
