@@ -5,7 +5,6 @@ class LoteService {
   const dadosDoLote = {
     id_produto: id_produto,
     codigo_lote: codigo_lote,
-    quantidade_atual: quantidade_atual,
     validade: validade,
   };
 

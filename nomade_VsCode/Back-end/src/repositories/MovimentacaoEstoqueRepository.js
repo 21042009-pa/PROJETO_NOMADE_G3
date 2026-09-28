@@ -12,7 +12,7 @@ class MovimentacaoEstoqueRepository {
   async buscarMovimentacaoEstoqueId(id) {
     const [mostrarMovimentacao] = await pool.query(
       `SELECT * FROM tbl_movimentacao_estoque
-             WHERE id_movimentacao = ?`,
+       WHERE id_movimentacao = ?`,
       [id],
     );
 
@@ -44,10 +44,10 @@ class MovimentacaoEstoqueRepository {
     valoresMovimentacao.push(id);
 
     const query = `
-            UPDATE tbl_movimentacao_estoque
-            SET ${camposMovimentacao.join(", ")}
-            WHERE id_movimentacao = ?
-        `;
+      UPDATE tbl_movimentacao_estoque
+      SET ${camposMovimentacao.join(", ")}
+      WHERE id_movimentacao = ?
+    `;
 
     const [resultadoMovimentacao] = await pool.query(
       query,

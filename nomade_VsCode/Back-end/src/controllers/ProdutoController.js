@@ -29,6 +29,25 @@ class ProdutoController {
     }
   }
 
+  async consultarEstoque(req, res) {
+    try {
+      const resultado = await ProdutoService.buscarEstoqueProduto(
+        req.params.id,
+      );
+
+      res.json({
+        id_produto: req.params.id,
+        estoque: resultado.estoque,
+      });
+    } catch (erro) {
+      res.status(erro.status || 500).json({
+        sucesso: false,
+        mensagem: erro.mensagem || "Erro interno do servidor",
+        erro: erro.stack || erro,
+      });
+    }
+  }
+
   async cadastrarProduto(req, res) {
     try {
       const resultado = await ProdutoService.criarProduto(
@@ -85,14 +104,14 @@ class ProdutoController {
 
   async upload(req, res) {
     try {
-      res.status(200).json({
-        sucesso: true,
-        arquivo: req.file ? req.file.filename : null,
+      res.json({
+        mensagem: "Imagem enviada com sucesso",
+        arquivo: req.file,
       });
     } catch (erro) {
-      res.status(erro.status || 500).json({
+      res.status(500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: "Erro ao enviar imagem",
         erro: erro.stack || erro,
       });
     }

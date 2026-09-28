@@ -13,15 +13,15 @@ class ProdutoService {
   imagem,
 ) {
   const dadosDoProduto = {
-    id_fornecedor: id_fornecedor,
-    id_categoria: id_categoria,
-    nome: nome,
-    descricao: descricao,
-    modelo: modelo,
-    data_validade: data_validade,
-    codigo_produto: codigo_produto,
-    cor: cor,
-    imagem: imagem,
+    id_fornecedor,
+    id_categoria,
+    nome,
+    descricao,
+    modelo,
+    data_validade,
+    codigo_produto,
+    cor,
+    imagem,
   };
 
   const produto = await produtoRepository.cadastrarProduto(dadosDoProduto);

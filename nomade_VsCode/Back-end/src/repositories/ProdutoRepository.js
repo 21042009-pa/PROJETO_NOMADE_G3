@@ -16,6 +16,31 @@ class ProdutoRepository {
     return mostrarProduto[0];
   }
 
+  async buscarEstoqueProduto(id) {
+    const [resultado] = await pool.query(
+      `
+      SELECT
+        COALESCE(
+          SUM(
+            CASE
+              WHEN tipo = 'ENTRADA' THEN quantidade
+              WHEN tipo = 'AJUSTE_ENTRADA' THEN quantidade
+              WHEN tipo = 'SAIDA' THEN -quantidade
+              WHEN tipo = 'AJUSTE_SAIDA' THEN -quantidade
+              ELSE 0
+            END
+          ),
+          0
+        ) AS estoque
+      FROM tbl_movimentacao_estoque
+      WHERE id_produto = ?
+      `,
+      [id],
+    );
+
+    return resultado[0];
+  }
+
   async cadastrarProduto(dadosDoProduto) {
     const [resultadoProduto] = await pool.query(
       "INSERT INTO tbl_produto SET ?",
@@ -41,10 +66,10 @@ class ProdutoRepository {
     valoresProduto.push(id);
 
     const query = `
-            UPDATE tbl_produto
-            SET ${camposProduto.join(", ")}
-            WHERE id_produto = ?
-        `;
+      UPDATE tbl_produto
+      SET ${camposProduto.join(", ")}
+      WHERE id_produto = ?
+    `;
 
     const [resultadoProduto] = await pool.query(query, valoresProduto);
 
