@@ -1,10 +1,10 @@
 const MovimentacaoEstoqueService = require("../services/MovimentacaoEstoqueService");
 
 class MovimentacaoEstoqueController {
-  async listarMovimentacoesEstoques(req, res) {
+  async listarMovimentacoesEstoque(req, res) {
     try {
       const resultado =
-        await MovimentacaoEstoqueService.listarMovimentacoesEstoques();
+        await MovimentacaoEstoqueService.listarMovimentacoesEstoque();
 
       res.json(resultado);
     } catch (erro) {
@@ -38,6 +38,8 @@ class MovimentacaoEstoqueController {
       const resultado =
         await MovimentacaoEstoqueService.criarMovimentacaoEstoque(
           req.body.id_produto,
+          req.body.id_lote,
+          req.body.id_usuario,
           req.body.tipo,
           req.body.data_movimentacao,
           req.body.quantidade,
@@ -60,6 +62,8 @@ class MovimentacaoEstoqueController {
         await MovimentacaoEstoqueService.atualizarMovimentacaoEstoque(
           req.params.id,
           req.body.id_produto,
+          req.body.id_lote,
+          req.body.id_usuario,
           req.body.tipo,
           req.body.data_movimentacao,
           req.body.quantidade,
