@@ -1,7 +1,7 @@
 const pool = require("../config/database");
 
 class MovimentacaoEstoqueRepository {
-  async listarMovimentacoesEstoques() {
+  async listarMovimentacoesEstoque() {
     const [listaMovimentacoes] = await pool.query(
       "SELECT * FROM tbl_movimentacao_estoque",
     );
@@ -19,29 +19,16 @@ class MovimentacaoEstoqueRepository {
     return mostrarMovimentacao[0];
   }
 
-  async buscarEstoqueProduto(id_produto) {
-    const [resultado] = await pool.query(
-      `
-      SELECT
-        COALESCE(
-          SUM(
-            CASE
-              WHEN tipo = 'ENTRADA' THEN quantidade
-              WHEN tipo = 'AJUSTE_ENTRADA' THEN quantidade
-              WHEN tipo = 'SAIDA' THEN -quantidade
-              WHEN tipo = 'AJUSTE_SAIDA' THEN -quantidade
-              ELSE 0
-            END
-          ),
-          0
-        ) AS estoque
-      FROM tbl_movimentacao_estoque
-      WHERE id_produto = ?
-      `,
-      [id_produto],
+  async buscarLoteDoProduto(id_lote, id_produto) {
+    const [lote] = await pool.query(
+      `SELECT *
+       FROM tbl_lote
+       WHERE id_lote = ?
+       AND id_produto = ?`,
+      [id_lote, id_produto],
     );
 
-    return resultado[0];
+    return lote[0];
   }
 
   async cadastrarMovimentacaoEstoque(dadosDaMovimentacao) {
@@ -82,7 +69,7 @@ class MovimentacaoEstoqueRepository {
     return resultadoMovimentacao.affectedRows;
   }
 
-  async deletarMovimentacaoEstoque(id) {
+  async apagarMovimentacaoEstoque(id) {
     await pool.query(
       "DELETE FROM tbl_movimentacao_estoque WHERE id_movimentacao = ?",
       [id],
