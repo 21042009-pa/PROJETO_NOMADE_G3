@@ -66,7 +66,8 @@ class LoteController {
 
   async deletarLote(req, res) {
     try {
-      const resultado = await LoteService.excluirLote(req.params.id);
+      const resultado = await LoteService.deletarLote(req.params.id);
+
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({

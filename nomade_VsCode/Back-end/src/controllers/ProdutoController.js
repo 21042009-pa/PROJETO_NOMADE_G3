@@ -4,7 +4,6 @@ class ProdutoController {
   async listarProdutos(req, res) {
     try {
       const resultado = await ProdutoService.listarProdutos();
-
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -18,7 +17,6 @@ class ProdutoController {
   async buscarProdutoPorId(req, res) {
     try {
       const resultado = await ProdutoService.buscarProduto(req.params.id);
-
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -56,7 +54,6 @@ class ProdutoController {
         req.body.nome,
         req.body.descricao,
         req.body.modelo,
-        req.body.data_validade,
         req.body.codigo_produto,
         req.body.cor,
         req.file ? req.file.filename : null,
@@ -74,12 +71,15 @@ class ProdutoController {
 
   async atualizarProduto(req, res) {
     try {
-    const { id } = req.params;
+      const { id } = req.params;
 
-    const produto = await produtoService.atualizarProduto(id, req.body);
+      const produto = await ProdutoService.atualizarProduto(id, {
+        ...req.body,
+        imagem: req.file ? req.file.filename : req.body.imagem,
+      });
 
-    res.json(produto);
-  } catch (erro) {
+      res.json(produto);
+    } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
         mensagem: erro.mensagem || "Erro interno do servidor",
@@ -90,7 +90,7 @@ class ProdutoController {
 
   async deletarProduto(req, res) {
     try {
-      const resultado = await ProdutoService.excluirProduto(req.params.id);
+      const resultado = await ProdutoService.deletarProduto(req.params.id);
 
       res.json(resultado);
     } catch (erro) {

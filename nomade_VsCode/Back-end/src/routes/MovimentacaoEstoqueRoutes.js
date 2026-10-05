@@ -3,7 +3,7 @@ const router = express.Router();
 
 const MovimentacaoEstoqueController = require("../controllers/MovimentacaoEstoqueController");
 
-router.get("/", MovimentacaoEstoqueController.listarMovimentacoesEstoques);
+router.get("/", MovimentacaoEstoqueController.listarMovimentacoesEstoque);
 
 router.get(
   "/:id",
@@ -11,9 +11,5 @@ router.get(
 );
 
 router.post("/", MovimentacaoEstoqueController.cadastrarMovimentacaoEstoque);
-
-router.put("/:id", MovimentacaoEstoqueController.atualizarMovimentacaoEstoque);
-
-router.delete("/:id", MovimentacaoEstoqueController.deletarMovimentacaoEstoque);
 
 module.exports = router;

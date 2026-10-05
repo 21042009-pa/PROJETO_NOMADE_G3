@@ -1,7 +1,7 @@
 const pool = require("../config/database");
 
 class MovimentacaoEstoqueRepository {
-  async listarMovimentacoesEstoques() {
+  async listarMovimentacoesEstoque() {
     const [listaMovimentacoes] = await pool.query(
       "SELECT * FROM tbl_movimentacao_estoque",
     );
@@ -17,6 +17,18 @@ class MovimentacaoEstoqueRepository {
     );
 
     return mostrarMovimentacao[0];
+  }
+
+  async buscarLoteDoProduto(id_lote, id_produto) {
+    const [lote] = await pool.query(
+      `SELECT *
+       FROM tbl_lote
+       WHERE id_lote = ?
+       AND id_produto = ?`,
+      [id_lote, id_produto],
+    );
+
+    return lote[0];
   }
 
   async cadastrarMovimentacaoEstoque(dadosDaMovimentacao) {
@@ -57,7 +69,7 @@ class MovimentacaoEstoqueRepository {
     return resultadoMovimentacao.affectedRows;
   }
 
-  async deletarMovimentacaoEstoque(id) {
+  async apagarMovimentacaoEstoque(id) {
     await pool.query(
       "DELETE FROM tbl_movimentacao_estoque WHERE id_movimentacao = ?",
       [id],

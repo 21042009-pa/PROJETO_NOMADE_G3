@@ -1,4 +1,3 @@
-const MovimentacaoEstoqueRepository = require("../repositories/MovimentacaoEstoqueRepository");
 const movimentacaoEstoqueRepository = require("../repositories/MovimentacaoEstoqueRepository");
 
 const TIPOS_MOVIMENTACAO = [
@@ -8,8 +7,10 @@ const TIPOS_MOVIMENTACAO = [
   "AJUSTE_SAIDA",
 ];
 
-class MovimentacaoEstoqueService {async criarMovimentacaoEstoque(
+async function criarMovimentacaoEstoque(
   id_produto,
+  id_lote,
+  id_usuario,
   tipo,
   data_movimentacao,
   quantidade,
@@ -23,6 +24,20 @@ class MovimentacaoEstoqueService {async criarMovimentacaoEstoque(
     throw erro;
   }
 
+  if (!id_lote) {
+    const erro = new Error();
+    erro.status = 400;
+    erro.mensagem = "O lote é obrigatório para registrar uma movimentação";
+    throw erro;
+  }
+
+  if (!id_usuario) {
+    const erro = new Error();
+    erro.status = 400;
+    erro.mensagem = "O usuário é obrigatório para registrar uma movimentação";
+    throw erro;
+  }
+
   if ((tipo === "AJUSTE_ENTRADA" || tipo === "AJUSTE_SAIDA") && !observacao) {
     const erro = new Error();
     erro.status = 400;
@@ -30,12 +45,26 @@ class MovimentacaoEstoqueService {async criarMovimentacaoEstoque(
     throw erro;
   }
 
+  const lote = await movimentacaoEstoqueRepository.buscarLoteDoProduto(
+    id_lote,
+    id_produto,
+  );
+
+  if (!lote) {
+    const erro = new Error();
+    erro.status = 400;
+    erro.mensagem = "O lote informado não pertence ao produto informado";
+    throw erro;
+  }
+
   const dadosDaMovimentacaoEstoque = {
-    id_produto: id_produto,
-    tipo: tipo,
-    data_movimentacao: data_movimentacao,
-    quantidade: quantidade,
-    observacao: observacao,
+    id_produto,
+    id_lote,
+    id_usuario,
+    tipo,
+    data_movimentacao,
+    quantidade,
+    observacao,
   };
 
   const movimentacaoEstoque =
@@ -46,23 +75,25 @@ class MovimentacaoEstoqueService {async criarMovimentacaoEstoque(
   return movimentacaoEstoque;
 }
 
-async listarMovimentacoesEstoques() {
+async function listarMovimentacoesEstoque() {
   const movimentacoesEstoque =
-    await movimentacaoEstoqueRepository.listarMovimentacoesEstoques();
+    await movimentacaoEstoqueRepository.listarMovimentacoesEstoque();
 
   return movimentacoesEstoque;
 }
 
-async buscarMovimentacaoEstoque(id) {
+async function buscarMovimentacaoEstoque(id) {
   const movimentacaoEstoque =
     await movimentacaoEstoqueRepository.buscarMovimentacaoEstoqueId(id);
 
   return movimentacaoEstoque;
 }
 
-async atualizarMovimentacaoEstoque(
+async function atualizarMovimentacaoEstoque(
   id,
   id_produto,
+  id_lote,
+  id_usuario,
   tipo,
   data_movimentacao,
   quantidade,
@@ -76,6 +107,20 @@ async atualizarMovimentacaoEstoque(
     throw erro;
   }
 
+  if (!id_lote) {
+    const erro = new Error();
+    erro.status = 400;
+    erro.mensagem = "O lote é obrigatório para registrar uma movimentação";
+    throw erro;
+  }
+
+  if (!id_usuario) {
+    const erro = new Error();
+    erro.status = 400;
+    erro.mensagem = "O usuário é obrigatório para registrar uma movimentação";
+    throw erro;
+  }
+
   if ((tipo === "AJUSTE_ENTRADA" || tipo === "AJUSTE_SAIDA") && !observacao) {
     const erro = new Error();
     erro.status = 400;
@@ -83,12 +128,26 @@ async atualizarMovimentacaoEstoque(
     throw erro;
   }
 
+  const lote = await movimentacaoEstoqueRepository.buscarLoteDoProduto(
+    id_lote,
+    id_produto,
+  );
+
+  if (!lote) {
+    const erro = new Error();
+    erro.status = 400;
+    erro.mensagem = "O lote informado não pertence ao produto informado";
+    throw erro;
+  }
+
   const dadosDaMovimentacaoEstoque = {
-    id_produto: id_produto,
-    tipo: tipo,
-    data_movimentacao: data_movimentacao,
-    quantidade: quantidade,
-    observacao: observacao,
+    id_produto,
+    id_lote,
+    id_usuario,
+    tipo,
+    data_movimentacao,
+    quantidade,
+    observacao,
   };
 
   const movimentacaoEstoque =
@@ -100,11 +159,17 @@ async atualizarMovimentacaoEstoque(
   return movimentacaoEstoque;
 }
 
-async deletarMovimentacaoEstoque(id) {
+async function excluirMovimentacaoEstoque(id) {
   const movimentacaoEstoque =
     await movimentacaoEstoqueRepository.apagarMovimentacaoEstoque(id);
 
   return movimentacaoEstoque;
-}}
+}
 
-module.exports = new MovimentacaoEstoqueService()
+module.exports = {
+  criarMovimentacaoEstoque,
+  listarMovimentacoesEstoque,
+  buscarMovimentacaoEstoque,
+  atualizarMovimentacaoEstoque,
+  excluirMovimentacaoEstoque,
+};
