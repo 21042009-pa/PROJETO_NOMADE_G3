@@ -3,7 +3,7 @@ const router = express.Router();
 
 const LoteController = require("../controllers/LoteController");
 
-router.get("/", LoteController.listarLote);
+router.get("/", LoteController.listarLotes);
 
 router.get("/:id", LoteController.buscarLotePorId);
 

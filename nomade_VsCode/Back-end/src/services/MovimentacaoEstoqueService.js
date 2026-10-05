@@ -1,3 +1,4 @@
+const MovimentacaoEstoqueRepository = require("../repositories/MovimentacaoEstoqueRepository");
 const movimentacaoEstoqueRepository = require("../repositories/MovimentacaoEstoqueRepository");
 
 const TIPOS_MOVIMENTACAO = [
@@ -88,14 +89,14 @@ async function criarMovimentacaoEstoque(
   return movimentacaoEstoque;
 }
 
-async function listarMovimentacoesEstoque() {
+async listarMovimentacoesEstoques() {
   const movimentacoesEstoque =
-    await movimentacaoEstoqueRepository.listarMovimentacoesEstoque();
+    await movimentacaoEstoqueRepository.listarMovimentacoesEstoques();
 
   return movimentacoesEstoque;
 }
 
-async function buscarMovimentacaoEstoque(id) {
+async buscarMovimentacaoEstoque(id) {
   const movimentacaoEstoque =
     await movimentacaoEstoqueRepository.buscarMovimentacaoEstoqueId(id);
 

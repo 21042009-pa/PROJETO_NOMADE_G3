@@ -1,6 +1,7 @@
 const usuarioRepository = require("../repositories/UsuarioRepository");
 
-async function criarUsuario(nome, login, senha, cargo, setor) {
+class UsuarioService {
+  async criarUsuario(nome, login, senha, cargo, setor) {
   const dadosDoUsuario = {
     nome: nome,
     login: login,
@@ -14,19 +15,19 @@ async function criarUsuario(nome, login, senha, cargo, setor) {
   return usuario;
 }
 
-async function listarUsuarios() {
+async listarUsuarios() {
   const usuarios = await usuarioRepository.listarUsuarios();
 
   return usuarios;
 }
 
-async function buscarUsuario(id) {
+async buscarUsuario(id) {
   const usuario = await usuarioRepository.buscarUsuarioId(id);
 
   return usuario;
 }
 
-async function atualizarUsuario(id, nome, login, senha, cargo, setor) {
+async atualizarUsuario(id, nome, login, senha, cargo, setor) {
   const dadosDoUsuario = {
     nome: nome,
     login: login,
@@ -40,16 +41,10 @@ async function atualizarUsuario(id, nome, login, senha, cargo, setor) {
   return usuario;
 }
 
-async function excluirUsuario(id) {
+async deletarUsuario(id) {
   const usuario = await usuarioRepository.apagarUsuario(id);
 
   return usuario;
-}
+}}
 
-module.exports = {
-  criarUsuario,
-  listarUsuarios,
-  buscarUsuario,
-  atualizarUsuario,
-  excluirUsuario,
-};
+module.exports = new UsuarioService()

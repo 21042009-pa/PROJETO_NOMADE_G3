@@ -1,6 +1,7 @@
 const produtoRepository = require("../repositories/ProdutoRepository");
 
-async function criarProduto(
+class ProdutoService {
+  async criarProduto(
   id_fornecedor,
   id_categoria,
   nome,
@@ -28,46 +29,29 @@ async function criarProduto(
   return produto;
 }
 
-async function listarProdutos() {
+async listarProdutos() {
   const produtos = await produtoRepository.listarProdutos();
 
   return produtos;
 }
 
-async function buscarProduto(id) {
+async buscarProduto(id) {
   const produto = await produtoRepository.buscarProdutoId(id);
 
   return produto;
 }
 
-async function buscarEstoqueProduto(id) {
-  const estoque = await produtoRepository.buscarEstoqueProduto(id);
-
-  return estoque;
-}
-
-async function atualizarProduto(
-  id,
-  id_fornecedor,
-  id_categoria,
-  nome,
-  descricao,
-  modelo,
-  data_validade,
-  codigo_produto,
-  cor,
-  imagem,
-) {
+async atualizarProduto(id, dados) {
   const dadosDoProduto = {
-    id_fornecedor,
-    id_categoria,
-    nome,
-    descricao,
-    modelo,
-    data_validade,
-    codigo_produto,
-    cor,
-    imagem,
+    id_fornecedor: dados.id_fornecedor,
+    id_categoria: dados.id_categoria,
+    nome: dados.nome,
+    descricao: dados.descricao,
+    modelo: dados.modelo,
+    data_validade: dados.data_validade,
+    codigo_produto: dados.codigo_produto,
+    cor: dados.cor,
+    imagem: dados.imagem,
   };
 
   const produto = await produtoRepository.atualizarProduto(id, dadosDoProduto);
@@ -75,17 +59,10 @@ async function atualizarProduto(
   return produto;
 }
 
-async function excluirProduto(id) {
+async deletarProduto(id) {
   const produto = await produtoRepository.apagarProduto(id);
 
   return produto;
 }
-
-module.exports = {
-  criarProduto,
-  listarProdutos,
-  buscarProduto,
-  buscarEstoqueProduto,
-  atualizarProduto,
-  excluirProduto,
-};
+}
+module.exports = new ProdutoService()

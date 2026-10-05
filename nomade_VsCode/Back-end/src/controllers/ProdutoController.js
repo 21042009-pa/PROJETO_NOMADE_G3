@@ -1,7 +1,7 @@
 const ProdutoService = require("../services/ProdutoService");
 
 class ProdutoController {
-  async listarProduto(req, res) {
+  async listarProdutos(req, res) {
     try {
       const resultado = await ProdutoService.listarProdutos();
 
@@ -74,21 +74,12 @@ class ProdutoController {
 
   async atualizarProduto(req, res) {
     try {
-      const resultado = await ProdutoService.atualizarProduto(
-        req.params.id,
-        req.body.id_fornecedor,
-        req.body.id_categoria,
-        req.body.nome,
-        req.body.descricao,
-        req.body.modelo,
-        req.body.data_validade,
-        req.body.codigo_produto,
-        req.body.cor,
-        req.file ? req.file.filename : null,
-      );
+    const { id } = req.params;
 
-      res.json(resultado);
-    } catch (erro) {
+    const produto = await produtoService.atualizarProduto(id, req.body);
+
+    res.json(produto);
+  } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
         mensagem: erro.mensagem || "Erro interno do servidor",
