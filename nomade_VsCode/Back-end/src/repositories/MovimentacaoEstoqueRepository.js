@@ -19,6 +19,31 @@ class MovimentacaoEstoqueRepository {
     return mostrarMovimentacao[0];
   }
 
+  async buscarEstoqueProduto(id_produto) {
+    const [resultado] = await pool.query(
+      `
+      SELECT
+        COALESCE(
+          SUM(
+            CASE
+              WHEN tipo = 'ENTRADA' THEN quantidade
+              WHEN tipo = 'AJUSTE_ENTRADA' THEN quantidade
+              WHEN tipo = 'SAIDA' THEN -quantidade
+              WHEN tipo = 'AJUSTE_SAIDA' THEN -quantidade
+              ELSE 0
+            END
+          ),
+          0
+        ) AS estoque
+      FROM tbl_movimentacao_estoque
+      WHERE id_produto = ?
+      `,
+      [id_produto],
+    );
+
+    return resultado[0];
+  }
+
   async cadastrarMovimentacaoEstoque(dadosDaMovimentacao) {
     const [resultadoMovimentacao] = await pool.query(
       "INSERT INTO tbl_movimentacao_estoque SET ?",
