@@ -70,7 +70,7 @@ CREATE TABLE
 -- =========================================
 CREATE TABLE
     IF NOT EXISTS tbl_movimentacao_estoque (
-        id_movimentacao INT PRIMARY KEY AUTO_INCREMENT,
+        id_movimentacao INT PRIMARY KEY,AUTO_INCREMENT,
         id_produto INT NOT NULL,
         id_lote INT,
         id_usuario INT,
