@@ -21,4 +21,6 @@ app.use(cors({
   credentials: true
 }));
 
+app.use(errorHandler);
+
 module.exports = app
