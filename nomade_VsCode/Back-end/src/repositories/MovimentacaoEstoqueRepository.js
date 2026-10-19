@@ -12,23 +12,11 @@ class MovimentacaoEstoqueRepository {
   async buscarMovimentacaoEstoqueId(id) {
     const [mostrarMovimentacao] = await pool.query(
       `SELECT * FROM tbl_movimentacao_estoque
-       WHERE id_movimentacao = ?`,
+             WHERE id_movimentacao = ?`,
       [id],
     );
 
     return mostrarMovimentacao[0];
-  }
-
-  async buscarLoteDoProduto(id_lote, id_produto) {
-    const [lote] = await pool.query(
-      `SELECT *
-       FROM tbl_lote
-       WHERE id_lote = ?
-       AND id_produto = ?`,
-      [id_lote, id_produto],
-    );
-
-    return lote[0];
   }
 
   async cadastrarMovimentacaoEstoque(dadosDaMovimentacao) {
@@ -56,10 +44,10 @@ class MovimentacaoEstoqueRepository {
     valoresMovimentacao.push(id);
 
     const query = `
-      UPDATE tbl_movimentacao_estoque
-      SET ${camposMovimentacao.join(", ")}
-      WHERE id_movimentacao = ?
-    `;
+            UPDATE tbl_movimentacao_estoque
+            SET ${camposMovimentacao.join(", ")}
+            WHERE id_movimentacao = ?
+        `;
 
     const [resultadoMovimentacao] = await pool.query(
       query,

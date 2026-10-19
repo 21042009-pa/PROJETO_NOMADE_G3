@@ -3,7 +3,7 @@ const router = express.Router();
 
 const FornecedorController = require("../controllers/FornecedorController");
 
-router.get("/", FornecedorController.listarFornecedores);
+router.get("/", FornecedorController.listarFornecedor);
 
 router.get("/:id", FornecedorController.buscarFornecedorPorId);
 

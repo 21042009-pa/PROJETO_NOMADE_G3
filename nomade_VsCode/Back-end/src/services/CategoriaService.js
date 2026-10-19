@@ -1,7 +1,6 @@
 const categoriaRepository = require("../repositories/CategoriaRepository");
 
-class CategoriaService {
-  async criarCategoria(nome_categoria) {
+async function criarCategoria(nome_categoria) {
   const dadosDaCategoria = {
     nome_categoria: nome_categoria,
   };
@@ -12,19 +11,19 @@ class CategoriaService {
   return categoria;
 }
 
-async listarCategorias() {
+async function listarCategorias() {
   const categorias = await categoriaRepository.listarCategorias();
 
   return categorias;
 }
 
-async buscarCategoria(id) {
+async function buscarCategoria(id) {
   const categoria = await categoriaRepository.buscarCategoriaId(id);
 
   return categoria;
 }
 
-async atualizarCategoria(id, nome_categoria) {
+async function atualizarCategoria(id, nome_categoria) {
   const dadosDaCategoria = {
     nome_categoria: nome_categoria,
   };
@@ -37,11 +36,16 @@ async atualizarCategoria(id, nome_categoria) {
   return categoria;
 }
 
-async deletarCategoria(id) {
+async function excluirCategoria(id) {
   const categoria = await categoriaRepository.apagarCategoria(id);
 
   return categoria;
 }
-}
 
-module.exports = new CategoriaService()
+module.exports = {
+  criarCategoria,
+  listarCategorias,
+  buscarCategoria,
+  atualizarCategoria,
+  excluirCategoria,
+};

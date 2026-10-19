@@ -12,4 +12,8 @@ router.get(
 
 router.post("/", MovimentacaoEstoqueController.cadastrarMovimentacaoEstoque);
 
+router.put("/:id", MovimentacaoEstoqueController.atualizarMovimentacaoEstoque);
+
+router.delete("/:id", MovimentacaoEstoqueController.deletarMovimentacaoEstoque);
+
 module.exports = router;

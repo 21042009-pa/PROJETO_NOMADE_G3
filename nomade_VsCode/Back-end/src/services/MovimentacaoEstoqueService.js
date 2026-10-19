@@ -1,70 +1,18 @@
 const movimentacaoEstoqueRepository = require("../repositories/MovimentacaoEstoqueRepository");
 
-const TIPOS_MOVIMENTACAO = [
-  "ENTRADA",
-  "SAIDA",
-  "AJUSTE_ENTRADA",
-  "AJUSTE_SAIDA",
-];
-
 async function criarMovimentacaoEstoque(
   id_produto,
-  id_lote,
-  id_usuario,
   tipo,
   data_movimentacao,
   quantidade,
   observacao,
 ) {
-  if (!TIPOS_MOVIMENTACAO.includes(tipo)) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem =
-      "Tipo de movimentação inválido. Use ENTRADA, SAIDA, AJUSTE_ENTRADA ou AJUSTE_SAIDA";
-    throw erro;
-  }
-
-  if (!id_lote) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem = "O lote é obrigatório para registrar uma movimentação";
-    throw erro;
-  }
-
-  if (!id_usuario) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem = "O usuário é obrigatório para registrar uma movimentação";
-    throw erro;
-  }
-
-  if ((tipo === "AJUSTE_ENTRADA" || tipo === "AJUSTE_SAIDA") && !observacao) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem = "A observação é obrigatória para ajustes de estoque";
-    throw erro;
-  }
-
-  const lote = await movimentacaoEstoqueRepository.buscarLoteDoProduto(
-    id_lote,
-    id_produto,
-  );
-
-  if (!lote) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem = "O lote informado não pertence ao produto informado";
-    throw erro;
-  }
-
   const dadosDaMovimentacaoEstoque = {
-    id_produto,
-    id_lote,
-    id_usuario,
-    tipo,
-    data_movimentacao,
-    quantidade,
-    observacao,
+    id_produto: id_produto,
+    tipo: tipo,
+    data_movimentacao: data_movimentacao,
+    quantidade: quantidade,
+    observacao: observacao,
   };
 
   const movimentacaoEstoque =
@@ -92,62 +40,17 @@ async function buscarMovimentacaoEstoque(id) {
 async function atualizarMovimentacaoEstoque(
   id,
   id_produto,
-  id_lote,
-  id_usuario,
   tipo,
   data_movimentacao,
   quantidade,
   observacao,
 ) {
-  if (!TIPOS_MOVIMENTACAO.includes(tipo)) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem =
-      "Tipo de movimentação inválido. Use ENTRADA, SAIDA, AJUSTE_ENTRADA ou AJUSTE_SAIDA";
-    throw erro;
-  }
-
-  if (!id_lote) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem = "O lote é obrigatório para registrar uma movimentação";
-    throw erro;
-  }
-
-  if (!id_usuario) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem = "O usuário é obrigatório para registrar uma movimentação";
-    throw erro;
-  }
-
-  if ((tipo === "AJUSTE_ENTRADA" || tipo === "AJUSTE_SAIDA") && !observacao) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem = "A observação é obrigatória para ajustes de estoque";
-    throw erro;
-  }
-
-  const lote = await movimentacaoEstoqueRepository.buscarLoteDoProduto(
-    id_lote,
-    id_produto,
-  );
-
-  if (!lote) {
-    const erro = new Error();
-    erro.status = 400;
-    erro.mensagem = "O lote informado não pertence ao produto informado";
-    throw erro;
-  }
-
   const dadosDaMovimentacaoEstoque = {
-    id_produto,
-    id_lote,
-    id_usuario,
-    tipo,
-    data_movimentacao,
-    quantidade,
-    observacao,
+    id_produto: id_produto,
+    tipo: tipo,
+    data_movimentacao: data_movimentacao,
+    quantidade: quantidade,
+    observacao: observacao,
   };
 
   const movimentacaoEstoque =
