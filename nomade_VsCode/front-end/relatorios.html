@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <title>Relatórios — Nômade</title>
+
+  <!-- Fontes -->
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <!-- Bootstrap -->
+  <link
+    href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+    rel="stylesheet"
+  >
+
+  <!-- CSS do projeto -->
+  <link
+    rel="stylesheet"
+    href="assets/css/style.css"
+  >
+  <script src="assets/js/theme.js"></script>
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       ESTRUTURA PRINCIPAL
+       ===================================================== -->
+
+  <div
+    class="app-shell"
+    id="app-shell"
+  >
+
+    <div class="content">
+
+      <!-- Cabeçalho -->
+      <div class="page-head">
+
+        <div>
+
+          <h1>
+            Gráficos de Desempenho de Vendas
+          </h1>
+
+          <p>
+            Preencha e acompanhe o desempenho mensal
+            e anual da empresa.
+          </p>
+
+        </div>
+
+
+        <!-- Botão para abrir modal -->
+        <button
+          class="btn-accent"
+          type="button"
+          data-bs-toggle="modal"
+          data-bs-target="#chartModal"
+        >
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2.1"
+          >
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+
+          Criar gráfico
+
+        </button>
+
+      </div>
+
+
+      <!-- Área dos gráficos -->
+      <div
+        class="row g-3"
+        id="chartGrid"
+      >
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MODAL: CRIAR GRÁFICO
+       ===================================================== -->
+
+  <div
+    class="modal fade"
+    id="chartModal"
+    tabindex="-1"
+    aria-labelledby="chartModalLabel"
+    aria-hidden="true"
+  >
+
+    <div
+      class="modal-dialog modal-dialog-centered"
+    >
+
+      <div
+        class="modal-content"
+        style="
+          background: var(--panel);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+        "
+      >
+
+        <!-- Cabeçalho do modal -->
+        <div
+          class="modal-header"
+          style="border-color: var(--border)"
+        >
+
+          <h5
+            class="modal-title font-display"
+            id="chartModalLabel"
+          >
+            Preencha o gráfico de desempenho
+          </h5>
+
+
+          <button
+            type="button"
+            class="btn-close btn-close-white"
+            data-bs-dismiss="modal"
+            aria-label="Fechar"
+          >
+          </button>
+
+        </div>
+
+
+        <!-- Formulário -->
+        <form id="chartForm">
+
+          <div class="modal-body">
+
+            <div class="row g-3">
+
+
+              <!-- Ano -->
+              <div class="col-6">
+
+                <label
+                  class="field-label"
+                  for="cAno"
+                >
+                  Ano
+                </label>
+
+                <input
+                  class="form-control-app"
+                  id="cAno"
+                  type="number"
+                  min="2000"
+                  max="2100"
+                  value="2026"
+                  required
+                >
+
+              </div>
+
+
+              <!-- Mês -->
+              <div class="col-6">
+
+                <label
+                  class="field-label"
+                  for="cMes"
+                >
+                  Mês
+                </label>
+
+                <select
+                  class="form-select-app"
+                  id="cMes"
+                  required
+                >
+
+                  <option value="Janeiro">
+                    Janeiro
+                  </option>
+
+                  <option value="Fevereiro">
+                    Fevereiro
+                  </option>
+
+                  <option value="Março">
+                    Março
+                  </option>
+
+                  <option value="Abril">
+                    Abril
+                  </option>
+
+                  <option value="Maio">
+                    Maio
+                  </option>
+
+                  <option value="Junho">
+                    Junho
+                  </option>
+
+                  <option value="Julho">
+                    Julho
+                  </option>
+
+                  <option value="Agosto">
+                    Agosto
+                  </option>
+
+                  <option value="Setembro">
+                    Setembro
+                  </option>
+
+                  <option value="Outubro">
+                    Outubro
+                  </option>
+
+                  <option value="Novembro">
+                    Novembro
+                  </option>
+
+                  <option value="Dezembro">
+                    Dezembro
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <!-- Quantidade de vendas -->
+              <div class="col-12">
+
+                <label
+                  class="field-label"
+                  for="cVendas"
+                >
+                  Quantidade de vendas
+                </label>
+
+                <input
+                  class="form-control-app"
+                  id="cVendas"
+                  type="number"
+                  min="0"
+                  required
+                >
+
+              </div>
+
+
+              <!-- Descrição -->
+              <div class="col-12">
+
+                <label
+                  class="field-label"
+                  for="cDescricao"
+                >
+                  Descrição sobre o mês
+                </label>
+
+                <textarea
+                  class="form-control-app"
+                  id="cDescricao"
+                  rows="3"
+                  placeholder="Contexto, sazonalidade, campanhas do período..."
+                ></textarea>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- Rodapé -->
+          <div
+            class="modal-footer"
+            style="border-color: var(--border)"
+          >
+
+            <button
+              type="button"
+              class="btn-ghost"
+              data-bs-dismiss="modal"
+            >
+              Cancelar
+            </button>
+
+
+            <button
+              type="submit"
+              class="btn-accent"
+            >
+              Criar gráfico
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  
+  <!-- =====================================================
+       SCRIPTS
+       ===================================================== -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/layout/icons.js"></script>
+  <script src="assets/js/layout/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/integration/core.js"></script>
+  <script src="assets/js/integration/relatorios.js"></script>
+
+</body>
+
+</html>
