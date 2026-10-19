@@ -3,6 +3,7 @@ const routes = require('./routes')
 const path = require("path")
 const app = express()
 const cors = require("cors");
+const errorHandler = require('./middleware/errorHandler');
 
 
 app.use(express.json()) 

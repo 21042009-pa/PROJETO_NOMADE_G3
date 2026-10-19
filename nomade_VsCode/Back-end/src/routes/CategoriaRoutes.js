@@ -1,6 +1,7 @@
 const express = require("express");
 const router = express.Router();
 
+
 const CategoriaController = require("../controllers/CategoriaController");
 const asyncHandler = require("../middleware/asyncHandler");
 
