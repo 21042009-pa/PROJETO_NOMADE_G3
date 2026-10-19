@@ -3,9 +3,9 @@ const router = express.Router();
 
 
 const CategoriaController = require("../controllers/CategoriaController");
-const asyncHandler = require("../middleware/asyncHandler");
 
-router.get("/", CategoriaController.listarCategorias, asyncHandler(CategoriaController.listarCategorias));
+
+router.get("/", CategoriaController.listarCategorias);
 
 router.get("/:id", CategoriaController.buscarCategoriaPorId);
 

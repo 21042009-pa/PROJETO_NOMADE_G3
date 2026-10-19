@@ -3,9 +3,8 @@ const router = express.Router();
 
 const ProdutoController = require("../controllers/ProdutoController");
 const upload = require("../config/multer");
-const asyncHandler = require("../middleware/asyncHandler");
 
-router.get("/", ProdutoController.listarProdutos, asyncHandler(ProdutoController.listarProdutos));
+router.get("/", ProdutoController.listarProdutos);
 
 router.get("/:id/estoque", ProdutoController.consultarEstoque);
 

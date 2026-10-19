@@ -1,11 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const asyncHandler = require("../middleware/asyncHandler");
 
 const MovimentacaoEstoqueController = require("../controllers/MovimentacaoEstoqueController");
 const { listarMovimentacoesEstoque } = require("../repositories/MovimentacaoEstoqueRepository");
 
-router.get("/", MovimentacaoEstoqueController.listarMovimentacoesEstoque, asyncHandler(MovimentacaoEstoqueController.listarMovimentacoesEstoque));
+router.get("/", MovimentacaoEstoqueController.listarMovimentacoesEstoque);
 
 router.get(
   "/:id",

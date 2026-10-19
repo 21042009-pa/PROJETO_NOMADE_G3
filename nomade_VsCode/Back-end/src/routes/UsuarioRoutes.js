@@ -1,10 +1,10 @@
 const express = require("express");
 const router = express.Router();
-const asyncHandler = require("../middleware/asyncHandler");
+
 
 const UsuarioController = require("../controllers/UsuarioController");
 
-router.get("/", UsuarioController.listarUsuarios, asyncHandler(UsuarioController.listarUsuarios));
+router.get("/", UsuarioController.listarUsuarios);
 
 router.get("/:id", UsuarioController.buscarUsuarioPorId);
 

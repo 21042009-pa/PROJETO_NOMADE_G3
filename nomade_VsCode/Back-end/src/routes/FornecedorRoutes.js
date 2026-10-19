@@ -1,10 +1,9 @@
 const express = require("express");
 const router = express.Router();
-const asyncHandler = require("../middleware/asyncHandler");
 
 const FornecedorController = require("../controllers/FornecedorController");
 
-router.get("/", FornecedorController.listarFornecedores, asyncHandler(FornecedorController.listarFornecedores));
+router.get("/", FornecedorController.listarFornecedores);
 
 router.get("/:id", FornecedorController.buscarFornecedorPorId);
 
