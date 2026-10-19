@@ -1,0 +1,20 @@
+{
+  "name": "projeto_nomade_g3",
+  "version": "1.0.0",
+  "description": "Sistema web desenvolvido pelo Grupo 3 para gerenciamento de estoque, produtos, categorias, fornecedores, lotes, movimentações e usuários.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "dependencies": {
+    "cors": "^2.8.6",
+    "dotenv": "^18.0.1",
+    "express": "^5.2.1",
+    "multer": "^2.4.0",
+    "mysql2": "^3.24.4"
+  }
+}
