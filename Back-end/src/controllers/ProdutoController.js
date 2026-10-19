@@ -41,6 +41,8 @@ class ProdutoController {
         req.body.codigo_produto,
         req.body.cor,
         req.file ? req.file.filename : null,
+        req.body.id_lote,
+        req.body.id_lote,
       );
 
       res.status(201).json(resultado);

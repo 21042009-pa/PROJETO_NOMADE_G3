@@ -10,6 +10,7 @@ async function criarProduto(
   codigo_produto,
   cor,
   imagem,
+  id_lote,
 ) {
   const dadosDoProduto = {
     id_fornecedor: id_fornecedor,
@@ -21,6 +22,7 @@ async function criarProduto(
     codigo_produto: codigo_produto,
     cor: cor,
     imagem: imagem,
+    ...(id_lote !== undefined && id_lote !== "" ? { id_lote: Number(id_lote) } : {}),
   };
 
   const produto = await produtoRepository.cadastrarProduto(dadosDoProduto);
@@ -51,6 +53,7 @@ async function atualizarProduto(
   codigo_produto,
   cor,
   imagem,
+  id_lote,
 ) {
   const dadosDoProduto = {
     id_fornecedor: id_fornecedor,
@@ -62,6 +65,7 @@ async function atualizarProduto(
     codigo_produto: codigo_produto,
     cor: cor,
     imagem: imagem,
+    ...(id_lote !== undefined && id_lote !== "" ? { id_lote: Number(id_lote) } : {}),
   };
 
   const produto = await produtoRepository.atualizarProduto(id, dadosDoProduto);

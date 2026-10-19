@@ -1,59 +1,55 @@
-const loteRepository = require("../repositories/LoteRepository");
+const fornecedorRepository = require("../repositories/FornecedorRepository");
 
-async function criarLote(id_produto, codigo_lote, quantidade_atual, validade) {
-  const dadosDoLote = {
-    id_produto: id_produto,
-    codigo_lote: codigo_lote,
-    quantidade_atual: quantidade_atual,
-    validade: validade,
+async function criarFornecedor(nome, contato, endereco) {
+  const dadosDoFornecedor = {
+    nome: nome,
+    contato: contato,
+    endereco: endereco,
   };
 
-  const lote = await loteRepository.cadastrarLote(dadosDoLote);
+  const fornecedor =
+    await fornecedorRepository.cadastrarFornecedor(dadosDoFornecedor);
 
-  return lote;
+  return fornecedor;
 }
 
-async function listarLotes() {
-  const lotes = await loteRepository.listarLotes();
+async function listarFornecedores() {
+  const fornecedores = await fornecedorRepository.listarFornecedores();
 
-  return lotes;
+  return fornecedores;
 }
 
-async function buscarLote(id) {
-  const lote = await loteRepository.buscarLoteId(id);
+async function buscarFornecedor(id) {
+  const fornecedor = await fornecedorRepository.buscarFornecedorId(id);
 
-  return lote;
+  return fornecedor;
 }
 
-async function atualizarLote(
-  id,
-  id_produto,
-  codigo_lote,
-  quantidade_atual,
-  validade,
-) {
-  const dadosDoLote = {
-    id_produto: id_produto,
-    codigo_lote: codigo_lote,
-    quantidade_atual: quantidade_atual,
-    validade: validade,
+async function atualizarFornecedor(id, nome, contato, endereco) {
+  const dadosDoFornecedor = {
+    nome: nome,
+    contato: contato,
+    endereco: endereco,
   };
 
-  const lote = await loteRepository.atualizarLote(id, dadosDoLote);
+  const fornecedor = await fornecedorRepository.atualizarFornecedor(
+    id,
+    dadosDoFornecedor,
+  );
 
-  return lote;
+  return fornecedor;
 }
 
-async function excluirLote(id) {
-  const lote = await loteRepository.apagarLote(id);
+async function excluirFornecedor(id) {
+  const fornecedor = await fornecedorRepository.apagarFornecedor(id);
 
-  return lote;
+  return fornecedor;
 }
 
 module.exports = {
-  criarLote,
-  listarLotes,
-  buscarLote,
-  atualizarLote,
-  excluirLote,
+  criarFornecedor,
+  listarFornecedores,
+  buscarFornecedor,
+  atualizarFornecedor,
+  excluirFornecedor,
 };
