@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>Nômade — Entrar no sistema</title>
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS do projeto -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/theme.js"></script>
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       LOGIN
+       ===================================================== -->
+
+  <div class="login-shell">
+
+    <div class="login-card">
+
+
+      <!-- =================================================
+           LOGO
+           ================================================= -->
+
+      <div class="brand">
+
+        <svg class="brand-mark" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg">
+
+          <path d="
+              M4 21.5
+              c5-1.5 9-4.6 11.3-9.3
+              1-2 3-6.7 5.2-8.7
+              -2.7 3.8-3 8.4-1.2 11.7
+              1.4 2.6 4 4.2 7.2 3.9
+              -3.7 2.8-8.7 3.3-12.9 1
+              -1.7-.9-3-.9-4.7-.2
+              -1.7.8-3.1 1.7-4.9 1.6z
+            " />
+
+        </svg>
+
+        <span>
+          NÔMADE
+        </span>
+
+      </div>
+
+
+      <!-- =================================================
+           FORMULÁRIO DE LOGIN
+           ================================================= -->
+
+      <form id="loginForm">
+
+
+        <!-- Login -->
+        <div class="mb-3">
+
+          <label class="field-label" for="email">
+            Login
+          </label>
+
+
+          <div class="input-icon-wrap">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+              <path d="
+                  M3 6.5h18v11
+                  a1.5 1.5 0 0 1-1.5 1.5h-15
+                  A1.5 1.5 0 0 1 3 17.5z
+                " />
+
+              <path d="M3.5 7l8.5 6.5L20.5 7" />
+
+            </svg>
+
+
+            <input class="form-control-app" type="text" id="email" placeholder="Digite seu login"
+              autocomplete="username" required>
+
+          </div>
+
+        </div>
+
+
+        <!-- Senha -->
+        <div class="mb-3">
+
+          <label class="field-label" for="senha">
+            Senha
+          </label>
+
+
+          <div class="input-icon-wrap">
+
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+              <rect x="4.5" y="10.5" width="15" height="9.5" rx="1.8" />
+
+              <path d="M8 10.5V7a4 4 0 0 1 8 0v3.5" />
+
+            </svg>
+
+
+            <input class="form-control-app" type="password" id="senha" placeholder="••••••••"
+              autocomplete="current-password" minlength="6" required>
+
+          </div>
+
+        </div>
+        <!-- Opções -->
+        <div class="login-foot">
+
+          <label class="form-check-app m-0">
+
+            <input type="checkbox" id="lembrar">
+
+            Lembrar dispositivo
+
+          </label>
+
+
+          <div class="d-flex align-items-center gap-3">
+            <button
+              type="button"
+              class="btn-link-disabled"
+              id="forgotPasswordButton"
+              disabled
+              aria-disabled="true"
+              title="Recuperação de senha ainda não disponível"
+            >
+              Esqueci minha senha
+            </button>
+
+            <a href="#" id="openRegister">
+              Criar conta
+            </a>
+          </div>
+
+        </div>
+
+
+        <!-- Mensagem de erro -->
+        <p id="loginError" class="text-danger small mb-2">
+        </p>
+
+
+        <!-- Botão -->
+        <button type="submit" class="btn-accent w-100 justify-content-center">
+
+          Entrar no sistema
+
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+
+            <path d="M13.5 5.5 20 12l-6.5 6.5M4 12h15.5" />
+
+          </svg>
+
+        </button>
+
+      </form>
+
+    </div>
+
+  </div>
+
+
+  <!-- =====================================================
+       MODAL DE CADASTRO
+       ===================================================== -->
+
+  <div class="modal fade" id="registerModal" tabindex="-1" aria-labelledby="registerModalLabel" aria-hidden="true">
+
+    <div class="modal-dialog modal-dialog-centered">
+
+      <div class="modal-content" style="
+          background: var(--panel);
+          border: 1px solid var(--border);
+          border-radius: var(--radius-lg);
+        ">
+
+
+        <!-- =================================================
+             CABEÇALHO
+             ================================================= -->
+
+        <div class="modal-header" style="border-color: var(--border)">
+
+          <h5 class="modal-title font-display" id="registerModalLabel">
+            Criar usuário
+          </h5>
+
+
+          <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal" aria-label="Fechar">
+          </button>
+
+        </div>
+
+
+        <!-- =================================================
+             FORMULÁRIO DE CADASTRO
+             ================================================= -->
+
+        <form id="registerForm">
+
+          <div class="modal-body">
+
+
+            <!-- Mensagem -->
+            <div id="registerMessage" class="small mb-3">
+            </div>
+
+
+            <!-- Nome -->
+            <div class="mb-3">
+
+              <label class="field-label" for="registerNome">
+                Nome completo
+              </label>
+
+
+              <input class="form-control-app" id="registerNome" type="text" maxlength="100" autocomplete="name"
+                required>
+
+            </div>
+
+
+            <!-- Login / e-mail -->
+            <div class="mb-3">
+
+              <label class="field-label" for="registerLogin">
+                Login / e-mail
+              </label>
+
+
+              <input class="form-control-app" id="registerLogin" type="text" maxlength="100" autocomplete="username"
+                required>
+
+            </div>
+
+
+            <!-- Senhas -->
+            <div class="row g-3">
+
+
+              <!-- Senha -->
+              <div class="col-md-6">
+
+                <label class="field-label" for="registerSenha">
+                  Senha
+                </label>
+
+
+                <input class="form-control-app" type="password" id="registerSenha" minlength="6"
+                  autocomplete="new-password" placeholder="Mínimo de 6 caracteres" required>
+
+              </div>
+
+
+              <!-- Confirmação -->
+              <div class="col-md-6">
+
+                <label class="field-label" for="registerConfirmar">
+                  Confirmar senha
+                </label>
+
+
+                <input class="form-control-app" type="password" id="registerConfirmar" minlength="6"
+                  autocomplete="new-password" placeholder="Repita a senha" required>
+
+              </div>
+
+            </div>
+
+
+            <!-- Perfil e setor -->
+            <div class="row g-3 mt-1">
+
+
+              <!-- Perfil -->
+              <div class="col-md-6">
+
+                <label class="field-label" for="registerCargo">
+                  Perfil
+                </label>
+
+
+                <select class="form-select-app" id="registerCargo" required>
+
+                  <option value="Gerente">
+                    Gerente
+                  </option>
+
+                  <option value="Analista">
+                    Analista
+                  </option>
+
+                  <option value="Operador" selected>
+                    Operador
+                  </option>
+
+                  <option value="Somente visualização">
+                    Somente visualização
+                  </option>
+
+                </select>
+
+              </div>
+
+
+              <!-- Setor -->
+              <div class="col-md-6">
+
+                <label class="field-label" for="registerSetor">
+                  Setor
+                </label>
+
+
+                <input class="form-control-app" id="registerSetor" type="text" value="Estoque" maxlength="100" required>
+
+              </div>
+
+            </div>
+
+          </div>
+
+
+          <!-- =================================================
+               RODAPÉ
+               ================================================= -->
+
+          <div class="modal-footer" style="border-color: var(--border)">
+
+            <button type="button" class="btn-ghost" data-bs-dismiss="modal">
+              Cancelar
+            </button>
+
+
+            <button type="submit" class="btn-accent" id="registerButton">
+              Cadastrar usuário
+            </button>
+
+          </div>
+
+        </form>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  
+  <!-- =====================================================
+       SCRIPTS
+       ===================================================== -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/integration/core.js"></script>
+  <script src="assets/js/integration/auth.js"></script>
+
+</body>
+
+</html>

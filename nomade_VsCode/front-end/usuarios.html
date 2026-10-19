@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<title>Gestão de Equipe — Nômade</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<div class="app-shell" id="app-shell">
+  <div class="content">
+
+    <div class="page-head">
+      <div>
+        <h1>Gestão de Equipe</h1>
+        <p>Gerencie o acesso de usuários, funções e permissões de segurança em todo o sistema de inventário.</p>
+      </div>
+      <button class="btn-accent" data-bs-toggle="modal" data-bs-target="#addUserModal">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1"><path d="M12 5v14M5 12h14"/></svg>
+        Adicionar usuário
+      </button>
+    </div>
+
+    <div class="row g-3 mb-4">
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Total de usuários</div>
+          <div class="metric-value">24</div>
+        </div>
+      </div>
+      <div class="col-6 col-lg-3">
+        <div class="metric-card">
+          <div class="metric-label">Ativos agora</div>
+          <div class="metric-value" style="color:var(--success)">08</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+        <div class="panel-title">Elenco da equipe</div>
+        <div class="input-icon-wrap" style="width:240px">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9"><circle cx="10.5" cy="10.5" r="6.5"/><path d="M20 20l-4.3-4.3"/></svg>
+          <input class="form-control-app" id="userFilter" placeholder="Pesquisar membros da equipe...">
+        </div>
+      </div>
+
+      <div class="table-responsive">
+        <table class="table-app" id="userTable">
+          <thead>
+            <tr>
+              <th>Usuário</th>
+              <th>Função</th>
+              <th>Nível de acesso</th>
+              <th>Status</th>
+              <th>Última atividade</th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="avatar" style="width:34px;height:34px;font-size:0.72rem">AM</div>
+                  <div>
+                    <div class="cell-strong">Alex Mercer</div>
+                    <div class="cell-muted" style="font-size:0.78rem">alex.m@nomade.tech</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-app badge-warning">Gerente</span></td>
+              <td class="cell-muted">Acesso total</td>
+              <td><span class="badge-app badge-success">Ativo</span></td>
+              <td class="cell-muted">Agora</td>
+              <td class="text-end">
+                <button type="button" class="btn-ghost me-2" style="padding:4px 10px;font-size:0.78rem" data-bs-toggle="modal" data-bs-target="#customizeUserModal">Personalizar usuário</button>
+                <a href="#" class="small">Editar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="avatar" style="width:34px;height:34px;font-size:0.72rem">SK</div>
+                  <div>
+                    <div class="cell-strong">Sarah Kaine</div>
+                    <div class="cell-muted" style="font-size:0.78rem">s.kaine@nomade.tech</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-app badge-info">Analista</span></td>
+              <td class="cell-muted">Analítico</td>
+              <td><span class="badge-app badge-success">Ativo</span></td>
+              <td class="cell-muted">há 12m</td>
+              <td class="text-end">
+                <button type="button" class="btn-ghost me-2" style="padding:4px 10px;font-size:0.78rem" data-bs-toggle="modal" data-bs-target="#customizeUserModal">Personalizar usuário</button>
+                <a href="#" class="small">Editar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="avatar" style="width:34px;height:34px;font-size:0.72rem">JT</div>
+                  <div>
+                    <div class="cell-strong">Jason Thorne</div>
+                    <div class="cell-muted" style="font-size:0.78rem">j.thorne@nomade.tech</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-app badge-neutral">Operador</span></td>
+              <td class="cell-muted">Operação</td>
+              <td><span class="badge-app badge-warning">Reservado</span></td>
+              <td class="cell-muted">há 1d</td>
+              <td class="text-end">
+                <button type="button" class="btn-ghost me-2" style="padding:4px 10px;font-size:0.78rem" data-bs-toggle="modal" data-bs-target="#customizeUserModal">Personalizar usuário</button>
+                <a href="#" class="small">Editar</a>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <div class="d-flex align-items-center gap-2">
+                  <div class="avatar" style="width:34px;height:34px;font-size:0.72rem;background:linear-gradient(140deg,#3a3a42,#232328);color:var(--text-muted)">RV</div>
+                  <div>
+                    <div class="cell-strong">Riley Vance</div>
+                    <div class="cell-muted" style="font-size:0.78rem">r.vance@nomade.tech</div>
+                  </div>
+                </div>
+              </td>
+              <td><span class="badge-app badge-neutral">Assistente</span></td>
+              <td class="cell-muted">Somente visualização</td>
+              <td><span class="badge-app badge-danger">Offline</span></td>
+              <td class="cell-muted">há 2d</td>
+              <td class="text-end">
+                <button type="button" class="btn-ghost me-2" style="padding:4px 10px;font-size:0.78rem" data-bs-toggle="modal" data-bs-target="#customizeUserModal">Personalizar usuário</button>
+                <a href="#" class="small">Editar</a>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="d-flex align-items-center justify-content-between mt-3">
+        <span class="text-muted small">Exibindo 4 de 24 membros</span>
+        <div class="pager">
+          <button disabled>‹</button>
+          <button class="active">1</button>
+          <button>2</button>
+          <button>3</button>
+          <button>4</button>
+          <button>›</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- Modal: adicionar usuário -->
+<div class="modal fade" id="addUserModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg)">
+      <div class="modal-header" style="border-color:var(--border)">
+        <h5 class="modal-title font-display">Adicionar usuário</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="addUserForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="field-label" for="uNome">Nome completo</label>
+            <input class="form-control-app" id="uNome" required>
+          </div>
+          <div class="mb-3">
+            <label class="field-label" for="uEmail">E-mail</label>
+            <input class="form-control-app" id="uEmail" type="email" required>
+          </div>
+          <div class="mb-3">
+            <label class="field-label" for="uFuncao">Função</label>
+            <select class="form-select-app" id="uFuncao">
+              <option>Gerente</option>
+              <option>Analista</option>
+              <option>Operador</option>
+              <option>Assistente</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-color:var(--border)">
+          <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn-accent">Adicionar</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<!-- Modal: personalizar usuário -->
+<div class="modal fade" id="customizeUserModal" tabindex="-1">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content" style="background:var(--panel);border:1px solid var(--border);border-radius:var(--radius-lg)">
+      <div class="modal-header" style="border-color:var(--border)">
+        <h5 class="modal-title font-display">Personalizar usuário</h5>
+        <button type="button" class="btn-close btn-close-white" data-bs-dismiss="modal"></button>
+      </div>
+      <form id="customizeUserForm">
+        <div class="modal-body">
+          <div class="mb-3">
+            <label class="field-label" for="cUsuario">Usuário</label>
+            <input class="form-control-app" id="cUsuario" readonly>
+          </div>
+          <div class="mb-3">
+            <label class="field-label" for="cFuncao">Função</label>
+            <select class="form-select-app" id="cFuncao">
+              <option>Gerente</option>
+              <option>Analista</option>
+              <option>Operador</option>
+              <option>Assistente</option>
+            </select>
+          </div>
+          <div class="mb-3">
+            <label class="field-label" for="cAcesso">Nível de acesso</label>
+            <input class="form-control-app" id="cAcesso" required>
+          </div>
+        </div>
+        <div class="modal-footer" style="border-color:var(--border)">
+          <button type="button" class="btn-ghost" data-bs-dismiss="modal">Cancelar</button>
+          <button type="submit" class="btn-accent">Salvar alterações</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+<script src="assets/js/layout/icons.js"></script>
+<script src="assets/js/layout/layout.js"></script>
+<script src="assets/js/app.js"></script>
+<script src="assets/js/integration/core.js"></script>
+<script src="assets/js/integration/usuarios.js"></script>
+</body>
+</html>

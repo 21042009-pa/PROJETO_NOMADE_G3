@@ -1,0 +1,492 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Painel de Controle — Nômade
+  </title>
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/theme.js"></script>
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       ESTRUTURA PRINCIPAL
+       ===================================================== -->
+
+  <div class="app-shell" id="app-shell">
+
+    <div class="content">
+
+
+      <!-- =================================================
+           CABEÇALHO
+           ================================================= -->
+
+      <div class="page-head">
+
+        <div>
+
+          <h1>
+            Painel de Controle
+          </h1>
+
+          <p>
+            Visão geral dos produtos, estoque
+            e movimentações da operação.
+          </p>
+
+        </div>
+
+
+        <a href="movimentacao.html" class="btn-accent">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+
+          Registrar movimentação
+
+        </a>
+
+      </div>
+
+
+      <!-- =================================================
+           INDICADORES
+           ================================================= -->
+
+      <div class="row g-3 mb-4">
+
+
+        <!-- Produtos -->
+        <div class="col-6 col-lg-3">
+
+          <div class="metric-card">
+
+            <div class="metric-label">
+              Produtos cadastrados
+            </div>
+
+            <div class="metric-value">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Estoque -->
+        <div class="col-6 col-lg-3">
+
+          <div class="metric-card">
+
+            <div class="metric-label">
+              Unidades em estoque
+            </div>
+
+            <div class="metric-value">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Entradas -->
+        <div class="col-6 col-lg-3">
+
+          <div class="metric-card">
+
+            <div class="metric-label">
+              Entradas registradas
+            </div>
+
+            <div class="metric-value">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Saídas -->
+        <div class="col-6 col-lg-3">
+
+          <div class="metric-card">
+
+            <div class="metric-label">
+              Saídas registradas
+            </div>
+
+            <div class="metric-value">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           GRÁFICOS
+           ================================================= -->
+
+      <div class="row g-3 mb-4">
+
+
+        <!-- Gráfico de barras -->
+        <div class="col-lg-8">
+
+          <div class="panel h-100">
+
+            <div class="panel-header">
+
+              <div class="panel-title">
+                Volume de movimentações
+              </div>
+
+              <span class="panel-title label">
+                Semana
+              </span>
+
+            </div>
+
+
+            <div class="bar-chart" id="salesChart">
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Donut -->
+        <div class="col-lg-4">
+
+          <div class="panel h-100">
+
+            <div class="panel-header">
+
+              <div class="panel-title">
+                Distribuição do estoque
+              </div>
+
+            </div>
+
+
+            <div class="donut-wrap" id="stockDonut">
+            </div>
+
+
+            <div class="mt-4">
+
+              <div class="legend-row">
+
+                <span class="legend-key">
+
+                  <span class="dot" style="background:var(--chart-high)">
+                  </span>
+
+                  Estoque alto
+
+                </span>
+
+                <span class="pct">
+                  45%
+                </span>
+
+              </div>
+
+
+              <div class="legend-row">
+
+                <span class="legend-key">
+
+                  <span class="dot" style="background:var(--chart-medium)">
+                  </span>
+
+                  Estoque médio
+
+                </span>
+
+                <span class="pct">
+                  30%
+                </span>
+
+              </div>
+
+
+              <div class="legend-row">
+
+                <span class="legend-key">
+
+                  <span class="dot" style="background:var(--chart-low)">
+                  </span>
+
+                  Estoque baixo
+
+                </span>
+
+                <span class="pct">
+                  25%
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           PRODUTOS RECENTES
+           ================================================= -->
+
+      <div class="row g-3">
+
+
+        <div class="col-lg-8">
+
+          <div class="panel">
+
+            <div class="panel-header">
+
+              <div class="panel-title">
+                Produtos cadastrados
+              </div>
+
+
+              <a href="produtos.html" class="small">
+                Ver tudo
+              </a>
+
+            </div>
+
+
+            <div class="table-responsive">
+
+              <table class="table-app">
+
+                <thead>
+
+                  <tr>
+
+                    <th>
+                      Produto
+                    </th>
+
+                    <th>
+                      Código
+                    </th>
+
+                    <th>
+                      Modelo
+                    </th>
+
+                    <th>
+                      Cor
+                    </th>
+
+                  </tr>
+
+                </thead>
+
+
+                <tbody>
+
+                  <!--
+                    Preenchido automaticamente
+                    pelo integration.js
+                  -->
+
+                  <tr>
+
+                    <td colspan="4" class="cell-muted text-center">
+                      Carregando produtos...
+                    </td>
+
+                  </tr>
+
+                </tbody>
+
+              </table>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===============================================
+             ACESSOS RÁPIDOS
+             =============================================== -->
+
+        <div class="col-lg-4">
+
+          <div class="panel">
+
+            <div class="panel-header">
+
+              <div class="panel-title">
+
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                  <path d="
+                      M6 9a6 6 0 1 1 12 0
+                      c0 5 2 6 2 6
+                      H4
+                      s2-1 2-6z
+                    " />
+
+                  <path d="
+                      M10 19
+                      a2.1 2.1 0 0 0 4 0
+                    " />
+
+                </svg>
+
+                Acessos rápidos
+
+              </div>
+
+            </div>
+
+
+            <!-- Estoque -->
+            <div class="alert-item">
+
+              <span class="alert-dot" style="background:var(--accent)">
+              </span>
+
+
+              <div>
+
+                <div class="title">
+                  Estoque
+                </div>
+
+                <p>
+                  Consulte produtos e quantidades
+                  disponíveis no inventário.
+                </p>
+
+
+                <a href="estoque.html" class="small">
+                  Abrir estoque
+                </a>
+
+              </div>
+
+            </div>
+
+
+            <!-- Produtos -->
+            <div class="alert-item">
+
+              <span class="alert-dot" style="background:var(--success)">
+              </span>
+
+
+              <div>
+
+                <div class="title">
+                  Produtos
+                </div>
+
+                <p>
+                  Cadastre e gerencie produtos,
+                  lotes e fornecedores.
+                </p>
+
+
+                <a href="produtos.html" class="small">
+                  Gerenciar produtos
+                </a>
+
+              </div>
+
+            </div>
+
+
+            <!-- Movimentação -->
+            <div class="alert-item">
+
+              <span class="alert-dot" style="background:var(--warning)">
+              </span>
+
+
+              <div>
+
+                <div class="title">
+                  Movimentações
+                </div>
+
+                <p>
+                  Registre entradas e saídas
+                  de mercadorias.
+                </p>
+
+
+                <a href="movimentacao.html" class="small">
+                  Registrar movimentação
+                </a>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  
+  <!-- =====================================================
+       SCRIPTS
+       ===================================================== -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/layout/icons.js"></script>
+  <script src="assets/js/layout/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/integration/core.js"></script>
+  <script src="assets/js/integration/dashboard.js"></script>
+
+</body>
+
+</html>
