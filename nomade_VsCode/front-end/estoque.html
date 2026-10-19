@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+  <meta charset="UTF-8">
+
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <title>
+    Gestão de Estoque — Nômade
+  </title>
+
+  <!-- Fontes -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+    rel="stylesheet">
+
+  <!-- Bootstrap -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- CSS do projeto -->
+  <link rel="stylesheet" href="assets/css/style.css">
+  <script src="assets/js/theme.js"></script>
+</head>
+
+
+<body>
+
+  <!-- =====================================================
+       ESTRUTURA PRINCIPAL
+       ===================================================== -->
+
+  <div class="app-shell" id="app-shell">
+
+    <div class="content">
+
+
+      <!-- =================================================
+           BREADCRUMB
+           ================================================= -->
+
+      <div class="breadcrumb-app">
+
+        Admin / Produtos /
+
+        <span class="current">
+          Visão de estoque
+        </span>
+
+      </div>
+
+
+      <!-- =================================================
+           CABEÇALHO
+           ================================================= -->
+
+      <div class="page-head">
+
+        <div>
+
+          <h1>
+            Gestão de Estoque
+          </h1>
+
+          <p>
+            Consulte, filtre e rastreie todos os
+            itens ativos no inventário.
+          </p>
+
+        </div>
+
+
+        <!-- Novo produto -->
+        <a href="produtos.html#cadastro" class="btn-accent">
+
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+            <path d="M12 5v14M5 12h14" />
+          </svg>
+
+          Adicionar produto
+
+        </a>
+
+      </div>
+
+
+      <!-- =================================================
+           INDICADORES
+           ================================================= -->
+
+      <div class="row g-3 mb-4">
+
+
+        <!-- Total de produtos -->
+        <div class="col-6 col-lg-3">
+
+          <div class="metric-card">
+
+            <div class="metric-label">
+              Produtos cadastrados
+            </div>
+
+            <div class="metric-value" id="totalProducts" style="font-size: 1.4rem">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Total em estoque -->
+        <div class="col-6 col-lg-3">
+
+          <div class="metric-card">
+
+            <div class="metric-label">
+              Unidades em estoque
+            </div>
+
+            <div class="metric-value" id="totalStock" style="font-size: 1.4rem">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Estoque baixo -->
+        <div class="col-6 col-lg-3">
+
+          <div class="metric-card">
+
+            <div class="metric-label">
+              Estoque baixo
+            </div>
+
+            <div class="metric-value" id="lowStock" style="
+                font-size: 1.4rem;
+                color: var(--warning);
+              ">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- Reposição crítica -->
+        <div class="col-6 col-lg-3">
+
+          <div class="metric-card">
+
+            <div class="metric-label">
+              Reposição crítica
+            </div>
+
+            <div class="metric-value" id="criticalStock" style="
+                font-size: 1.4rem;
+                color: var(--danger);
+              ">
+              —
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- =================================================
+           PAINEL DO ESTOQUE
+           ================================================= -->
+
+      <div class="panel">
+
+
+        <!-- ===============================================
+             FERRAMENTAS
+             =============================================== -->
+
+        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+
+
+          <!-- Abas -->
+          <div class="pill-tabs">
+
+            <button type="button" class="active">
+              Todos os itens
+            </button>
+
+
+            <button type="button">
+              Novidades
+            </button>
+
+
+            <button type="button">
+              Arquivo
+            </button>
+
+          </div>
+
+
+          <!-- Pesquisa e filtros -->
+          <div class="d-flex align-items-center gap-2">
+
+
+            <!-- Pesquisa -->
+            <div class="input-icon-wrap" style="width: 240px">
+
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
+
+                <circle cx="10.5" cy="10.5" r="6.5" />
+
+                <path d="M20 20l-4.3-4.3" />
+
+              </svg>
+
+
+              <input class="form-control-app" id="filterInput" type="search"
+                placeholder="Filtrar por nome, código, lote...">
+
+            </div>
+
+
+            <!-- Filtros -->
+            <button class="btn-ghost" type="button">
+
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+
+                <path d="M4 5h16l-6.2 7.2V19l-3.6 2v-8.8z" />
+
+              </svg>
+
+              Filtros
+
+            </button>
+
+          </div>
+
+        </div>
+
+
+        <!-- ===============================================
+             CONTAGEM
+             =============================================== -->
+
+        <p class="text-muted small mb-2" id="stockCount">
+          Carregando produtos...
+        </p>
+
+
+        <!-- ===============================================
+             TABELA
+             =============================================== -->
+
+        <div class="table-responsive">
+
+          <table class="table-app" id="stockTable">
+
+            <thead>
+
+              <tr>
+
+                <th>
+                  Nome
+                </th>
+
+                <th>
+                  Código
+                </th>
+
+                <th>
+                  Fornecedor
+                </th>
+
+                <th>
+                  Lote
+                </th>
+
+                <th>
+                  Modelo
+                </th>
+
+                <th>
+                  Cor
+                </th>
+
+                <th>
+                  Estoque
+                </th>
+
+              </tr>
+
+            </thead>
+
+
+            <tbody>
+
+              <!--
+                O integration.js preencherá
+                automaticamente esta tabela.
+              -->
+
+              <tr>
+
+                <td colspan="7" class="cell-muted text-center">
+                  Carregando estoque...
+                </td>
+
+              </tr>
+
+            </tbody>
+
+          </table>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  
+  <!-- =====================================================
+       SCRIPTS
+       ===================================================== -->
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+  <script src="assets/js/layout/icons.js"></script>
+  <script src="assets/js/layout/layout.js"></script>
+  <script src="assets/js/app.js"></script>
+  <script src="assets/js/integration/core.js"></script>
+  <script src="assets/js/integration/estoque.js"></script>
+
+</body>
+
+</html>
