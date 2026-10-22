@@ -66,6 +66,12 @@ function bindCustomizeUser() {
   });
 }
 
+function isManager() {
+  return String(currentUser()?.cargo || "")
+    .trim()
+    .toLocaleLowerCase("pt-BR") === "gerente";
+}
+
 async function renderUsers() {
   try {
     const users = await nomadeApi("/usuarios");
@@ -108,6 +114,11 @@ async function renderUsers() {
 }
 
 if (nomadeInitInternalPage("usuarios", "Pesquisar membros da equipe...")) {
-  nomadeInitTableFilter("userFilter", "#userTable");
-  renderUsers();
+  if (!isManager()) {
+    showError("Somente o gerente pode gerenciar usuários.");
+    window.location.href = "dashboard.html";
+  } else {
+    nomadeInitTableFilter("userFilter", "#userTable");
+    renderUsers();
+  }
 }
