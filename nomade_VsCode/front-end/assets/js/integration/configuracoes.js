@@ -135,10 +135,16 @@ function bindPasswordChange() {
 }
 
 function bindSettingsLogout() {
-  document.getElementById("logoutButton")?.addEventListener("click", () => {
+  document.getElementById("logoutButton")?.addEventListener("click", async () => {
+  try {
+    await nomadeApi("/usuarios/logout", { method: "POST" });
+  } catch {
+    // Mesmo que o servidor esteja indisponível, a sessão local deve ser removida.
+  } finally {
     clearSession();
     window.location.href = "index.html";
-  });
+  }
+});
 }
 
 if (nomadeInitInternalPage("configuracoes", "Pesquisar no sistema...")) {
