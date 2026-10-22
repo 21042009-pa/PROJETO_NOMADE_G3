@@ -5,6 +5,38 @@ function ehGerente(usuario) {
   return String(usuario?.cargo || "").trim().toLocaleLowerCase("pt-BR") === "gerente";
 }
 
+function cargoDoUsuario(usuario) {
+  return String(usuario?.cargo || "")
+    .trim()
+    .toLocaleLowerCase("pt-BR");
+}
+
+function somenteGerenteOuAnalista(req, res, next) {
+  const cargo = cargoDoUsuario(req.usuarioAutenticado);
+
+  if (!["gerente", "analista"].includes(cargo)) {
+    return res.status(403).json({
+      sucesso: false,
+      mensagem: "Somente gerente ou analista pode executar esta ação.",
+    });
+  }
+
+  return next();
+}
+
+function somenteEquipeEstoque(req, res, next) {
+  const cargo = cargoDoUsuario(req.usuarioAutenticado);
+
+  if (!["gerente", "analista", "operador"].includes(cargo)) {
+    return res.status(403).json({
+      sucesso: false,
+      mensagem: "Usuário sem permissão para acessar o estoque.",
+    });
+  }
+
+  return next();
+}
+
 async function autenticar(req, res, next) {
   const cabecalho = req.get("authorization") || "";
   const resultado = /^Bearer ([a-f0-9]{64})$/i.exec(cabecalho);
@@ -50,4 +82,12 @@ function somenteProprioUsuario(req, res, next) {
   return next();
 }
 
-module.exports = { autenticar, autenticarSeHouverToken, somenteGerente, somenteProprioUsuario, ehGerente };
+module.exports = {
+  autenticar,
+  autenticarSeHouverToken,
+  somenteGerente,
+  somenteGerenteOuAnalista,
+  somenteEquipeEstoque,
+  somenteProprioUsuario,
+  ehGerente,
+};
