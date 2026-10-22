@@ -4,9 +4,14 @@ let productFormBound = false;
 let productCache = { fornecedores: [], categorias: [], lotes: [] };
 
 function setSelectOptions(select, placeholder, items, valueKey, labelFn) {
-  select.innerHTML = `<option value="">${placeholder}</option>` + items.map((item) =>
-    `<option value="${escHtml(item[valueKey])}">${escHtml(labelFn(item))}</option>`
-  ).join("");
+  select.innerHTML =
+    `<option value="">${placeholder}</option>` +
+    items
+      .map(
+        (item) =>
+          `<option value="${escHtml(item[valueKey])}">${escHtml(labelFn(item))}</option>`,
+      )
+      .join("");
 }
 
 function ensureProductSelects(fornecedores, categorias, lotes) {
@@ -19,7 +24,14 @@ function ensureProductSelects(fornecedores, categorias, lotes) {
     fornecedor.replaceWith(select);
     fornecedor = select;
   }
-  if (fornecedor) setSelectOptions(fornecedor, "Selecione o fornecedor", fornecedores, "id_fornecedor", (f) => f.nome);
+  if (fornecedor)
+    setSelectOptions(
+      fornecedor,
+      "Selecione o fornecedor",
+      fornecedores,
+      "id_fornecedor",
+      (f) => f.nome,
+    );
 
   let categoria = document.getElementById("pCategoria");
   if (!categoria && fornecedor) {
@@ -31,7 +43,14 @@ function ensureProductSelects(fornecedores, categorias, lotes) {
     fornecedor.closest(".col-md-6")?.after(col);
     categoria = document.getElementById("pCategoria");
   }
-  if (categoria) setSelectOptions(categoria, "Selecione a categoria", categorias, "id_categoria", (c) => c.nome_categoria);
+  if (categoria)
+    setSelectOptions(
+      categoria,
+      "Selecione a categoria",
+      categorias,
+      "id_categoria",
+      (c) => c.nome_categoria,
+    );
 
   let lote = document.getElementById("pLote");
   if (!lote && categoria) {
@@ -43,7 +62,14 @@ function ensureProductSelects(fornecedores, categorias, lotes) {
     categoria.closest(".col-md-6")?.after(col);
     lote = document.getElementById("pLote");
   }
-  if (lote) setSelectOptions(lote, "Selecione o lote", lotes, "id_lote", (l) => l.codigo_lote || `Lote ${l.id_lote}`);
+  if (lote)
+    setSelectOptions(
+      lote,
+      "Selecione o lote",
+      lotes,
+      "id_lote",
+      (l) => l.codigo_lote || `Lote ${l.id_lote}`,
+    );
 }
 
 function recalcMargin() {
@@ -90,6 +116,8 @@ function bindProductForm() {
       data_validade: document.getElementById("pValidade").value || null,
       codigo_produto: document.getElementById("pCodigo").value.trim(),
       cor: document.getElementById("pCor").value.trim(),
+      codigo_rastreamento:
+        document.getElementById("pRastreamento")?.value.trim() || null,
     };
 
     try {
@@ -114,14 +142,18 @@ async function renderProducts() {
     ]);
 
     productCache = { fornecedores, categorias, lotes };
-    const supplierById = Object.fromEntries(fornecedores.map((f) => [f.id_fornecedor, f.nome]));
+    const supplierById = Object.fromEntries(
+      fornecedores.map((f) => [f.id_fornecedor, f.nome]),
+    );
     const lotById = Object.fromEntries(lotes.map((l) => [l.id_lote, l]));
     const tbody = document.querySelector("#catalogTable tbody");
 
     if (tbody) {
-      tbody.innerHTML = produtos.map((produto) => {
-        const lote = lotById[produto.id_lote];
-        return `
+      tbody.innerHTML =
+        produtos
+          .map((produto) => {
+            const lote = lotById[produto.id_lote];
+            return `
           <tr>
             <td class="cell-strong">${escHtml(produto.nome)}</td>
             <td class="cell-muted">${escHtml(lote?.codigo_lote || "-")}</td>
@@ -130,7 +162,9 @@ async function renderProducts() {
             <td class="cell-muted">${escHtml(produto.imagem || "-")}</td>
             <td>${rowActions(produto.id_produto, "/produtos")}</td>
           </tr>`;
-      }).join("") || `<tr><td colspan="6" class="cell-muted text-center">Nenhum produto cadastrado.</td></tr>`;
+          })
+          .join("") ||
+        `<tr><td colspan="6" class="cell-muted text-center">Nenhum produto cadastrado.</td></tr>`;
     }
 
     ensureProductSelects(fornecedores, categorias, lotes);

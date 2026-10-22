@@ -1,12 +1,6 @@
 /* NÔMADE — relatorios.js */
 
-const REPORT_STORAGE_KEY = "nomade_relatorios_custom";
-const reportSeedCharts = [
-  { ano: 2024, mes: "Anual", desc: "Crescimento constante ao longo do ano, com pico em novembro.", values: [12, 34, 22, 20, 30, 41] },
-  { ano: 2025, mes: "Anual", desc: "Expansão da linha de sneakers colaborativas.", values: [15, 38, 24, 23, 33, 45] },
-  { ano: 2027, mes: "Projeção", desc: "Meta conservadora para o novo centro de distribuição.", values: [8, 6, 9, 7, 10, 34] },
-  { ano: 2028, mes: "Projeção", desc: "Cenário otimista com abertura de 2 lojas físicas.", values: [10, 8, 12, 9, 13, 40] },
-];
+const dados = await nomadeApi("/relatorios/estoque");
 
 function getCustomReports() {
   try {

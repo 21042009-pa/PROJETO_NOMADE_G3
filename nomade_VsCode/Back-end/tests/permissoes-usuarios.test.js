@@ -125,3 +125,13 @@ test("alteração de senha de outra conta é bloqueada", async () => {
     { senhaAtual: "senha123", novaSenha: "outra123", confirmarSenha: "outra123" }, { id: 1 });
   assert.equal(response.code, 403);
 });
+
+test("cadastro sem autenticação é bloqueado", async () => {
+  const response = await run(
+    [autenticar, somenteGerente, UsuarioController.cadastrarUsuario],
+    null,
+    { nome: "Pessoa", login: "sem-token", senha: "123456" },
+  );
+
+  assert.equal(response.code, 401);
+});

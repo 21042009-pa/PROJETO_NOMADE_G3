@@ -1,9 +1,22 @@
 const express = require("express");
 const path = require("path");
 const routes = require("./routes");
+const cors = require("cors");
 
 const app = express();
 const frontendPath = path.join(__dirname, "../../front-end");
+
+const origensPermitidas = [
+  "http://localhost:3000",
+  "http://localhost:5500",
+  "http://127.0.0.1:5500",
+];
+
+app.use(cors({
+  origin: origensPermitidas,
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+}));
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));

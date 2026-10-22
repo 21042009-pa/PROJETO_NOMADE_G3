@@ -1,4 +1,9 @@
 const movimentacaoEstoqueRepository = require("../repositories/MovimentacaoEstoqueRepository");
+const {
+  inteiroPositivo,
+  textoObrigatorio,
+  tipoMovimentacao,
+} = require("../validators/validacoes");
 
 async function criarMovimentacaoEstoque(
   id_produto,
@@ -7,6 +12,9 @@ async function criarMovimentacaoEstoque(
   quantidade,
   observacao,
 ) {
+  id_produto = inteiroPositivo(id_produto, "id_produto");
+  quantidade = inteiroPositivo(quantidade, "quantidade");
+  tipo = tipoMovimentacao(tipo);
   const dadosDaMovimentacaoEstoque = {
     id_produto: id_produto,
     tipo: tipo,
@@ -16,9 +24,9 @@ async function criarMovimentacaoEstoque(
   };
 
   const movimentacaoEstoque =
-    await movimentacaoEstoqueRepository.cadastrarMovimentacaoEstoque(
-      dadosDaMovimentacaoEstoque,
-    );
+  await movimentacaoEstoqueRepository.registrarComAtualizacao(
+    dadosDaMovimentacaoEstoque,
+  );
 
   return movimentacaoEstoque;
 }

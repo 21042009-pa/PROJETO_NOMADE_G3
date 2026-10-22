@@ -2,23 +2,33 @@ const express = require("express")
 const multer = require("multer")
 const path = require("path")
 const app = express()
+const fs = require("fs");
+
+const uploadDir = path.join(__dirname, "../../uploads");
+fs.mkdirSync(uploadDir, { recursive: true });
 
 const storage = multer.diskStorage({
-    destination: function(req, file, cb){
-        cb(null, 'uploads/')
-    },
-    filename: function (req, file, cb){
-        cb(null, Date.now() + ".jpg")
-    }
-})
-
-
-const upload = multer({
-  storage,
-  limits: {
-    fileSize: 10 * 1024 * 1024, 
+  destination: (_req, _file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (_req, file, cb) => {
+    const extensao = path.extname(file.originalname).toLowerCase();
+    cb(null, `${Date.now()}-${Math.round(Math.random() * 1e9)}${extensao}`);
   },
 });
 
+const fileFilter = (_req, file, cb) => {
+  const permitidos = ["image/jpeg", "image/png", "image/webp"];
 
-module.exports = upload
+  if (!permitidos.includes(file.mimetype)) {
+    return cb(new Error("A imagem deve ser JPG, PNG ou WEBP."));
+  }
+
+  cb(null, true);
+};
+
+module.exports = multer({
+  storage,
+  fileFilter,
+  limits: { fileSize: 10 * 1024 * 1024 },
+});

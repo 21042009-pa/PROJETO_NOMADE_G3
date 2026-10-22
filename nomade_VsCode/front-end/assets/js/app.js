@@ -1,20 +1,3 @@
-/* =========================================================
-   NÔMADE — app.js
-
-   Funções genéricas utilizadas em várias páginas:
-   - Toasts
-   - Steppers
-   - Filtros de tabela
-   - Abas
-   - Gráficos
-   - Formulários de demonstração
-   ========================================================= */
-
-
-// ==========================================================
-// TOAST / NOTIFICAÇÕES
-// ==========================================================
-
 function nomadeToast(message, tone = "success") {
   let toast = document.getElementById("nomadeToast");
 

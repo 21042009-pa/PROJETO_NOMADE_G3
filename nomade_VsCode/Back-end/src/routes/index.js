@@ -1,6 +1,6 @@
 const express = require("express");
 const router = express.Router();
-
+const relatorioRoutes = require("./RelatorioRoutes");
 const produtoRoutes = require("./ProdutoRoutes");
 const categoriaRoutes = require("./CategoriaRoutes");
 const fornecedorRoutes = require("./FornecedorRoutes");
@@ -15,6 +15,7 @@ router.get("/", (req, res) => {
   });
 });
 
+router.use("/relatorios", relatorioRoutes);
 router.use("/produtos", produtoRoutes);
 router.use("/categorias", categoriaRoutes);
 router.use("/fornecedores", fornecedorRoutes);

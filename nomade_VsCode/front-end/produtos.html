@@ -1,643 +1,559 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Produtos — Nômade</title>
 
-  <title>Produtos — Nômade</title>
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-  <!-- Fontes -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+    <!-- Bootstrap -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Bootstrap -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="assets/js/theme.js"></script>
+  </head>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="assets/js/theme.js"></script>
-</head>
-
-
-<body>
-
-  <!-- =====================================================
+  <body>
+    <!-- =====================================================
        ESTRUTURA PRINCIPAL
        ===================================================== -->
 
-  <div class="app-shell" id="app-shell">
+    <div class="app-shell" id="app-shell">
+      <div class="content">
+        <!-- Cabeçalho -->
+        <div class="page-head">
+          <div>
+            <h1>Produtos</h1>
 
-    <div class="content">
-
-      <!-- Cabeçalho -->
-      <div class="page-head">
-
-        <div>
-
-          <h1>
-            Produtos
-          </h1>
-
-          <p>
-            Catálogo de produtos cadastrados
-            e formulário de cadastro de novo SKU.
-          </p>
-
+            <p>
+              Catálogo de produtos cadastrados e formulário de cadastro de novo
+              SKU.
+            </p>
+          </div>
         </div>
 
-      </div>
-
-
-      <!-- =================================================
+        <!-- =================================================
            CATÁLOGO
            ================================================= -->
 
-      <div class="panel mb-4">
+        <div class="panel mb-4">
+          <div class="panel-header">
+            <div class="panel-title">Catálogo</div>
 
-        <div class="panel-header">
+            <!-- Pesquisa -->
+            <div class="input-icon-wrap" style="width: 230px">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.9"
+              >
+                <circle cx="10.5" cy="10.5" r="6.5" />
 
-          <div class="panel-title">
-            Catálogo
+                <path d="M20 20l-4.3-4.3" />
+              </svg>
+
+              <input
+                class="form-control-app"
+                id="catalogFilter"
+                type="search"
+                placeholder="Buscar por nome ou lote..."
+              />
+            </div>
           </div>
 
+          <!-- Tabela -->
+          <div class="table-responsive">
+            <table class="table-app" id="catalogTable">
+              <thead>
+                <tr>
+                  <th>Nome</th>
 
-          <!-- Pesquisa -->
-          <div class="input-icon-wrap" style="width: 230px">
+                  <th>Lote</th>
 
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
-              <circle cx="10.5" cy="10.5" r="6.5" />
+                  <th>Fornecedor</th>
 
-              <path d="M20 20l-4.3-4.3" />
-            </svg>
+                  <th>Validade</th>
 
+                  <th>Imagem</th>
 
-            <input class="form-control-app" id="catalogFilter" type="search" placeholder="Buscar por nome ou lote...">
+                  <th>Ações</th>
+                </tr>
+              </thead>
 
-          </div>
-
-        </div>
-
-
-        <!-- Tabela -->
-        <div class="table-responsive">
-
-          <table class="table-app" id="catalogTable">
-
-            <thead>
-
-              <tr>
-
-                <th>
-                  Nome
-                </th>
-
-                <th>
-                  Lote
-                </th>
-
-                <th>
-                  Fornecedor
-                </th>
-
-                <th>
-                  Validade
-                </th>
-
-                <th>
-                  Imagem
-                </th>
-
-                <th>
-                  Ações
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-            <tbody>
-
-              <!--
+              <tbody>
+                <!--
                 O integration.js preencherá
                 esta tabela automaticamente.
               -->
 
-              <tr>
-
-                <td colspan="6" class="cell-muted text-center">
-                  Carregando produtos...
-                </td>
-
-              </tr>
-
-            </tbody>
-
-          </table>
-
+                <tr>
+                  <td colspan="6" class="cell-muted text-center">
+                    Carregando produtos...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
 
-      </div>
-
-
-      <!-- =================================================
+        <!-- =================================================
            CADASTRO DE PRODUTO
            ================================================= -->
 
-      <div id="cadastro"></div>
+        <div id="cadastro"></div>
 
-
-      <div class="row g-3">
-
-        <!-- ===============================================
+        <div class="row g-3">
+          <!-- ===============================================
              COLUNA PRINCIPAL
              =============================================== -->
 
-        <div class="col-lg-8">
-
-          <form id="productForm">
-
-
-            <!-- ===========================================
+          <div class="col-lg-8">
+            <form id="productForm">
+              <!-- ===========================================
                  INFORMAÇÕES BÁSICAS
                  =========================================== -->
 
-            <div class="panel mb-3">
+              <div class="panel mb-3">
+                <div class="panel-header">
+                  <div class="panel-title">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <circle cx="12" cy="12" r="9.2" />
 
-              <div class="panel-header">
+                      <path d="M12 7.8v5l3.2 1.9" />
+                    </svg>
 
-                <div class="panel-title">
-
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <circle cx="12" cy="12" r="9.2" />
-
-                    <path d="M12 7.8v5l3.2 1.9" />
-                  </svg>
-
-                  Informações básicas
-
+                    Informações básicas
+                  </div>
                 </div>
 
-              </div>
+                <div class="row g-3">
+                  <!-- Nome -->
+                  <div class="col-12">
+                    <label class="field-label" for="pNome">
+                      Nome do produto
+                    </label>
 
+                    <input
+                      class="form-control-app"
+                      id="pNome"
+                      type="text"
+                      placeholder="Ex: Jordan 1 Retro High OG 'Chicago'"
+                      required
+                    />
+                  </div>
 
-              <div class="row g-3">
+                  <!-- Código -->
+                  <div class="col-md-4">
+                    <label class="field-label" for="pCodigo">
+                      Código / SKU
+                    </label>
 
+                    <input
+                      class="form-control-app"
+                      id="pCodigo"
+                      type="text"
+                      placeholder="SKU-8829-XJ"
+                      required
+                    />
+                  </div>
 
-                <!-- Nome -->
-                <div class="col-12">
+                  <!-- Modelo -->
+                  <div class="col-md-4">
+                    <label class="field-label" for="pModelo">
+                      Modelo do item
+                    </label>
 
-                  <label class="field-label" for="pNome">
-                    Nome do produto
-                  </label>
+                    <input
+                      class="form-control-app"
+                      id="pModelo"
+                      type="text"
+                      placeholder="Retro High"
+                    />
+                  </div>
 
-                  <input class="form-control-app" id="pNome" type="text"
-                    placeholder="Ex: Jordan 1 Retro High OG 'Chicago'" required>
+                  <!-- Validade -->
+                  <div class="col-md-4">
+                    <label class="field-label" for="pValidade">
+                      Data de validade
+                    </label>
 
-                </div>
+                    <input
+                      class="form-control-app"
+                      id="pValidade"
+                      type="date"
+                    />
+                  </div>
 
+                  <!-- Fornecedor -->
+                  <div class="col-md-6">
+                    <label class="field-label" for="pFornecedor">
+                      Fornecedor
+                    </label>
 
-                <!-- Código -->
-                <div class="col-md-4">
-
-                  <label class="field-label" for="pCodigo">
-                    Código / SKU
-                  </label>
-
-                  <input class="form-control-app" id="pCodigo" type="text" placeholder="SKU-8829-XJ" required>
-
-                </div>
-
-
-                <!-- Modelo -->
-                <div class="col-md-4">
-
-                  <label class="field-label" for="pModelo">
-                    Modelo do item
-                  </label>
-
-                  <input class="form-control-app" id="pModelo" type="text" placeholder="Retro High">
-
-                </div>
-
-
-                <!-- Validade -->
-                <div class="col-md-4">
-
-                  <label class="field-label" for="pValidade">
-                    Data de validade
-                  </label>
-
-                  <input class="form-control-app" id="pValidade" type="date">
-
-                </div>
-
-
-                <!-- Fornecedor -->
-                <div class="col-md-6">
-
-                  <label class="field-label" for="pFornecedor">
-                    Fornecedor
-                  </label>
-
-                  <!--
+                    <!--
                     O integration.js transforma
                     este input em select.
                   -->
 
-                  <input class="form-control-app" id="pFornecedor" type="text" placeholder="Carregando fornecedores...">
+                    <input
+                      class="form-control-app"
+                      id="pFornecedor"
+                      type="text"
+                      placeholder="Carregando fornecedores..."
+                    />
+                  </div>
 
-                </div>
-
-
-                <!-- Rastreamento -->
-                <div class="col-md-6">
-
+                  <!-- Rastreamento -->
                   <label class="field-label" for="pRastreamento">
                     Código de rastreamento
                   </label>
+                  <input
+                    class="form-control-app"
+                    id="pRastreamento"
+                    type="text"
+                    maxlength="100"
+                  />
 
+                  <!-- Descrição -->
+                  <div class="col-12">
+                    <label class="field-label" for="pDescricao">
+                      Descrição do produto
+                    </label>
 
-                  <div class="input-icon-wrap">
-
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                      <rect x="3" y="3" width="7" height="7" rx="1" />
-
-                      <rect x="14" y="3" width="7" height="7" rx="1" />
-
-                      <rect x="3" y="14" width="7" height="7" rx="1" />
-
-                      <path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20v.01" />
-
-                    </svg>
-
-
-                    <input class="form-control-app" id="pRastreamento" type="text" placeholder="TRK-000000">
-
+                    <textarea
+                      class="form-control-app"
+                      id="pDescricao"
+                      rows="4"
+                      placeholder="Detalhes, materiais, particularidades do lote..."
+                    ></textarea>
                   </div>
-
                 </div>
-
-
-                <!-- Descrição -->
-                <div class="col-12">
-
-                  <label class="field-label" for="pDescricao">
-                    Descrição do produto
-                  </label>
-
-                  <textarea class="form-control-app" id="pDescricao" rows="4"
-                    placeholder="Detalhes, materiais, particularidades do lote..."></textarea>
-
-                </div>
-
               </div>
 
-            </div>
-
-
-            <!-- ===========================================
+              <!-- ===========================================
                  LOGÍSTICA E VARIAÇÕES
                  =========================================== -->
 
-            <div class="panel mb-3">
+              <div class="panel mb-3">
+                <div class="panel-header">
+                  <div class="panel-title">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <rect x="3" y="6" width="18" height="12" rx="2" />
 
-              <div class="panel-header">
+                      <path d="M3 10h18" />
+                    </svg>
 
-                <div class="panel-title">
-
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                    <rect x="3" y="6" width="18" height="12" rx="2" />
-
-                    <path d="M3 10h18" />
-
-                  </svg>
-
-                  Logística &amp; variações
-
+                    Logística &amp; variações
+                  </div>
                 </div>
 
+                <div class="row g-3">
+                  <!-- Cor -->
+                  <div class="col-md-6">
+                    <label class="field-label" for="pCor">
+                      Cor principal
+                    </label>
+
+                    <input
+                      class="form-control-app"
+                      id="pCor"
+                      type="text"
+                      placeholder="Bred / Onyx"
+                    />
+                  </div>
+
+                  <!-- Tamanho -->
+                  <div class="col-md-6">
+                    <label class="field-label" for="pTamanho"> Tamanho </label>
+
+                    <input
+                      class="form-control-app"
+                      id="pTamanho"
+                      type="text"
+                      placeholder="US 10.5 / EU 44"
+                    />
+                  </div>
+
+                  <!-- Quantidade -->
+                  <div class="col-md-6">
+                    <label class="field-label" for="pQuantidade">
+                      Quantidade inicial
+                    </label>
+
+                    <input
+                      class="form-control-app"
+                      id="pQuantidade"
+                      type="number"
+                      min="0"
+                      value="0"
+                    />
+                  </div>
+
+                  <!-- Causa -->
+                  <div class="col-md-6">
+                    <label class="field-label" for="pCausa">
+                      Causa da entrada
+                    </label>
+
+                    <input
+                      class="form-control-app"
+                      id="pCausa"
+                      type="text"
+                      placeholder="Reposição, novo lote, devolução..."
+                    />
+                  </div>
+                </div>
               </div>
 
-
-              <div class="row g-3">
-
-
-                <!-- Cor -->
-                <div class="col-md-6">
-
-                  <label class="field-label" for="pCor">
-                    Cor principal
-                  </label>
-
-                  <input class="form-control-app" id="pCor" type="text" placeholder="Bred / Onyx">
-
-                </div>
-
-
-                <!-- Tamanho -->
-                <div class="col-md-6">
-
-                  <label class="field-label" for="pTamanho">
-                    Tamanho
-                  </label>
-
-                  <input class="form-control-app" id="pTamanho" type="text" placeholder="US 10.5 / EU 44">
-
-                </div>
-
-
-                <!-- Quantidade -->
-                <div class="col-md-6">
-
-                  <label class="field-label" for="pQuantidade">
-                    Quantidade inicial
-                  </label>
-
-                  <input class="form-control-app" id="pQuantidade" type="number" min="0" value="0">
-
-                </div>
-
-
-                <!-- Causa -->
-                <div class="col-md-6">
-
-                  <label class="field-label" for="pCausa">
-                    Causa da entrada
-                  </label>
-
-                  <input class="form-control-app" id="pCausa" type="text"
-                    placeholder="Reposição, novo lote, devolução...">
-
-                </div>
-
-              </div>
-
-            </div>
-
-
-            <!-- ===========================================
+              <!-- ===========================================
                  BOTÕES
                  =========================================== -->
 
-            <div class="d-flex gap-2">
+              <div class="d-flex gap-2">
+                <button type="submit" class="btn-accent">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.1"
+                  >
+                    <path
+                      d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"
+                    />
 
-              <button type="submit" class="btn-accent">
+                    <path d="M7 21v-7h10v7M7 3v5h8" />
+                  </svg>
 
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
+                  Salvar produto
+                </button>
 
-                  <path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z" />
+                <button type="reset" class="btn-ghost">Cancelar</button>
+              </div>
+            </form>
+          </div>
 
-                  <path d="M7 21v-7h10v7M7 3v5h8" />
-
-                </svg>
-
-                Salvar produto
-
-              </button>
-
-
-              <button type="reset" class="btn-ghost">
-                Cancelar
-              </button>
-
-            </div>
-
-          </form>
-
-        </div>
-
-
-        <!-- ===============================================
+          <!-- ===============================================
              COLUNA LATERAL
              =============================================== -->
 
-        <div class="col-lg-4">
-
-
-          <!-- =============================================
+          <div class="col-lg-4">
+            <!-- =============================================
                PREÇOS
                ============================================= -->
 
-          <div class="panel mb-3">
+            <div class="panel mb-3">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  >
+                    <path d="M3 12l4-8h10l4 8-9 9z" />
 
-            <div class="panel-header">
+                    <path d="M3 12h18M9 4l3 8 3-8" />
+                  </svg>
 
-              <div class="panel-title">
-
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                  <path d="M3 12l4-8h10l4 8-9 9z" />
-
-                  <path d="M3 12h18M9 4l3 8 3-8" />
-
-                </svg>
-
-                Preços
-
+                  Preços
+                </div>
               </div>
 
-            </div>
+              <!-- Custo -->
+              <label class="field-label" for="pCusto"> Preço de custo </label>
 
+              <div class="input-icon-wrap mb-3">
+                <span
+                  style="
+                    position: absolute;
+                    left: 13px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--text-faint);
+                    font-size: 0.85rem;
+                  "
+                >
+                  R$
+                </span>
 
-            <!-- Custo -->
-            <label class="field-label" for="pCusto">
-              Preço de custo
-            </label>
-
-
-            <div class="input-icon-wrap mb-3">
-
-              <span style="
-                  position: absolute;
-                  left: 13px;
-                  top: 50%;
-                  transform: translateY(-50%);
-                  color: var(--text-faint);
-                  font-size: .85rem;
-                ">
-                R$
-              </span>
-
-
-              <input class="form-control-app" style="padding-left: 36px" id="pCusto" type="number" step="0.01" min="0"
-                placeholder="0,00">
-
-            </div>
-
-
-            <!-- Venda -->
-            <label class="field-label" for="pVenda">
-              Preço de venda
-            </label>
-
-
-            <div class="input-icon-wrap mb-3">
-
-              <span style="
-                  position: absolute;
-                  left: 13px;
-                  top: 50%;
-                  transform: translateY(-50%);
-                  color: var(--text-faint);
-                  font-size: .85rem;
-                ">
-                R$
-              </span>
-
-
-              <input class="form-control-app" style="padding-left: 36px" id="pVenda" type="number" step="0.01" min="0"
-                placeholder="0,00">
-
-            </div>
-
-
-            <!-- Margem -->
-            <div class="panel" style="
-                background: var(--panel-2);
-                padding: 14px;
-              ">
-
-              <div class="field-label mb-1">
-                Margem projetada
+                <input
+                  class="form-control-app"
+                  style="padding-left: 36px"
+                  id="pCusto"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="0,00"
+                />
               </div>
 
-              <div class="font-display" id="marginOutput" style="
-                  font-size: 1.4rem;
-                  font-weight: 700;
-                ">
-                —%
+              <!-- Venda -->
+              <label class="field-label" for="pVenda"> Preço de venda </label>
+
+              <div class="input-icon-wrap mb-3">
+                <span
+                  style="
+                    position: absolute;
+                    left: 13px;
+                    top: 50%;
+                    transform: translateY(-50%);
+                    color: var(--text-faint);
+                    font-size: 0.85rem;
+                  "
+                >
+                  R$
+                </span>
+
+                <input
+                  class="form-control-app"
+                  style="padding-left: 36px"
+                  id="pVenda"
+                  type="number"
+                  step="0.01"
+                  min="0"
+                  placeholder="0,00"
+                />
               </div>
 
+              <!-- Margem -->
+              <div
+                class="panel"
+                style="background: var(--panel-2); padding: 14px"
+              >
+                <div class="field-label mb-1">Margem projetada</div>
+
+                <div
+                  class="font-display"
+                  id="marginOutput"
+                  style="font-size: 1.4rem; font-weight: 700"
+                >
+                  —%
+                </div>
+              </div>
             </div>
 
-          </div>
-
-
-          <!-- =============================================
+            <!-- =============================================
                IMAGENS
                ============================================= -->
 
-          <div class="panel">
-
-            <div class="panel-header">
-
-              <div class="panel-title">
-
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                  <rect x="3" y="3.5" width="18" height="17" rx="2" />
-
-                  <circle cx="8.5" cy="9" r="1.6" />
-
-                  <path d="M21 16l-5.5-5.5L8 18" />
-
-                </svg>
-
-                Imagens do produto
-
-              </div>
-
-            </div>
-
-
-            <div class="row g-2">
-
-              <!-- Imagem principal -->
-              <div class="col-6">
-
-                <div class="upload-dropzone">
-
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                    <path d="M12 16V4M7 9l5-5 5 5" />
-
-                    <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
-
-                  </svg>
-
-                  Arraste ou clique
-
-                </div>
-
-              </div>
-
-
-              <!-- Imagem 2 -->
-              <div class="col-6">
-
-                <div class="upload-dropzone">
-
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
+            <div class="panel">
+              <div class="panel-header">
+                <div class="panel-title">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                  >
                     <rect x="3" y="3.5" width="18" height="17" rx="2" />
 
                     <circle cx="8.5" cy="9" r="1.6" />
 
                     <path d="M21 16l-5.5-5.5L8 18" />
-
                   </svg>
 
-                  Vazio
-
+                  Imagens do produto
                 </div>
-
               </div>
 
+              <div class="row g-2">
+                <!-- Imagem principal -->
+                <div class="col-6">
+                  <div class="upload-dropzone">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <path d="M12 16V4M7 9l5-5 5 5" />
 
-              <!-- Imagem 3 -->
-              <div class="col-6">
+                      <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
+                    </svg>
 
-                <div class="upload-dropzone">
-
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                    <rect x="3" y="3.5" width="18" height="17" rx="2" />
-
-                    <circle cx="8.5" cy="9" r="1.6" />
-
-                    <path d="M21 16l-5.5-5.5L8 18" />
-
-                  </svg>
-
-                  Vazio
-
+                    Arraste ou clique
+                  </div>
                 </div>
 
-              </div>
+                <!-- Imagem 2 -->
+                <div class="col-6">
+                  <div class="upload-dropzone">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <rect x="3" y="3.5" width="18" height="17" rx="2" />
 
+                      <circle cx="8.5" cy="9" r="1.6" />
+
+                      <path d="M21 16l-5.5-5.5L8 18" />
+                    </svg>
+
+                    Vazio
+                  </div>
+                </div>
+
+                <!-- Imagem 3 -->
+                <div class="col-6">
+                  <div class="upload-dropzone">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                    >
+                      <rect x="3" y="3.5" width="18" height="17" rx="2" />
+
+                      <circle cx="8.5" cy="9" r="1.6" />
+
+                      <path d="M21 16l-5.5-5.5L8 18" />
+                    </svg>
+
+                    Vazio
+                  </div>
+                </div>
+              </div>
             </div>
-
           </div>
-
         </div>
-
       </div>
-
     </div>
 
-  </div>
-
-
-  
-  <!-- =====================================================
+    <!-- =====================================================
        SCRIPTS
        ===================================================== -->
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/layout/icons.js"></script>
-  <script src="assets/js/layout/layout.js"></script>
-  <script src="assets/js/app.js"></script>
-  <script src="assets/js/integration/core.js"></script>
-  <script src="assets/js/integration/produtos.js"></script>
-
-</body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/layout/icons.js"></script>
+    <script src="assets/js/layout/layout.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/integration/core.js"></script>
+    <script src="assets/js/integration/produtos.js"></script>
+  </body>
 </html>

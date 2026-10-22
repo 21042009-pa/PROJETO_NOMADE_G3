@@ -89,7 +89,7 @@ function showError(message) {
   }
 }
 
-function currentUser() {
+function currentSession() {
   try {
     const raw =
       sessionStorage.getItem(SESSION_KEY) ||
@@ -104,6 +104,7 @@ function currentUser() {
 function currentUser() {
   return currentSession()?.usuario || null;
 }
+
 
 function clearSession() {
   sessionStorage.removeItem(SESSION_KEY);
