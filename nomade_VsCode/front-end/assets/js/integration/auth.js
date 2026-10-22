@@ -51,11 +51,17 @@ function initRegister() {
     button.disabled = true;
 
     try {
-      await nomadeApi("/usuarios", jsonRequest("POST", { nome, login, senha, cargo, setor }));
+      await nomadeApi(
+        "/usuarios",
+        jsonRequest("POST", { nome, login, senha, cargo, setor }),
+      );
 
       document.getElementById("email").value = login;
       document.getElementById("senha").value = senha;
-      setRegisterMessage("Usuário cadastrado! Agora você já pode entrar no sistema.", "success");
+      setRegisterMessage(
+        "Usuário cadastrado! Agora você já pode entrar no sistema.",
+        "success",
+      );
 
       setTimeout(() => {
         bootstrap.Modal.getOrCreateInstance(modalElement).hide();
@@ -97,11 +103,19 @@ function initLogin() {
     button.disabled = true;
 
     try {
-      const data = await nomadeApi("/usuarios/login", jsonRequest("POST", { login, senha }));
-      sessionStorage.setItem(SESSION_KEY, JSON.stringify(data.usuario));
+      const data = await nomadeApi(
+        "/usuarios/login",
+        jsonRequest("POST", { login, senha }),
+      );
+      const sessao = {
+        usuario: data.usuario,
+        token: data.token,
+      };
+
+      sessionStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
 
       if (lembrar) {
-        localStorage.setItem(SESSION_KEY, JSON.stringify(data.usuario));
+        localStorage.setItem(SESSION_KEY, JSON.stringify(sessao));
       } else {
         localStorage.removeItem(SESSION_KEY);
       }

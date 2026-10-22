@@ -24,9 +24,17 @@ function escHtml(value) {
 
 async function nomadeApi(path, options = {}) {
   let response;
+  const session = currentSession();
+  const headers = new Headers(options.headers || {});
+
+  if (session?.token) {
+    headers.set("Authorization", `Bearer ${session.token}`);
+  }
 
   try {
-    response = await fetch(`${NOMADE_API}${path}`, options);
+    response = await fetch(`${NOMADE_API}${path}`, {
+      ...options,
+      headers,});
   } catch (error) {
     throw new Error(
       `Não foi possível conectar à API em ${API_ORIGIN}. Verifique se o servidor Node está rodando.`
@@ -83,11 +91,18 @@ function showError(message) {
 
 function currentUser() {
   try {
-    const raw = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY) || "null";
-    return JSON.parse(raw);
+    const raw =
+      sessionStorage.getItem(SESSION_KEY) ||
+      localStorage.getItem(SESSION_KEY);
+
+    return raw ? JSON.parse(raw) : null;
   } catch {
     return null;
   }
+}
+
+function currentUser() {
+  return currentSession()?.usuario || null;
 }
 
 function clearSession() {
