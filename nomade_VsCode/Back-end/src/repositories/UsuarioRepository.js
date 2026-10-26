@@ -2,18 +2,31 @@ const pool = require("../config/database");
 
 class UsuarioRepository {
   async listarUsuarios() {
-    const [listaUsuarios] = await pool.query("SELECT * FROM tbl_usuario");
+    const [listaUsuarios] = await pool.query(
+      `SELECT id_usuario, nome, login, cargo, setor
+       FROM tbl_usuario
+       ORDER BY id_usuario DESC`,
+    );
 
     return listaUsuarios;
   }
 
+  async buscarUsuarioPorLogin(login) {
+    const [usuarios] = await pool.query(
+      "SELECT * FROM tbl_usuario WHERE login = ? LIMIT 1",
+      [login],
+    );
+
+    return usuarios[0];
+  }
+
   async buscarUsuarioId(id) {
-    const [mostrarUsuario] = await pool.query(
-      "SELECT * FROM tbl_usuario WHERE id_usuario = ?",
+    const [usuarios] = await pool.query(
+      "SELECT * FROM tbl_usuario WHERE id_usuario = ? LIMIT 1",
       [id],
     );
 
-    return mostrarUsuario[0];
+    return usuarios[0];
   }
 
   async cadastrarUsuario(dadosDoUsuario) {
@@ -25,6 +38,15 @@ class UsuarioRepository {
     return resultadoUsuario.insertId;
   }
 
+  async atualizarSenha(id, senhaHash) {
+    const [resultado] = await pool.query(
+      "UPDATE tbl_usuario SET senha = ? WHERE id_usuario = ?",
+      [senhaHash, id],
+    );
+
+    return resultado.affectedRows;
+  }
+
   async atualizarUsuario(id, dadosDoUsuario) {
     const camposUsuario = [];
     const valoresUsuario = [];
@@ -34,27 +56,27 @@ class UsuarioRepository {
       valoresUsuario.push(value);
     }
 
-    if (camposUsuario.length === 0) {
-      return null;
-    }
+    if (camposUsuario.length === 0) return 0;
 
     valoresUsuario.push(id);
 
     const query = `
-            UPDATE tbl_usuario
-            SET ${camposUsuario.join(", ")}
-            WHERE id_usuario = ?
-        `;
+      UPDATE tbl_usuario
+      SET ${camposUsuario.join(", ")}
+      WHERE id_usuario = ?
+    `;
 
     const [resultadoUsuario] = await pool.query(query, valoresUsuario);
-
     return resultadoUsuario.affectedRows;
   }
 
-  async deletarUsuario(id) {
-    await pool.query("DELETE FROM tbl_usuario WHERE id_usuario = ?", [id]);
+  async apagarUsuario(id) {
+    const [resultado] = await pool.query(
+      "DELETE FROM tbl_usuario WHERE id_usuario = ?",
+      [id],
+    );
 
-    return true;
+    return resultado.affectedRows > 0;
   }
 }
 

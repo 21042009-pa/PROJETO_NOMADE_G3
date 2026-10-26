@@ -1,9 +1,10 @@
 const ProdutoService = require("../services/ProdutoService");
 
 class ProdutoController {
-  async listarProdutos(req, res) {
+  async listarProduto(req, res) {
     try {
       const resultado = await ProdutoService.listarProdutos();
+
       res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
@@ -17,26 +18,8 @@ class ProdutoController {
   async buscarProdutoPorId(req, res) {
     try {
       const resultado = await ProdutoService.buscarProduto(req.params.id);
+
       res.json(resultado);
-    } catch (erro) {
-      res.status(erro.status || 500).json({
-        sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
-      });
-    }
-  }
-
-  async consultarEstoque(req, res) {
-    try {
-      const resultado = await ProdutoService.buscarEstoqueProduto(
-        req.params.id,
-      );
-
-      res.json({
-        id_produto: req.params.id,
-        estoque: resultado.estoque,
-      });
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
@@ -54,9 +37,12 @@ class ProdutoController {
         req.body.nome,
         req.body.descricao,
         req.body.modelo,
+        req.body.data_validade,
         req.body.codigo_produto,
         req.body.cor,
         req.file ? req.file.filename : null,
+        req.body.id_lote,
+        req.body.id_lote,
       );
 
       res.status(201).json(resultado);
@@ -71,14 +57,20 @@ class ProdutoController {
 
   async atualizarProduto(req, res) {
     try {
-      const { id } = req.params;
+      const resultado = await ProdutoService.atualizarProduto(
+        req.params.id,
+        req.body.id_fornecedor,
+        req.body.id_categoria,
+        req.body.nome,
+        req.body.descricao,
+        req.body.modelo,
+        req.body.data_validade,
+        req.body.codigo_produto,
+        req.body.cor,
+        req.file ? req.file.filename : null,
+      );
 
-      const produto = await ProdutoService.atualizarProduto(id, {
-        ...req.body,
-        imagem: req.file ? req.file.filename : req.body.imagem,
-      });
-
-      res.json(produto);
+      res.json(resultado);
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
@@ -90,7 +82,7 @@ class ProdutoController {
 
   async deletarProduto(req, res) {
     try {
-      const resultado = await ProdutoService.deletarProduto(req.params.id);
+      const resultado = await ProdutoService.excluirProduto(req.params.id);
 
       res.json(resultado);
     } catch (erro) {
@@ -104,14 +96,14 @@ class ProdutoController {
 
   async upload(req, res) {
     try {
-      res.json({
-        mensagem: "Imagem enviada com sucesso",
-        arquivo: req.file,
+      res.status(200).json({
+        sucesso: true,
+        arquivo: req.file ? req.file.filename : null,
       });
     } catch (erro) {
-      res.status(500).json({
+      res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: "Erro ao enviar imagem",
+        mensagem: erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
