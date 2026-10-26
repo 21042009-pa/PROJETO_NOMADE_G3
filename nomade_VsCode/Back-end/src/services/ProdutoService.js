@@ -25,8 +25,12 @@ async function atualizarProduto(
   return produtoRepository.atualizarProduto(id, dadosDoProduto);
 }
 
+async function atualizarApenasImagem(id, imagem) {
+  return produtoRepository.atualizarProduto(id, { imagem });
+}
+
 async function excluirProduto(id) {
   return produtoRepository.apagarProduto(id);
 }
 
-module.exports = { criarProduto, listarProdutos, buscarProduto, atualizarProduto, excluirProduto };
+module.exports = { criarProduto, listarProdutos, buscarProduto, atualizarProduto, atualizarApenasImagem, excluirProduto };

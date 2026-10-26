@@ -23,6 +23,7 @@
 
     <!-- CSS -->
     <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="icon" type="image/png" href="assets/img/logo-nomade-original.png" />
     <link rel="stylesheet" href="assets/css/pages/product-media.css" />
     <script src="assets/js/theme.js"></script>
   </head>
@@ -574,91 +575,18 @@
 
             <section class="panel" aria-labelledby="panel-heading-5">
               <header class="panel-header">
-                <h2 class="panel-title" id="panel-heading-5">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="1.8"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <rect x="3" y="3.5" width="18" height="17" rx="2" />
-
-                    <circle cx="8.5" cy="9" r="1.6" />
-
-                    <path d="M21 16l-5.5-5.5L8 18" />
-                  </svg>
-
-                  Imagens do produto
-                </h2>
+                <h2 class="panel-title" id="panel-heading-5">Imagem do produto</h2>
               </header>
-
-              <div class="row g-2">
-                <!-- Imagem principal -->
-                <div class="col-6">
-                  <div class="upload-dropzone">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <path d="M12 16V4M7 9l5-5 5 5" />
-
-                      <path d="M4 16v3a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-3" />
-                    </svg>
-
-                    Arraste ou clique
-                  </div>
-                </div>
-
-                <!-- Imagem 2 -->
-                <div class="col-6">
-                  <div class="upload-dropzone">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <rect x="3" y="3.5" width="18" height="17" rx="2" />
-
-                      <circle cx="8.5" cy="9" r="1.6" />
-
-                      <path d="M21 16l-5.5-5.5L8 18" />
-                    </svg>
-
-                    Vazio
-                  </div>
-                </div>
-
-                <!-- Imagem 3 -->
-                <div class="col-6">
-                  <div class="upload-dropzone">
-                    <svg
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      stroke-width="1.8"
-                      aria-hidden="true"
-                      focusable="false"
-                    >
-                      <rect x="3" y="3.5" width="18" height="17" rx="2" />
-
-                      <circle cx="8.5" cy="9" r="1.6" />
-
-                      <path d="M21 16l-5.5-5.5L8 18" />
-                    </svg>
-
-                    Vazio
-                  </div>
-                </div>
-              </div>
+              <label class="upload-dropzone" id="productImageDropzone" for="pImagem">
+                <img id="pImagemPreview" class="product-image-preview" alt="Prévia da imagem selecionada" hidden />
+                <span id="productImagePrompt">Clique ou arraste uma imagem para enviar</span>
+                <small>JPG, PNG ou WebP · até 5 MB</small>
+              </label>
+              <input id="pImagem" form="productForm" name="imagem" type="file"
+                     accept="image/jpeg,image/png,image/webp" class="visually-hidden" />
+              <button type="button" class="btn-ghost mt-2" id="removerPreviewImagem" hidden>
+                Remover imagem selecionada
+              </button>
             </section>
           </div>
         </div>
@@ -674,6 +602,7 @@
     <script src="assets/js/layout/layout.js"></script>
     <script src="assets/js/app.js"></script>
     <script src="assets/js/integration/core.js"></script>
+    <input id="trocarImagemArquivo" type="file" accept="image/jpeg,image/png,image/webp" hidden />
     <script src="assets/js/integration/produtos.js"></script>
   </body>
 </html>

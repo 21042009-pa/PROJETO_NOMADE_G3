@@ -2,6 +2,8 @@
 
 let productFormBound = false;
 let productDeleteBound = false;
+let productImageActionsBound = false;
+let productImagePreviewUrl = null;
 let productCache = { fornecedores: [], categorias: [], lotes: [] };
 
 const cadastroTipos = {
@@ -93,6 +95,83 @@ function obterRelacionamento(tipo) {
     : { [info.fieldNovo]: nome };
 }
 
+// Constrói apenas URLs seguras de arquivos enviados pelo servidor.
+function nomadeImagemUrl(nome) {
+  if (!/^[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp)$/.test(String(nome || ""))) return "";
+  return `${NOMADE_API}/uploads/${encodeURIComponent(nome)}`;
+}
+
+function validarArquivoImagem(arquivo) {
+  if (!arquivo) return;
+  const tipos = ["image/jpeg", "image/png", "image/webp"];
+  if (!tipos.includes(arquivo.type)) throw new Error("Escolha uma imagem JPG, PNG ou WebP.");
+  if (arquivo.size > 5 * 1024 * 1024) throw new Error("A imagem deve ter no máximo 5 MB.");
+}
+
+function limparPreviewImagem() {
+  if (productImagePreviewUrl) URL.revokeObjectURL(productImagePreviewUrl);
+  productImagePreviewUrl = null;
+  const imagem = document.getElementById("pImagemPreview");
+  const prompt = document.getElementById("productImagePrompt");
+  const remover = document.getElementById("removerPreviewImagem");
+  if (imagem) { imagem.hidden = true; imagem.removeAttribute("src"); }
+  if (prompt) prompt.hidden = false;
+  if (remover) remover.hidden = true;
+}
+
+function atualizarPreviewImagem() {
+  limparPreviewImagem();
+  const campo = document.getElementById("pImagem");
+  const arquivo = campo?.files?.[0];
+  if (!arquivo) return;
+  try {
+    validarArquivoImagem(arquivo);
+    productImagePreviewUrl = URL.createObjectURL(arquivo);
+    document.getElementById("pImagemPreview").src = productImagePreviewUrl;
+    document.getElementById("pImagemPreview").hidden = false;
+    document.getElementById("productImagePrompt").hidden = true;
+    document.getElementById("removerPreviewImagem").hidden = false;
+  } catch (erro) {
+    campo.value = "";
+    limparPreviewImagem();
+    showError(erro.message);
+  }
+}
+
+function bindProductImageInput() {
+  const campo = document.getElementById("pImagem");
+  const dropzone = document.getElementById("productImageDropzone");
+  if (!campo || !dropzone) return;
+  campo.addEventListener("change", atualizarPreviewImagem);
+  document.getElementById("removerPreviewImagem")?.addEventListener("click", () => {
+    campo.value = "";
+    limparPreviewImagem();
+  });
+  ["dragenter", "dragover"].forEach((nome) => {
+    dropzone.addEventListener(nome, (evento) => {
+      evento.preventDefault();
+      dropzone.classList.add("is-dragging");
+    });
+  });
+  ["dragleave", "drop"].forEach((nome) => {
+    dropzone.addEventListener(nome, (evento) => {
+      evento.preventDefault();
+      dropzone.classList.remove("is-dragging");
+    });
+  });
+  dropzone.addEventListener("drop", (evento) => {
+    const arquivo = evento.dataTransfer?.files?.[0];
+    if (!arquivo) return;
+    try {
+      validarArquivoImagem(arquivo);
+      const lista = new DataTransfer();
+      lista.items.add(arquivo);
+      campo.files = lista.files;
+      atualizarPreviewImagem();
+    } catch (erro) { showError(erro.message); }
+  });
+}
+
 function recalcMargin() {
   const custo = Number(document.getElementById("pCusto")?.value || 0);
   const venda = Number(document.getElementById("pVenda")?.value || 0);
@@ -112,6 +191,7 @@ function bindProductForm() {
   const form = document.getElementById("productForm");
   if (!form || productFormBound) return;
   productFormBound = true;
+  bindProductImageInput();
 
   ["fornecedor", "categoria", "lote"].forEach((tipo) => {
     const campo = document.getElementById(cadastroTipos[tipo].input);
@@ -125,6 +205,7 @@ function bindProductForm() {
     queueMicrotask(() => {
       ["fornecedor", "categoria", "lote"].forEach(atualizarDicaCadastro);
       recalcMargin();
+      limparPreviewImagem();
     });
   });
 
@@ -150,8 +231,18 @@ function bindProductForm() {
         codigo_produto: document.getElementById("pCodigo").value.trim(),
         cor: document.getElementById("pCor").value.trim(),
       };
+      const dados = new FormData();
+      Object.entries(body).forEach(([chave, valor]) => {
+        if (valor !== null && valor !== undefined) dados.append(chave, String(valor));
+      });
+      const arquivo = document.getElementById("pImagem")?.files?.[0];
+      if (arquivo) {
+        validarArquivoImagem(arquivo);
+        dados.append("imagem", arquivo);
+      }
       if (button) button.disabled = true;
-      await nomadeApi("/produtos", jsonRequest("POST", body));
+      // Não defina Content-Type manualmente; o navegador cria o boundary multipart.
+      await nomadeApi("/produtos", { method: "POST", body: dados });
       nomadeToast("Produto e novos cadastros salvos com sucesso.");
       form.reset();
       await renderProducts();
@@ -193,6 +284,49 @@ function bindCadastroDelete() {
   });
 }
 
+// Trocar/remover imagem de um produto existente sem mudar os outros campos.
+function bindCatalogImageActions() {
+  const tabela = document.getElementById("catalogTable");
+  const seletor = document.getElementById("trocarImagemArquivo");
+  if (!tabela || !seletor || productImageActionsBound) return;
+  productImageActionsBound = true;
+  let idProdutoParaTroca = null;
+
+  tabela.addEventListener("click", async (evento) => {
+    const trocar = evento.target.closest(".btn-trocar-imagem");
+    if (trocar) {
+      idProdutoParaTroca = trocar.dataset.id;
+      seletor.value = "";
+      seletor.click();
+      return;
+    }
+    const remover = evento.target.closest(".btn-remover-imagem");
+    if (!remover) return;
+    if (!confirm("Deseja remover a imagem deste produto?")) return;
+    remover.disabled = true;
+    try {
+      await nomadeApi(`/produtos/${remover.dataset.id}/imagem`, { method: "DELETE" });
+      nomadeToast("Imagem removida com sucesso.");
+      await renderProducts();
+    } catch (erro) { showError(erro.message); }
+    finally { remover.disabled = false; }
+  });
+
+  seletor.addEventListener("change", async () => {
+    const arquivo = seletor.files?.[0];
+    if (!arquivo || !idProdutoParaTroca) return;
+    try {
+      validarArquivoImagem(arquivo);
+      const formData = new FormData();
+      formData.append("imagem", arquivo);
+      await nomadeApi(`/produtos/${idProdutoParaTroca}/imagem`, { method: "PUT", body: formData });
+      nomadeToast("Imagem atualizada com sucesso.");
+      await renderProducts();
+    } catch (erro) { showError(erro.message); }
+    finally { seletor.value = ""; idProdutoParaTroca = null; }
+  });
+}
+
 async function renderProducts() {
   try {
     const [produtos, fornecedores, categorias, lotes] = await Promise.all([
@@ -208,14 +342,26 @@ async function renderProducts() {
     if (tbody) {
       tbody.innerHTML = produtos.map((produto) => {
         const lote = lotById[produto.id_lote];
+        const imagemUrl = nomadeImagemUrl(produto.imagem);
+        const id = Number(produto.id_produto);
         return `
           <tr>
             <td class="cell-strong">${escHtml(produto.nome)}</td>
             <td class="cell-muted">${escHtml(lote?.codigo_lote || "-")}</td>
             <td class="cell-muted">${escHtml(supplierById[produto.id_fornecedor] || "-")}</td>
             <td class="cell-muted">${escHtml(produto.data_validade || "-")}</td>
-            <td class="cell-muted">${escHtml(produto.imagem || "-")}</td>
-            <td>${rowActions(produto.id_produto, "/produtos")}</td>
+            <td>${imagemUrl
+              ? `<a href="${imagemUrl}" target="_blank" rel="noopener noreferrer" title="Ampliar imagem">
+                   <img class="catalog-product-image" src="${imagemUrl}" alt="Imagem de ${escHtml(produto.nome)}" loading="lazy" />
+                 </a>`
+              : `<span class="cell-muted">Sem imagem</span>`}</td>
+            <td>
+              <span class="product-image-actions">
+                <button type="button" class="btn-ghost btn-trocar-imagem" data-id="${id}">${imagemUrl ? "Trocar foto" : "Adicionar foto"}</button>
+                ${imagemUrl ? `<button type="button" class="btn-ghost btn-remover-imagem" data-id="${id}">Remover foto</button>` : ""}
+                ${rowActions(id, "/produtos")}
+              </span>
+            </td>
           </tr>`;
       }).join("") ||
       `<tr><td colspan="6" class="cell-muted text-center">Nenhum produto cadastrado.</td></tr>`;
@@ -223,6 +369,7 @@ async function renderProducts() {
     ["fornecedor", "categoria", "lote"].forEach(preencherCadastro);
     bindProductForm();
     bindCadastroDelete();
+    bindCatalogImageActions();
     bindDeleteButtons(document, renderProducts);
   } catch (erro) {
     showError(erro.message);

@@ -1,17 +1,17 @@
-const app = require('./app');
-const pool = require('./config/database');
-const PORT = 3000;
+const app = require("./app");
+const pool = require("./config/database");
+const PORT = Number(process.env.PORT) || 3000;
 
-pool.getConnection((err, connection) => { 
-    if (err) { 
-        console.error('Erro ao conectar no banco:', err);
-        process.exit(1); 
-    }
+async function iniciarServidor() {
+  try {
+    const conexao = await pool.getConnection();
+    conexao.release();
+    console.log("Conectado ao MySQL com sucesso!");
+    app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));
+  } catch (erro) {
+    console.error("Erro ao conectar no MySQL:", erro.message);
+    process.exitCode = 1;
+  }
+}
 
-    console.log('Conectado ao MySQL com sucesso!');
-    connection.release(); 
-});
-
-app.listen(PORT, () => { 
-    console.log(`Servidor rodando na porta ${PORT}`);
-});
+iniciarServidor();

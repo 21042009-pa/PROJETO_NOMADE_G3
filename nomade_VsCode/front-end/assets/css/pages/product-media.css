@@ -80,3 +80,34 @@ html[data-theme="light"] .product-shot svg {
 html[data-theme="light"] .product-shot .sku-tag {
   color: #ffffff;
 }
+
+/* Campo real de imagem e prévia durante o cadastro */
+#productImageDropzone {
+  aspect-ratio: auto;
+  min-height: 186px;
+  width: 100%;
+  padding: 22px;
+  gap: 12px;
+  border-radius: var(--radius);
+}
+#productImageDropzone.is-dragging {
+  border-color: var(--accent);
+  background: var(--accent-soft);
+}
+#productImageDropzone .product-image-preview {
+  display: block;
+  max-width: min(100%, 340px);
+  max-height: 240px;
+  object-fit: contain;
+  border-radius: var(--radius-sm);
+}
+#productImageDropzone .product-image-preview[hidden] { display: none; }
+.catalog-product-image {
+  width: 62px;
+  height: 54px;
+  object-fit: cover;
+  border-radius: var(--radius-sm);
+  background: var(--panel-2);
+  border: 1px solid var(--border);
+}
+.product-image-actions { display: flex; flex-wrap: wrap; gap: 6px; }

@@ -29,10 +29,8 @@ const NOMADE_NAV = [
 ];
 
 function nomadeBrandMark() {
-  return `
-    <svg class="brand-mark" viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-      <path d="M4 21.5c5-1.5 9-4.6 11.3-9.3 1-2 3-6.7 5.2-8.7-2.7 3.8-3 8.4-1.2 11.7 1.4 2.6 4 4.2 7.2 3.9-3.7 2.8-8.7 3.3-12.9 1-1.7-.9-3-.9-4.7-.2-1.7.8-3.1 1.7-4.9 1.6z"/>
-    </svg>`;
+  return `<img class="logo-nomade-sidebar" src="assets/img/logo-nomade.png"
+               alt="NÔMADE" width="190" height="123" />`;
 }
 
 function nomadeBuildSidebar(active) {
@@ -49,7 +47,6 @@ function nomadeBuildSidebar(active) {
       <div class="sidebar-head">
         <div class="brand">
           ${nomadeBrandMark()}
-          <span>NÔMADE</span>
         </div>
 
         <button
