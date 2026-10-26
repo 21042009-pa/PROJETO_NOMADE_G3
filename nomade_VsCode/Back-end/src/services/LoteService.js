@@ -1,8 +1,7 @@
 const loteRepository = require("../repositories/LoteRepository");
 
-async function criarLote(id_produto, codigo_lote, quantidade_atual, validade) {
+async function criarLote(codigo_lote, quantidade_atual, validade) {
   const dadosDoLote = {
-    id_produto: id_produto,
     codigo_lote: codigo_lote,
     quantidade_atual: quantidade_atual,
     validade: validade,
@@ -27,13 +26,11 @@ async function buscarLote(id) {
 
 async function atualizarLote(
   id,
-  id_produto,
   codigo_lote,
   quantidade_atual,
   validade,
 ) {
   const dadosDoLote = {
-    id_produto: id_produto,
     codigo_lote: codigo_lote,
     quantidade_atual: quantidade_atual,
     validade: validade,
@@ -45,9 +42,22 @@ async function atualizarLote(
 }
 
 async function excluirLote(id) {
-  const lote = await loteRepository.apagarLote(id);
-
-  return lote;
+  try {
+    const excluidos = await loteRepository.apagarLote(id);
+    if (!excluidos) {
+      const erro = new Error("Lote não encontrado para exclusão.");
+      erro.status = 404;
+      throw erro;
+    }
+    return { sucesso: true, mensagem: "Lote excluído com sucesso." };
+  } catch (erro) {
+    if (erro.code === "ER_ROW_IS_REFERENCED_2" || erro.errno === 1451) {
+      const conflito = new Error("Não é possível excluir este lote: ele está vinculado a um produto ou outro registro. Remova o vínculo antes.");
+      conflito.status = 409;
+      throw conflito;
+    }
+    throw erro;
+  }
 }
 
 module.exports = {

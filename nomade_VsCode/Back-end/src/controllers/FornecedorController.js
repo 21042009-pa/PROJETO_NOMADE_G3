@@ -9,7 +9,7 @@ class FornecedorController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -23,7 +23,7 @@ class FornecedorController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -41,7 +41,7 @@ class FornecedorController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -60,7 +60,7 @@ class FornecedorController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -76,7 +76,7 @@ class FornecedorController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }

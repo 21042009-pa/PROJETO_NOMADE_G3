@@ -54,11 +54,10 @@ class FornecedorRepository {
   }
 
   async apagarFornecedor(id) {
-    await pool.query("DELETE FROM tbl_fornecedor WHERE id_fornecedor = ?", [
+    const [resultado] = await pool.query("DELETE FROM tbl_fornecedor WHERE id_fornecedor = ?", [
       id,
     ]);
-
-    return true;
+    return resultado.affectedRows;
   }
 }
 

@@ -9,7 +9,7 @@ class LoteController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -23,7 +23,7 @@ class LoteController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -32,7 +32,6 @@ class LoteController {
   async cadastrarLote(req, res) {
     try {
       const resultado = await LoteService.criarLote(
-        req.body.id_produto,
         req.body.codigo_lote,
         req.body.quantidade_atual,
         req.body.validade,
@@ -42,7 +41,7 @@ class LoteController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -52,7 +51,6 @@ class LoteController {
     try {
       const resultado = await LoteService.atualizarLote(
         req.params.id,
-        req.body.id_produto,
         req.body.codigo_lote,
         req.body.quantidade_atual,
         req.body.validade,
@@ -62,7 +60,7 @@ class LoteController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -76,7 +74,7 @@ class LoteController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }

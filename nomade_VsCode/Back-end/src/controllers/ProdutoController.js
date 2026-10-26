@@ -7,9 +7,9 @@ class ProdutoController {
 
       res.json(resultado);
     } catch (erro) {
-      res.status(erro.status || 500).json({
+      res.status(erro.status || (erro.code === "ER_ROW_IS_REFERENCED_2" ? 409 : 500)).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -21,9 +21,9 @@ class ProdutoController {
 
       res.json(resultado);
     } catch (erro) {
-      res.status(erro.status || 500).json({
+      res.status(erro.status || (erro.code === "ER_ROW_IS_REFERENCED_2" ? 409 : 500)).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -31,25 +31,16 @@ class ProdutoController {
 
   async cadastrarProduto(req, res) {
     try {
-      const resultado = await ProdutoService.criarProduto(
-        req.body.id_fornecedor,
-        req.body.id_categoria,
-        req.body.nome,
-        req.body.descricao,
-        req.body.modelo,
-        req.body.data_validade,
-        req.body.codigo_produto,
-        req.body.cor,
-        req.file ? req.file.filename : null,
-        req.body.id_lote,
-        req.body.id_lote,
-      );
+      const resultado = await ProdutoService.criarProduto({
+        ...req.body,
+        imagem: req.file ? req.file.filename : null,
+      });
 
       res.status(201).json(resultado);
     } catch (erro) {
-      res.status(erro.status || 500).json({
+      res.status(erro.status || (erro.code === "ER_ROW_IS_REFERENCED_2" ? 409 : 500)).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -68,13 +59,14 @@ class ProdutoController {
         req.body.codigo_produto,
         req.body.cor,
         req.file ? req.file.filename : null,
+        req.body.id_lote,
       );
 
       res.json(resultado);
     } catch (erro) {
-      res.status(erro.status || 500).json({
+      res.status(erro.status || (erro.code === "ER_ROW_IS_REFERENCED_2" ? 409 : 500)).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -86,9 +78,9 @@ class ProdutoController {
 
       res.json(resultado);
     } catch (erro) {
-      res.status(erro.status || 500).json({
+      res.status(erro.status || (erro.code === "ER_ROW_IS_REFERENCED_2" ? 409 : 500)).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }
@@ -101,9 +93,9 @@ class ProdutoController {
         arquivo: req.file ? req.file.filename : null,
       });
     } catch (erro) {
-      res.status(erro.status || 500).json({
+      res.status(erro.status || (erro.code === "ER_ROW_IS_REFERENCED_2" ? 409 : 500)).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
+        mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
         erro: erro.stack || erro,
       });
     }

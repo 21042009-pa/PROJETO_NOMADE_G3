@@ -37,9 +37,22 @@ async function atualizarCategoria(id, nome_categoria) {
 }
 
 async function excluirCategoria(id) {
-  const categoria = await categoriaRepository.apagarCategoria(id);
-
-  return categoria;
+  try {
+    const excluidos = await categoriaRepository.apagarCategoria(id);
+    if (!excluidos) {
+      const erro = new Error("Categoria não encontrado para exclusão.");
+      erro.status = 404;
+      throw erro;
+    }
+    return { sucesso: true, mensagem: "Categoria excluído com sucesso." };
+  } catch (erro) {
+    if (erro.code === "ER_ROW_IS_REFERENCED_2" || erro.errno === 1451) {
+      const conflito = new Error("Não é possível excluir este categoria: ele está vinculado a um produto ou outro registro. Remova o vínculo antes.");
+      conflito.status = 409;
+      throw conflito;
+    }
+    throw erro;
+  }
 }
 
 module.exports = {

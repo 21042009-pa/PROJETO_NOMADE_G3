@@ -222,17 +222,52 @@
                       Fornecedor
                     </label>
 
-                    <!--
-                    O integration.js transforma
-                    este input em select.
-                  -->
-
                     <input
                       class="form-control-app"
                       id="pFornecedor"
                       type="text"
-                      placeholder="Carregando fornecedores..."
+                      list="fornecedoresDisponiveis"
+                      maxlength="100"
+                      placeholder="Digite um novo ou escolha um existente"
+                      autocomplete="off"
+                      required
                     />
+                    <datalist id="fornecedoresDisponiveis"></datalist>
+                    <small class="cadastro-hint" id="pFornecedorHint" aria-live="polite"></small>
+                  </div>
+
+                  <!-- Categoria: permite digitar ou escolher um cadastro existente -->
+                  <div class="col-md-6">
+                    <label class="field-label" for="pCategoria">Categoria</label>
+                    <input
+                      class="form-control-app"
+                      id="pCategoria"
+                      type="text"
+                      list="categoriasDisponiveis"
+                      maxlength="100"
+                      placeholder="Digite uma nova ou escolha uma existente"
+                      autocomplete="off"
+                      required
+                    />
+                    <datalist id="categoriasDisponiveis"></datalist>
+                    <small class="cadastro-hint" id="pCategoriaHint" aria-live="polite"></small>
+                  </div>
+
+                  <!-- Lote: permite digitar ou escolher um cadastro existente -->
+                  <div class="col-md-6">
+                    <label class="field-label" for="pLote">Lote</label>
+                    <input
+                      class="form-control-app"
+                      id="pLote"
+                      type="text"
+                      list="lotesDisponiveis"
+                      maxlength="50"
+                      placeholder="Digite o código ou escolha um lote"
+                      autocomplete="off"
+                      required
+                    />
+                    <datalist id="lotesDisponiveis"></datalist>
+                    <small class="cadastro-hint" id="pLoteHint" aria-live="polite"></small>
                   </div>
 
                   <!-- Rastreamento -->
@@ -347,7 +382,9 @@
                       type="number"
                       min="0"
                       value="0"
+                      step="1"
                     />
+                    <small class="cadastro-hint">Usada ao criar um lote novo. Não altera a quantidade de lotes existentes.</small>
                   </div>
 
                   <!-- Causa -->
@@ -393,6 +430,40 @@
                 <button type="reset" class="btn-ghost">Cancelar</button>
               </div>
             </form>
+
+            <section class="panel mt-3" id="cadastrosPanel" aria-labelledby="cadastrosTitulo">
+              <header class="panel-header">
+                <h2 class="panel-title" id="cadastrosTitulo">Gerenciar cadastros</h2>
+              </header>
+              <p class="cadastro-hint">Confira fornecedores, categorias e lotes cadastrados. Clique em Excluir para remover um registro que não esteja vinculado a produtos.</p>
+              <details class="cadastro-details">
+                <summary>Fornecedores existentes</summary>
+                <div class="table-responsive">
+                  <table class="table-app" aria-label="Fornecedores cadastrados">
+                    <thead><tr><th>Fornecedor</th><th>Ações</th></tr></thead>
+                    <tbody id="fornecedorRecords"></tbody>
+                  </table>
+                </div>
+              </details>
+              <details class="cadastro-details">
+                <summary>Categorias existentes</summary>
+                <div class="table-responsive">
+                  <table class="table-app" aria-label="Categorias cadastradas">
+                    <thead><tr><th>Categoria</th><th>Ações</th></tr></thead>
+                    <tbody id="categoriaRecords"></tbody>
+                  </table>
+                </div>
+              </details>
+              <details class="cadastro-details">
+                <summary>Lotes existentes</summary>
+                <div class="table-responsive">
+                  <table class="table-app" aria-label="Lotes cadastrados">
+                    <thead><tr><th>Código do lote</th><th>Ações</th></tr></thead>
+                    <tbody id="loteRecords"></tbody>
+                  </table>
+                </div>
+              </details>
+            </section>
           </div>
 
           <!-- ===============================================

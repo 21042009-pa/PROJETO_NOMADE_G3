@@ -3,7 +3,7 @@ const path = require("path");
 const routes = require("./routes");
 
 const app = express();
-const frontendPath = path.join(__dirname, "../../front-end/nomade");
+const frontendPath = path.join(__dirname, "../../front-end");
 
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
