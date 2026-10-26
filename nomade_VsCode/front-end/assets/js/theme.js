@@ -44,7 +44,7 @@ function nomadeSetTheme(theme) {
   window.dispatchEvent(
     new CustomEvent("nomade:themechange", {
       detail: { theme: normalizedTheme },
-    })
+    }),
   );
 
   return normalizedTheme;

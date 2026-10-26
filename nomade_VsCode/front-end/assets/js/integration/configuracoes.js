@@ -36,9 +36,7 @@ function bindPreferenceSettings() {
     nomadeSetTheme(theme);
 
     nomadeToast(
-      theme === "dark"
-        ? "Modo escuro ativado."
-        : "Modo claro ativado."
+      theme === "dark" ? "Modo escuro ativado." : "Modo claro ativado.",
     );
   });
 
@@ -47,17 +45,18 @@ function bindPreferenceSettings() {
     nomadeToast("Preferência de notificações salva.");
   });
 
-  document.getElementById("clearPreferencesButton")?.addEventListener("click", () => {
-    localStorage.removeItem("nomade_notifications");
-    nomadeResetTheme();
+  document
+    .getElementById("clearPreferencesButton")
+    ?.addEventListener("click", () => {
+      localStorage.removeItem("nomade_notifications");
+      nomadeResetTheme();
 
-    darkSwitch.checked = true;
-    notifSwitch.checked = false;
+      darkSwitch.checked = true;
+      notifSwitch.checked = false;
 
-    nomadeToast("Preferências locais restauradas.");
-  });
+      nomadeToast("Preferências locais restauradas.");
+    });
 }
-
 
 function setPasswordMessage(message, tone = "danger") {
   const box = document.getElementById("passwordMessage");
@@ -119,7 +118,10 @@ function bindPasswordChange() {
         jsonRequest("PUT", { senhaAtual, novaSenha, confirmarSenha }),
       );
 
-      setPasswordMessage(result.mensagem || "Senha alterada com sucesso.", "success");
+      setPasswordMessage(
+        result.mensagem || "Senha alterada com sucesso.",
+        "success",
+      );
       nomadeToast(result.mensagem || "Senha alterada com sucesso.");
       form.reset();
 

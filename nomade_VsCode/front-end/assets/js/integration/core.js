@@ -13,13 +13,17 @@ const NOMADE_API = window.location.port === "3000" ? "" : API_ORIGIN;
 const SESSION_KEY = "nomade_usuario";
 
 function escHtml(value) {
-  return String(value ?? "").replace(/[&<>"']/g, (char) => ({
-    "&": "&amp;",
-    "<": "&lt;",
-    ">": "&gt;",
-    '"': "&quot;",
-    "'": "&#39;",
-  })[char]);
+  return String(value ?? "").replace(
+    /[&<>"']/g,
+    (char) =>
+      ({
+        "&": "&amp;",
+        "<": "&lt;",
+        ">": "&gt;",
+        '"': "&quot;",
+        "'": "&#39;",
+      })[char],
+  );
 }
 
 async function nomadeApi(path, options = {}) {
@@ -29,7 +33,7 @@ async function nomadeApi(path, options = {}) {
     response = await fetch(`${NOMADE_API}${path}`, options);
   } catch (error) {
     throw new Error(
-      `Não foi possível conectar à API em ${API_ORIGIN}. Verifique se o servidor Node está rodando.`
+      `Não foi possível conectar à API em ${API_ORIGIN}. Verifique se o servidor Node está rodando.`,
     );
   }
 
@@ -83,7 +87,10 @@ function showError(message) {
 
 function currentUser() {
   try {
-    const raw = sessionStorage.getItem(SESSION_KEY) || localStorage.getItem(SESSION_KEY) || "null";
+    const raw =
+      sessionStorage.getItem(SESSION_KEY) ||
+      localStorage.getItem(SESSION_KEY) ||
+      "null";
     return JSON.parse(raw);
   } catch {
     return null;
@@ -160,7 +167,9 @@ function bindDeleteButtons(root = document, afterDelete = null) {
       if (!confirm("Deseja realmente excluir este registro?")) return;
 
       try {
-        await nomadeApi(`${button.dataset.endpoint}/${button.dataset.id}`, { method: "DELETE" });
+        await nomadeApi(`${button.dataset.endpoint}/${button.dataset.id}`, {
+          method: "DELETE",
+        });
         if (typeof afterDelete === "function") await afterDelete();
       } catch (error) {
         showError(error.message);

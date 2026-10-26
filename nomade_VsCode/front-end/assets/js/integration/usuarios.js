@@ -32,8 +32,13 @@ function bindUserForm() {
     }
 
     try {
-      await nomadeApi("/usuarios", jsonRequest("POST", { nome, login, senha, cargo, setor: "Estoque" }));
-      bootstrap.Modal.getOrCreateInstance(document.getElementById("addUserModal")).hide();
+      await nomadeApi(
+        "/usuarios",
+        jsonRequest("POST", { nome, login, senha, cargo, setor: "Estoque" }),
+      );
+      bootstrap.Modal.getOrCreateInstance(
+        document.getElementById("addUserModal"),
+      ).hide();
       nomadeToast("Usuário adicionado com sucesso.");
       form.reset();
       await renderUsers();
@@ -54,7 +59,9 @@ function bindCustomizeUser() {
     const linha = event.relatedTarget && event.relatedTarget.closest("tr");
     if (!linha) return;
     const celulas = linha.querySelectorAll("td");
-    document.getElementById("cUsuario").value = linha.querySelector(".cell-strong").textContent.trim();
+    document.getElementById("cUsuario").value = linha
+      .querySelector(".cell-strong")
+      .textContent.trim();
     document.getElementById("cFuncao").value = celulas[1].textContent.trim();
     document.getElementById("cAcesso").value = celulas[2].textContent.trim();
   });
@@ -72,11 +79,14 @@ async function renderUsers() {
     const tbody = document.querySelector("#userTable tbody");
 
     if (tbody) {
-      tbody.innerHTML = users.map((user) => `
+      tbody.innerHTML =
+        users
+          .map(
+            (user) => `
         <tr>
           <td>
             <div class="d-flex align-items-center gap-2">
-              <div class="avatar" style="width:34px;height:34px;font-size:.72rem">${escHtml(userRowInitials(user))}</div>
+              <div class="avatar" aria-hidden="true" style="width:34px;height:34px;font-size:.72rem">${escHtml(userRowInitials(user))}</div>
               <div>
                 <div class="cell-strong">${escHtml(user.nome || "-")}</div>
                 <div class="cell-muted" style="font-size:.78rem">${escHtml(user.login || "-")}</div>
@@ -92,7 +102,10 @@ async function renderUsers() {
               data-bs-toggle="modal" data-bs-target="#customizeUserModal">Personalizar usuário</button>
             ${rowActions(user.id_usuario, "/usuarios")}
           </td>
-        </tr>`).join("") || `<tr><td colspan="6" class="cell-muted text-center">Nenhum usuário cadastrado.</td></tr>`;
+        </tr>`,
+          )
+          .join("") ||
+        `<tr><td colspan="6" class="cell-muted text-center">Nenhum usuário cadastrado.</td></tr>`;
     }
 
     const metrics = document.querySelectorAll(".metric-card .metric-value");

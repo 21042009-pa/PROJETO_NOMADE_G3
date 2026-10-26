@@ -9,8 +9,15 @@ const movementModeConfig = {
     destino: "Destino / cliente",
     sign: -1,
     apiType: "Saída",
-    warning: "Esta operação removerá os itens do inventário físico. Confira o produto e a quantidade antes de confirmar.",
-    options: ["Venda (Checkout)", "Transferência entre lojas", "Produto com falha", "Ajuste de inventário", "Devolução ao fornecedor"],
+    warning:
+      "Esta operação removerá os itens do inventário físico. Confira o produto e a quantidade antes de confirmar.",
+    options: [
+      "Venda (Checkout)",
+      "Transferência entre lojas",
+      "Produto com falha",
+      "Ajuste de inventário",
+      "Devolução ao fornecedor",
+    ],
   },
   entrada: {
     title: "Entrada de Mercadoria",
@@ -20,8 +27,14 @@ const movementModeConfig = {
     destino: "Origem / fornecedor",
     sign: 1,
     apiType: "Entrada",
-    warning: "Confirme a contagem física antes de lançar. A entrada atualiza o estoque disponível.",
-    options: ["Reposição de fornecedor", "Devolução de cliente", "Transferência entre lojas", "Novo lote cadastrado"],
+    warning:
+      "Confirme a contagem física antes de lançar. A entrada atualiza o estoque disponível.",
+    options: [
+      "Reposição de fornecedor",
+      "Devolução de cliente",
+      "Transferência entre lojas",
+      "Novo lote cadastrado",
+    ],
   },
   retirada: {
     title: "Retirada do Produto",
@@ -32,7 +45,12 @@ const movementModeConfig = {
     sign: -1,
     apiType: "Saída",
     warning: "A retirada será registrada como saída no histórico do produto.",
-    options: ["Produto avariado", "Extravio", "Recall do fabricante", "Amostra interna"],
+    options: [
+      "Produto avariado",
+      "Extravio",
+      "Recall do fabricante",
+      "Amostra interna",
+    ],
   },
 };
 
@@ -40,7 +58,9 @@ let movementProducts = [];
 let movementLots = [];
 
 function getMovementMode() {
-  return document.querySelector("#modeTabs button.active")?.dataset.mode || "saida";
+  return (
+    document.querySelector("#modeTabs button.active")?.dataset.mode || "saida"
+  );
 }
 
 function applyMovementMode(mode) {
@@ -49,6 +69,7 @@ function applyMovementMode(mode) {
 
   document.querySelectorAll("#modeTabs button").forEach((button) => {
     button.classList.toggle("active", button.dataset.mode === mode);
+    button.setAttribute("aria-pressed", String(button.dataset.mode === mode));
   });
 
   document.getElementById("pageTitle").textContent = config.title;
@@ -59,7 +80,10 @@ function applyMovementMode(mode) {
   document.querySelector("#warnBox p").textContent = config.warning;
 
   document.getElementById("motivoSelect").innerHTML = config.options
-    .map((option) => `<option value="${escHtml(option)}">${escHtml(option)}</option>`)
+    .map(
+      (option) =>
+        `<option value="${escHtml(option)}">${escHtml(option)}</option>`,
+    )
     .join("");
 
   updateMovementPreview();
@@ -67,13 +91,18 @@ function applyMovementMode(mode) {
 
 function selectedMovementProduct() {
   const id = Number(document.getElementById("skuInput")?.value || 0);
-  return movementProducts.find((product) => Number(product.id_produto) === id) || null;
+  return (
+    movementProducts.find((product) => Number(product.id_produto) === id) ||
+    null
+  );
 }
 
 function currentProductStock() {
   const product = selectedMovementProduct();
   if (!product) return null;
-  const lote = movementLots.find((item) => Number(item.id_lote) === Number(product.id_lote));
+  const lote = movementLots.find(
+    (item) => Number(item.id_lote) === Number(product.id_lote),
+  );
   return Number(lote?.quantidade_atual || 0);
 }
 
@@ -81,7 +110,8 @@ function setStockDisplay(elementId, value) {
   const element = document.getElementById(elementId);
   if (!element) return;
   element.innerHTML = `${value == null ? "—" : value} <span style="font-size:.8rem;color:var(--text-muted);font-family:var(--font-body)">un</span>`;
-  if (elementId === "currentStockValue") element.dataset.stock = value == null ? "" : String(value);
+  if (elementId === "currentStockValue")
+    element.dataset.stock = value == null ? "" : String(value);
 }
 
 function updateSelectedProductInfo() {
@@ -90,7 +120,12 @@ function updateSelectedProductInfo() {
   const meta = document.getElementById("selectedProductMeta");
 
   if (title) title.textContent = product?.nome || "Produto selecionado";
-  if (meta) meta.textContent = product ? [product.modelo, product.cor].filter(Boolean).join(" · ") || product.codigo_produto || "" : "Selecione um produto para registrar a movimentação.";
+  if (meta)
+    meta.textContent = product
+      ? [product.modelo, product.cor].filter(Boolean).join(" · ") ||
+        product.codigo_produto ||
+        ""
+      : "Selecione um produto para registrar a movimentação.";
 
   setStockDisplay("currentStockValue", currentProductStock());
   updateMovementPreview();
@@ -122,8 +157,14 @@ function ensureMovementProductSelect(produtos) {
     input = select;
   }
 
-  input.innerHTML = `<option value="">Selecione o produto</option>` + produtos.map((produto) => `
-    <option value="${produto.id_produto}">${escHtml(produto.codigo_produto || produto.nome)} — ${escHtml(produto.nome)}</option>`).join("");
+  input.innerHTML =
+    `<option value="">Selecione o produto</option>` +
+    produtos
+      .map(
+        (produto) => `
+    <option value="${produto.id_produto}">${escHtml(produto.codigo_produto || produto.nome)} — ${escHtml(produto.nome)}</option>`,
+      )
+      .join("");
 
   if (!input.dataset.changeBound) {
     input.dataset.changeBound = "1";
@@ -132,21 +173,30 @@ function ensureMovementProductSelect(produtos) {
 }
 
 function renderMovementRows(movimentacoes, produtos) {
-  const productById = Object.fromEntries(produtos.map((p) => [p.id_produto, p]));
+  const productById = Object.fromEntries(
+    produtos.map((p) => [p.id_produto, p]),
+  );
   const tbody = document.querySelector("#moveForm .table-app tbody");
   if (!tbody) return;
 
-  tbody.innerHTML = movimentacoes.slice(-10).reverse().map((movimento) => {
-    const produto = productById[movimento.id_produto];
-    const badge = movimento.tipo === "Entrada" ? "badge-success" : "badge-danger";
-    return `
+  tbody.innerHTML =
+    movimentacoes
+      .slice(-10)
+      .reverse()
+      .map((movimento) => {
+        const produto = productById[movimento.id_produto];
+        const badge =
+          movimento.tipo === "Entrada" ? "badge-success" : "badge-danger";
+        return `
       <tr>
         <td class="cell-muted">${escHtml(movimento.data_movimentacao || "-")}</td>
         <td class="cell-strong">${escHtml(produto?.codigo_produto || movimento.id_produto || "-")}</td>
         <td>${escHtml(movimento.quantidade)}</td>
         <td><span class="badge-app ${badge}">${escHtml(movimento.tipo)}</span></td>
       </tr>`;
-  }).join("") || `<tr><td colspan="4" class="cell-muted text-center">Nenhuma movimentação registrada.</td></tr>`;
+      })
+      .join("") ||
+    `<tr><td colspan="4" class="cell-muted text-center">Nenhuma movimentação registrada.</td></tr>`;
 }
 
 async function loadMovementData() {
@@ -205,10 +255,16 @@ function bindMovementForm() {
 
 function bindMovementControls() {
   document.querySelectorAll("#modeTabs button").forEach((button) => {
-    button.addEventListener("click", () => applyMovementMode(button.dataset.mode));
+    button.addEventListener("click", () =>
+      applyMovementMode(button.dataset.mode),
+    );
   });
-  document.getElementById("qtyInput")?.addEventListener("input", updateMovementPreview);
-  document.getElementById("qtyInput")?.addEventListener("change", updateMovementPreview);
+  document
+    .getElementById("qtyInput")
+    ?.addEventListener("input", updateMovementPreview);
+  document
+    .getElementById("qtyInput")
+    ?.addEventListener("change", updateMovementPreview);
 }
 
 if (nomadeInitInternalPage("movimentacao", "Buscar produto...")) {

@@ -4,7 +4,10 @@ function dashboardDateLabel(value) {
   if (!value) return "—";
   const date = new Date(`${String(value).slice(0, 10)}T00:00:00`);
   if (Number.isNaN(date.getTime())) return String(value).slice(0, 5);
-  return new Intl.DateTimeFormat("pt-BR", { weekday: "short" }).format(date).replace(".", "").toUpperCase();
+  return new Intl.DateTimeFormat("pt-BR", { weekday: "short" })
+    .format(date)
+    .replace(".", "")
+    .toUpperCase();
 }
 
 function renderDashboardCharts(movimentacoes, produtos, lotes) {
@@ -19,7 +22,10 @@ function renderDashboardCharts(movimentacoes, produtos, lotes) {
     .slice(-7)
     .map(([date, value]) => ({ label: dashboardDateLabel(date), value }));
 
-  nomadeRenderBarChart("salesChart", chartData.length ? chartData : [{ label: "SEM DADOS", value: 0 }]);
+  nomadeRenderBarChart(
+    "salesChart",
+    chartData.length ? chartData : [{ label: "SEM DADOS", value: 0 }],
+  );
 
   const lotById = Object.fromEntries(lotes.map((lote) => [lote.id_lote, lote]));
   const buckets = { high: 0, medium: 0, low: 0 };
@@ -32,13 +38,19 @@ function renderDashboardCharts(movimentacoes, produtos, lotes) {
   });
 
   nomadeRenderDonut("stockDonut", produtos.length, "Produtos", [
-    { value: buckets.high, color: "var(--chart-high)" },
-    { value: buckets.medium, color: "var(--chart-medium)" },
-    { value: buckets.low, color: "var(--chart-low)" },
+    { value: buckets.high, color: "var(--chart-high)", label: "Estoque alto" },
+    {
+      value: buckets.medium,
+      color: "var(--chart-medium)",
+      label: "Estoque médio",
+    },
+    { value: buckets.low, color: "var(--chart-low)", label: "Estoque baixo" },
   ]);
 
   const total = Math.max(produtos.length, 1);
-  const pcts = [buckets.high, buckets.medium, buckets.low].map((value) => `${Math.round((value / total) * 100)}%`);
+  const pcts = [buckets.high, buckets.medium, buckets.low].map(
+    (value) => `${Math.round((value / total) * 100)}%`,
+  );
   document.querySelectorAll(".legend-row .pct").forEach((el, index) => {
     if (pcts[index] != null) el.textContent = pcts[index];
   });
@@ -53,8 +65,13 @@ async function renderDashboard() {
     ]);
 
     const cards = document.querySelectorAll(".metric-card .metric-value");
-    const totalStock = lotes.reduce((sum, lote) => sum + Number(lote.quantidade_atual || 0), 0);
-    const entradas = movimentacoes.filter((mov) => mov.tipo === "Entrada").length;
+    const totalStock = lotes.reduce(
+      (sum, lote) => sum + Number(lote.quantidade_atual || 0),
+      0,
+    );
+    const entradas = movimentacoes.filter(
+      (mov) => mov.tipo === "Entrada",
+    ).length;
     const saidas = movimentacoes.filter((mov) => mov.tipo === "Saída").length;
 
     if (cards[0]) cards[0].textContent = produtos.length;
@@ -64,13 +81,20 @@ async function renderDashboard() {
 
     const tbody = document.querySelector(".table-app tbody");
     if (tbody) {
-      tbody.innerHTML = produtos.slice(0, 8).map((produto) => `
+      tbody.innerHTML =
+        produtos
+          .slice(0, 8)
+          .map(
+            (produto) => `
         <tr>
           <td class="cell-strong">${escHtml(produto.nome)}</td>
           <td class="cell-muted">${escHtml(produto.codigo_produto || "-")}</td>
           <td class="cell-muted">${escHtml(produto.modelo || "-")}</td>
           <td><span class="badge-app badge-info">${escHtml(produto.cor || "Sem cor")}</span></td>
-        </tr>`).join("") || `
+        </tr>`,
+          )
+          .join("") ||
+        `
         <tr><td colspan="4" class="cell-muted text-center">Nenhum produto cadastrado.</td></tr>`;
     }
 
