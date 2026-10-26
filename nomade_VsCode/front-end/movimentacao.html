@@ -318,46 +318,10 @@
 
             <div class="col-lg-4">
               <section class="panel" aria-labelledby="selectedProductName">
-                <!-- Imagem ilustrativa -->
-                <div class="product-shot mb-3">
-                  <svg
-                    viewBox="0 0 200 120"
-                    xmlns="http://www.w3.org/2000/svg"
-                    aria-hidden="true"
-                    focusable="false"
-                  >
-                    <path
-                      fill="#f2f0ea"
-                      opacity="0.9"
-                      d="
-                      M8 78
-                      c14-6 30-9 44-19
-                      12-9 20-22 34-27
-                      13-5 27-2 38 6
-                      9 7 13 17 24 21
-                      12 4 26 2 40 7
-                      6 2 10 6 10 11
-                      0 8-9 13-20 13
-                      H22
-                      c-9 0-16-4-16-9
-                      0-1 1-2 2-3z
-                    "
-                    />
-
-                    <path
-                      fill="#0a0a0c"
-                      opacity="0.5"
-                      d="
-                      M8 78
-                      c14-6 30-9 44-19
-                      3 4 7 8 12 11
-                      -11 5-19 12-24 20
-                      H22
-                      c-9 0-16-4-16-9
-                      0-1 1-2 2-3z
-                    "
-                    />
-                  </svg>
+                <!-- Fotografia real do produto cadastrado, quando disponível. -->
+                <div class="product-shot mb-3" id="movementProductShot">
+                  <img id="movementProductImage" alt="" hidden />
+                  <span id="movementProductImageEmpty" class="product-shot-empty">Selecione um produto para visualizar a imagem.</span>
                 </div>
 
                 <h3

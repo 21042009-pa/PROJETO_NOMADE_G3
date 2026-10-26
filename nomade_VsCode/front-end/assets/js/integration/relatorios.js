@@ -76,6 +76,42 @@ function renderReports() {
   });
 }
 
+// Diferente dos gráficos personalizados/ilustrativos, este bloco usa os
+// lançamentos reais da API e recebe notificações assim que o estoque muda.
+async function renderLiveInventoryReport() {
+  try {
+    const [movimentacoes, lotes] = await Promise.all([
+      nomadeApi("/movimentacoes-estoque"),
+      nomadeApi("/lotes"),
+    ]);
+    const entradas = movimentacoes.filter((mov) => mov.tipo === "Entrada");
+    const saidas = movimentacoes.filter((mov) => mov.tipo === "Saída");
+    const unidades = lotes.reduce((total, lote) => total + Number(lote.quantidade_atual || 0), 0);
+    const resumo = document.getElementById("liveReportSummary");
+    if (resumo) resumo.textContent = `Estoque atual: ${unidades} unidades · Entradas registradas: ${entradas.length} · Saídas registradas: ${saidas.length}`;
+
+    const datas = [];
+    for (let i = 6; i >= 0; i--) {
+      const dia = new Date();
+      dia.setHours(12, 0, 0, 0);
+      dia.setDate(dia.getDate() - i);
+      const chave = [dia.getFullYear(), String(dia.getMonth() + 1).padStart(2, "0"), String(dia.getDate()).padStart(2, "0")].join("-");
+      datas.push({ chave, label: `${dia.getDate()}/${dia.getMonth() + 1}` });
+    }
+    const volumes = new Map();
+    for (const movimento of movimentacoes) {
+      const dia = String(movimento.data_movimentacao || "").slice(0, 10);
+      volumes.set(dia, (volumes.get(dia) || 0) + 1);
+    }
+    nomadeRenderBarChart("liveMovementChart", datas.map(({ chave, label }) => ({
+      label, value: volumes.get(chave) || 0,
+    })));
+  } catch (erro) {
+    const resumo = document.getElementById("liveReportSummary");
+    if (resumo) resumo.textContent = `Não foi possível carregar dados reais: ${erro.message}`;
+  }
+}
+
 function bindReportForm() {
   const form = document.getElementById("chartForm");
   if (!form) return;
@@ -120,4 +156,6 @@ function bindReportForm() {
 if (nomadeInitInternalPage("relatorios", "Pesquisar relatórios...")) {
   renderReports();
   bindReportForm();
+  renderLiveInventoryReport();
+  nomadeLiveSync(renderLiveInventoryReport);
 }

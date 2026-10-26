@@ -10,8 +10,7 @@ class MovimentacaoEstoqueController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
+        mensagem: erro.status ? erro.message : "Erro interno do servidor",
       });
     }
   }
@@ -27,8 +26,7 @@ class MovimentacaoEstoqueController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
+        mensagem: erro.status ? erro.message : "Erro interno do servidor",
       });
     }
   }
@@ -48,8 +46,7 @@ class MovimentacaoEstoqueController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
+        mensagem: erro.status ? erro.message : "Erro interno do servidor",
       });
     }
   }
@@ -70,8 +67,7 @@ class MovimentacaoEstoqueController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
+        mensagem: erro.status ? erro.message : "Erro interno do servidor",
       });
     }
   }
@@ -87,11 +83,10 @@ class MovimentacaoEstoqueController {
     } catch (erro) {
       res.status(erro.status || 500).json({
         sucesso: false,
-        mensagem: erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
+        mensagem: erro.status ? erro.message : "Erro interno do servidor",
       });
     }
   }
 }
 
-module.exports = new MovimentacaoEstoqueController();
+module.exports = new MovimentacaoEstoqueController()

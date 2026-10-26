@@ -12,6 +12,51 @@ const NOMADE_API = window.location.port === "3000" ? "" : API_ORIGIN;
 
 const SESSION_KEY = "nomade_usuario";
 
+// URLs de imagens devem apontar somente para arquivos enviados ao back-end.
+function nomadeImagemUrl(nome) {
+  if (!/^[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp)$/i.test(String(nome || ""))) return "";
+  return `${NOMADE_API}/uploads/${encodeURIComponent(nome)}`;
+}
+
+// Eventos enviados pelo próprio servidor após uma alteração confirmada.
+// EventSource mantém abas e navegadores diferentes sincronizados. Um polling
+// leve e o evento de foco servem como fallback quando SSE não está disponível.
+function nomadeLiveSync(atualizar, recursos = ["estoque"]) {
+  if (typeof atualizar !== "function") return;
+  let atualizando = false;
+  let pendente = false;
+  const executar = async () => {
+    if (atualizando) { pendente = true; return; }
+    atualizando = true;
+    try { await atualizar(); }
+    finally {
+      atualizando = false;
+      if (pendente) { pendente = false; void executar(); }
+    }
+  };
+  let source = null;
+  if (typeof EventSource !== "undefined") {
+    source = new EventSource(`${NOMADE_API}/eventos`);
+    source.addEventListener("alteracao", (evento) => {
+      try {
+        if (recursos.includes(JSON.parse(evento.data).recurso)) void executar();
+      } catch (erro) { console.warn("Evento de sincronização inválido.", erro); }
+    });
+  }
+  const aoFocar = () => { if (!document.hidden) void executar(); };
+  document.addEventListener("visibilitychange", aoFocar);
+  window.addEventListener("focus", aoFocar);
+  const intervalo = setInterval(() => {
+    if (!document.hidden) void executar();
+  }, 15000);
+  window.addEventListener("pagehide", () => {
+    source?.close();
+    clearInterval(intervalo);
+    document.removeEventListener("visibilitychange", aoFocar);
+    window.removeEventListener("focus", aoFocar);
+  }, { once: true });
+}
+
 function escHtml(value) {
   return String(value ?? "").replace(
     /[&<>"']/g,

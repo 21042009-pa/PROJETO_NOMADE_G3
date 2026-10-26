@@ -82,7 +82,6 @@ function nomadeBuildSidebar(active) {
 }
 
 function nomadeBuildTopbar(options = {}, active = "") {
-  const placeholder = options.searchPlaceholder || "Buscar no sistema...";
   const settingsClass = active === "configuracoes" ? " active" : "";
 
   return `
@@ -97,11 +96,6 @@ function nomadeBuildTopbar(options = {}, active = "") {
       >
         ${NOMADE_ICONS.menu}
       </button>
-
-      <div class="search-field">
-        ${NOMADE_ICONS.search}
-        <input type="search" id="globalSearch" placeholder="${placeholder}" aria-label="${placeholder}" autocomplete="off">
-      </div>
 
       <span class="status-pill">
         <span class="status-dot" aria-hidden="true"></span>

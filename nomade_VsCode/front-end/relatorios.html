@@ -65,6 +65,16 @@
           </button>
         </header>
 
+        <!-- Indicadores do estoque reais, atualizados após entradas/saídas. -->
+        <section class="panel mb-4" aria-labelledby="liveReportTitle">
+          <header class="panel-header">
+            <h2 class="panel-title" id="liveReportTitle">Movimentações reais do estoque</h2>
+            <span class="badge-app badge-info">Dados da API</span>
+          </header>
+          <p class="small text-muted" id="liveReportSummary">Carregando estoque e movimentações...</p>
+          <div class="bar-chart" id="liveMovementChart" style="height:180px"></div>
+        </section>
+
         <!-- Área dos gráficos -->
         <section
           class="row g-3"

@@ -103,7 +103,7 @@ function currentProductStock() {
   const lote = movementLots.find(
     (item) => Number(item.id_lote) === Number(product.id_lote),
   );
-  return Number(lote?.quantidade_atual || 0);
+  return lote ? Number(lote.quantidade_atual || 0) : null;
 }
 
 function setStockDisplay(elementId, value) {
@@ -127,6 +127,31 @@ function updateSelectedProductInfo() {
         ""
       : "Selecione um produto para registrar a movimentação.";
 
+  // Busca a fotografia do cadastro (e não a imagem ilustrativa anterior).
+  const imagem = document.getElementById("movementProductImage");
+  const vazio = document.getElementById("movementProductImageEmpty");
+  const url = nomadeImagemUrl(product?.imagem);
+  if (imagem && vazio) {
+    if (url) {
+      // Não recarrega uma foto idêntica em cada evento de sincronização.
+      if (imagem.dataset.foto !== url) {
+        imagem.dataset.foto = url;
+        imagem.alt = `Imagem de ${product.nome}`;
+        imagem.src = url;
+      }
+      imagem.hidden = imagem.dataset.fotoComErro === url;
+      vazio.hidden = !imagem.hidden;
+      if (imagem.hidden) vazio.textContent = "Imagem não disponível.";
+    } else {
+      imagem.dataset.foto = "";
+      imagem.hidden = true;
+      imagem.removeAttribute("src");
+      vazio.hidden = false;
+      vazio.textContent = product
+        ? "Este produto não possui imagem cadastrada."
+        : "Selecione um produto para visualizar a imagem.";
+    }
+  }
   setStockDisplay("currentStockValue", currentProductStock());
   updateMovementPreview();
 }
@@ -141,7 +166,8 @@ function updateMovementPreview() {
     return;
   }
 
-  setStockDisplay("postOpValue", Math.max(0, stock + config.sign * quantity));
+  const novoSaldo = stock + config.sign * quantity;
+  setStockDisplay("postOpValue", novoSaldo >= 0 ? novoSaldo : null);
 }
 
 function ensureMovementProductSelect(produtos) {
@@ -157,6 +183,8 @@ function ensureMovementProductSelect(produtos) {
     input = select;
   }
 
+  // Atualizações recebidas por SSE não podem apagar a seleção em andamento.
+  const selecionado = input.value;
   input.innerHTML =
     `<option value="">Selecione o produto</option>` +
     produtos
@@ -165,6 +193,9 @@ function ensureMovementProductSelect(produtos) {
     <option value="${produto.id_produto}">${escHtml(produto.codigo_produto || produto.nome)} — ${escHtml(produto.nome)}</option>`,
       )
       .join("");
+  if (produtos.some((produto) => String(produto.id_produto) === selecionado)) {
+    input.value = selecionado;
+  }
 
   if (!input.dataset.changeBound) {
     input.dataset.changeBound = "1";
@@ -233,11 +264,28 @@ function bindMovementForm() {
     const motivo = document.getElementById("motivoSelect").value;
     const destino = document.getElementById("destinoInput").value.trim();
 
+    const quantidade = Number(document.getElementById("qtyInput").value);
+    const estoque = currentProductStock();
+    if (estoque === null) {
+      showError("Este produto não possui lote. Cadastre ou vincule um lote primeiro.");
+      return;
+    }
+    if (!Number.isSafeInteger(quantidade) || quantidade <= 0) {
+      showError("Informe uma quantidade inteira maior que zero.");
+      return;
+    }
+    if (config.sign < 0 && quantidade > estoque) {
+      showError(`Estoque insuficiente: apenas ${estoque} unidade(s) disponível(is).`);
+      return;
+    }
+
+    const agora = new Date();
+    const dataLocal = [agora.getFullYear(), String(agora.getMonth() + 1).padStart(2, "0"), String(agora.getDate()).padStart(2, "0")].join("-");
     const body = {
       tipo: config.apiType,
       id_produto: Number(document.getElementById("skuInput").value),
-      data_movimentacao: new Date().toISOString().slice(0, 10),
-      quantidade: Number(document.getElementById("qtyInput").value),
+      data_movimentacao: dataLocal,
+      quantidade,
       observacao: destino ? `${motivo} — ${destino}` : motivo,
     };
 
@@ -265,6 +313,12 @@ function bindMovementControls() {
   document
     .getElementById("qtyInput")
     ?.addEventListener("change", updateMovementPreview);
+  document.getElementById("movementProductImage")?.addEventListener("error", () => {
+    const imagem = document.getElementById("movementProductImage");
+    const vazio = document.getElementById("movementProductImageEmpty");
+    if (imagem) { imagem.dataset.fotoComErro = imagem.dataset.foto; imagem.hidden = true; imagem.removeAttribute("src"); }
+    if (vazio) { vazio.hidden = false; vazio.textContent = "Imagem não disponível."; }
+  });
 }
 
 if (nomadeInitInternalPage("movimentacao", "Buscar produto...")) {
@@ -272,4 +326,5 @@ if (nomadeInitInternalPage("movimentacao", "Buscar produto...")) {
   bindMovementForm();
   applyMovementMode("saida");
   loadMovementData();
+  nomadeLiveSync(loadMovementData);
 }

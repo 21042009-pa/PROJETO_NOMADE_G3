@@ -8,6 +8,43 @@ const frontendPath = path.join(__dirname, "../../front-end");
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
+// Canal de atualização em tempo real: só transmite eventos após HTTP 2xx.
+const clientesEventos = new Set();
+function emitirAlteracao(recurso) {
+  const mensagem = `event: alteracao\ndata: ${JSON.stringify({ recurso })}\n\n`;
+  for (const cliente of clientesEventos) cliente.write(mensagem);
+}
+
+app.get("/eventos", (req, res) => {
+  res.set({
+    "Content-Type": "text/event-stream; charset=utf-8",
+    "Cache-Control": "no-cache, no-transform",
+    "Connection": "keep-alive",
+    "X-Accel-Buffering": "no",
+    "Access-Control-Allow-Origin": "*",
+  });
+  res.flushHeaders();
+  res.write(": conectado\n\n");
+  clientesEventos.add(res);
+  const pulso = setInterval(() => res.write(": keepalive\n\n"), 25000);
+  pulso.unref?.();
+  req.on("close", () => { clearInterval(pulso); clientesEventos.delete(res); });
+});
+
+app.use((req, res, next) => {
+  if (["POST", "PUT", "PATCH", "DELETE"].includes(req.method)) {
+    const match = req.path.match(/^\/(movimentacoes-estoque|produtos|lotes|categorias|fornecedores|usuarios)(?:\/|$)/);
+    if (match) {
+      res.on("finish", () => {
+        if (res.statusCode >= 200 && res.statusCode < 300) {
+          emitirAlteracao(match[1] === "usuarios" ? "usuarios" : "estoque");
+        }
+      });
+    }
+  }
+  next();
+});
+
 // Permite testar o front-end também pelo Live Server/VS Code.
 app.use((req, res, next) => {
   res.header("Access-Control-Allow-Origin", "*");

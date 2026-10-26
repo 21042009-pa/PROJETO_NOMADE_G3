@@ -42,10 +42,12 @@ async function renderStock() {
         `<tr><td colspan="7" class="cell-muted text-center">Nenhum produto cadastrado.</td></tr>`;
     }
 
+    document.getElementById("filterInput")?.dispatchEvent(new Event("input"));
+
     const quantities = produtos.map((p) =>
       Number(lotById[p.id_lote]?.quantidade_atual || 0),
     );
-    const totalStock = quantities.reduce((sum, qtd) => sum + qtd, 0);
+    const totalStock = lotes.reduce((sum, lote) => sum + Number(lote.quantidade_atual || 0), 0);
     const lowStock = quantities.filter((qtd) => qtd > 5 && qtd <= 10).length;
     const criticalStock = quantities.filter((qtd) => qtd <= 5).length;
 
@@ -69,4 +71,5 @@ async function renderStock() {
 if (nomadeInitInternalPage("estoque", "Pesquisar estoque global...")) {
   nomadeInitTableFilter("filterInput", "#stockTable");
   renderStock();
+  nomadeLiveSync(renderStock);
 }

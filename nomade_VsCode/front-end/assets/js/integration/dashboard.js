@@ -106,4 +106,5 @@ async function renderDashboard() {
 
 if (nomadeInitInternalPage("dashboard", "Pesquisar estoque...")) {
   renderDashboard();
+  nomadeLiveSync(renderDashboard);
 }

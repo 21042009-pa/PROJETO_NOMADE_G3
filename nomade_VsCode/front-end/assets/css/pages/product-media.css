@@ -111,3 +111,20 @@ html[data-theme="light"] .product-shot .sku-tag {
   border: 1px solid var(--border);
 }
 .product-image-actions { display: flex; flex-wrap: wrap; gap: 6px; }
+/* Fotografia do produto na tela Entrada & Saída. */
+#movementProductImage {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  background: var(--panel-2);
+}
+#movementProductImage[hidden], #movementProductImageEmpty[hidden] {
+  display: none;
+}
+.product-shot-empty {
+  padding: 20px;
+  text-align: center;
+  color: var(--text-muted);
+  font-size: .85rem;
+}

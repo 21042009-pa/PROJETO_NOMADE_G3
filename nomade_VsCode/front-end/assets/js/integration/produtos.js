@@ -95,12 +95,6 @@ function obterRelacionamento(tipo) {
     : { [info.fieldNovo]: nome };
 }
 
-// Constrói apenas URLs seguras de arquivos enviados pelo servidor.
-function nomadeImagemUrl(nome) {
-  if (!/^[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp)$/.test(String(nome || ""))) return "";
-  return `${NOMADE_API}/uploads/${encodeURIComponent(nome)}`;
-}
-
 function validarArquivoImagem(arquivo) {
   if (!arquivo) return;
   const tipos = ["image/jpeg", "image/png", "image/webp"];
@@ -366,6 +360,8 @@ async function renderProducts() {
       }).join("") ||
       `<tr><td colspan="6" class="cell-muted text-center">Nenhum produto cadastrado.</td></tr>`;
     }
+    document.getElementById("catalogFilter")?.dispatchEvent(new Event("input"));
+
     ["fornecedor", "categoria", "lote"].forEach(preencherCadastro);
     bindProductForm();
     bindCadastroDelete();
@@ -379,4 +375,5 @@ async function renderProducts() {
 if (nomadeInitInternalPage("produtos", "Buscar produto...")) {
   nomadeInitTableFilter("catalogFilter", "#catalogTable");
   renderProducts();
+  nomadeLiveSync(renderProducts);
 }

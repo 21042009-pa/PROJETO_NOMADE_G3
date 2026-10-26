@@ -108,6 +108,8 @@ async function renderUsers() {
         `<tr><td colspan="6" class="cell-muted text-center">Nenhum usuário cadastrado.</td></tr>`;
     }
 
+    document.getElementById("userFilter")?.dispatchEvent(new Event("input"));
+
     const metrics = document.querySelectorAll(".metric-card .metric-value");
     if (metrics[0]) metrics[0].textContent = users.length;
     if (metrics[1]) metrics[1].textContent = users.length;
@@ -123,4 +125,5 @@ async function renderUsers() {
 if (nomadeInitInternalPage("usuarios", "Pesquisar membros da equipe...")) {
   nomadeInitTableFilter("userFilter", "#userTable");
   renderUsers();
+  nomadeLiveSync(renderUsers, ["usuarios"]);
 }
