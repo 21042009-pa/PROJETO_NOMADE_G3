@@ -4,9 +4,8 @@
    ========================================================= */
 
 const NOMADE_ICONS = {
-
   grid: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <rect x="3" y="3" width="8" height="8" rx="1.5"/>
@@ -17,9 +16,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   box: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <path d="M3 7l9-4 9 4-9 4-9-4z"/>
@@ -29,9 +27,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   cart: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <circle cx="9" cy="20" r="1.4"/>
@@ -42,9 +39,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   users: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <circle cx="9" cy="8" r="3.2"/>
@@ -58,9 +54,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   doc: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <path d="M6 2.5h8l4 4V21a.5.5 0 0 1-.5.5h-11a.5.5 0 0 1-.5-.5V3a.5.5 0 0 1 .5-.5z"/>
@@ -71,9 +66,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   gear: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <circle cx="12" cy="12" r="3.2"/>
@@ -83,9 +77,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   help: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <circle cx="12" cy="12" r="9.2"/>
@@ -97,9 +90,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   logout: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/>
@@ -111,9 +103,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   search: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.9">
 
       <circle cx="10.5" cy="10.5" r="6.5"/>
@@ -123,9 +114,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   bell: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <path d="M6 9a6 6 0 1 1 12 0c0 5 2 6 2 6H4s2-1 2-6z"/>
@@ -135,9 +125,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   wifi: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <path d="M4.5 9.8a12 12 0 0 1 15 0"/>
@@ -151,9 +140,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   menu: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.9">
 
       <path d="M3.5 6.5h17M3.5 12h17M3.5 17.5h17"/>
@@ -161,9 +149,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   close: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.9">
 
       <path d="M5 5l14 14M19 5L5 19"/>
@@ -171,9 +158,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   plus: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2.1">
 
       <path d="M12 5v14M5 12h14"/>
@@ -181,9 +167,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   filter: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <path d="M4 5h16l-6.2 7.2V19l-3.6 2v-8.8z"/>
@@ -191,9 +176,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   qr: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <rect x="3" y="3" width="7" height="7" rx="1"/>
@@ -205,9 +189,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   arrowUp: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2.4">
 
       <path d="M12 19V5M6 11l6-6 6 6"/>
@@ -215,9 +198,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   arrowDown: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2.4">
 
       <path d="M12 5v14M6 13l6 6 6-6"/>
@@ -225,9 +207,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   spark: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/>
@@ -235,9 +216,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   check: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="2.2">
 
       <path d="M4 12.5l5 5L20 6"/>
@@ -245,9 +225,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   scan: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <path d="M3 8V5a2 2 0 0 1 2-2h3"/>
@@ -263,9 +242,8 @@ const NOMADE_ICONS = {
     </svg>
   `,
 
-
   image: `
-    <svg viewBox="0 0 24 24" fill="none"
+    <svg aria-hidden="true" focusable="false" viewBox="0 0 24 24" fill="none"
       stroke="currentColor" stroke-width="1.8">
 
       <rect x="3" y="3.5" width="18" height="17" rx="2"/>

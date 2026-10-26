@@ -1,366 +1,334 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Entrada &amp; Saída de Mercadoria — Nômade</title>
 
-  <title>
-    Entrada &amp; Saída de Mercadoria — Nômade
-  </title>
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-  <!-- Fontes -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+    <!-- Bootstrap -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Bootstrap -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <link rel="stylesheet" href="assets/css/pages/product-media.css" />
+    <script src="assets/js/theme.js"></script>
+  </head>
 
-  <!-- CSS -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="assets/js/theme.js"></script>
-</head>
-
-
-<body>
-
-  <!-- =====================================================
+  <body>
+    <!-- =====================================================
        ESTRUTURA PRINCIPAL
        ===================================================== -->
 
-  <div class="app-shell" id="app-shell">
-
-    <div class="content">
-
-
-      <!-- =================================================
+    <div class="app-shell" id="app-shell">
+      <main class="content">
+        <!-- =================================================
            CABEÇALHO
            ================================================= -->
 
-      <div class="page-head">
+        <header class="page-head">
+          <div>
+            <h1 id="pageTitle">Saída de Mercadoria</h1>
 
-        <div>
+            <p id="pageSubtitle">
+              Registrar baixa técnica de estoque por venda ou ajuste.
+            </p>
+          </div>
 
-          <h1 id="pageTitle">
-            Saída de Mercadoria
-          </h1>
+          <div class="d-flex gap-2">
+            <button class="btn-ghost" type="button" onclick="history.back()">
+              Cancelar
+            </button>
 
-          <p id="pageSubtitle">
-            Registrar baixa técnica de estoque
-            por venda ou ajuste.
-          </p>
+            <button
+              class="btn-accent"
+              type="submit"
+              form="moveForm"
+              id="confirmBtn"
+            >
+              Confirmar saída
+            </button>
+          </div>
+        </header>
 
-        </div>
-
-
-        <div class="d-flex gap-2">
-
-          <button class="btn-ghost" type="button" onclick="history.back()">
-            Cancelar
-          </button>
-
-
-          <button class="btn-accent" type="submit" form="moveForm" id="confirmBtn">
-            Confirmar saída
-          </button>
-
-        </div>
-
-      </div>
-
-
-      <!-- =================================================
+        <!-- =================================================
            MODOS
            ================================================= -->
 
-      <div class="pill-tabs mb-4" id="modeTabs">
+        <div
+          class="pill-tabs mb-4"
+          id="modeTabs"
+          role="group"
+          aria-label="Modo de movimentação"
+        >
+          <button
+            type="button"
+            class="active"
+            data-mode="saida"
+            aria-pressed="true"
+          >
+            Saída de mercadoria
+          </button>
 
-        <button type="button" class="active" data-mode="saida">
-          Saída de mercadoria
-        </button>
+          <button type="button" data-mode="entrada" aria-pressed="false">
+            Entrada de mercadoria
+          </button>
 
+          <button type="button" data-mode="Atualizacao" aria-pressed="false">
+            Atualização do produto
+          </button>
+        </div>
 
-        <button type="button" data-mode="entrada">
-          Entrada de mercadoria
-        </button>
-
-
-        <button type="button" data-mode="Atualizacao">
-          Atualização do produto
-        </button>
-
-      </div>
-
-
-      <!-- =================================================
+        <!-- =================================================
            FORMULÁRIO DE MOVIMENTAÇÃO
            ================================================= -->
 
-      <form id="moveForm">
-
-        <div class="row g-3">
-
-
-          <!-- =============================================
+        <form id="moveForm">
+          <div class="row g-3">
+            <!-- =============================================
                COLUNA PRINCIPAL
                ============================================= -->
 
-          <div class="col-lg-8">
-
-
-            <!-- ===========================================
+            <div class="col-lg-8">
+              <!-- ===========================================
                  IDENTIFICAÇÃO DO PRODUTO
                  =========================================== -->
 
-            <div class="panel mb-3">
-
-              <div class="panel-header">
-
-                <div class="panel-title">
-
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-                    <path d="
+              <section class="panel mb-3" aria-labelledby="panel-heading-1">
+                <header class="panel-header">
+                  <h2 class="panel-title" id="panel-heading-1">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="1.8"
+                      aria-hidden="true"
+                      focusable="false"
+                    >
+                      <path
+                        d="
                         M3 8V5a2 2 0 0 1 2-2h3
                         M21 8V5a2 2 0 0 0-2-2h-3
                         M3 16v3a2 2 0 0 0 2 2h3
                         M21 16v3a2 2 0 0 1-2 2h-3
                         M3 12h18
-                      " />
-                  </svg>
+                      "
+                      />
+                    </svg>
 
-                  Identificação de produto
+                    Identificação de produto
+                  </h2>
+                </header>
 
-                </div>
+                <label class="field-label" for="skuInput"> Produto </label>
 
-              </div>
-
-
-              <label class="field-label" for="skuInput">
-                Produto
-              </label>
-
-
-              <div class="d-flex align-items-center gap-2 mb-2">
-
-                <!--
+                <div class="d-flex align-items-center gap-2 mb-2">
+                  <!--
                   O integration.js transforma este input
                   em um select com os produtos cadastrados.
                 -->
 
-                <input class="form-control-app" id="skuInput" placeholder="Carregando produtos..." required>
+                  <input
+                    class="form-control-app"
+                    id="skuInput"
+                    placeholder="Carregando produtos..."
+                    required
+                  />
+                </div>
+              </section>
 
-              </div>
-
-            </div>
-
-
-            <!-- ===========================================
+              <!-- ===========================================
                  QUANTIDADE E MOTIVO
                  =========================================== -->
 
-            <div class="row g-3 mb-3">
+              <div class="row g-3 mb-3">
+                <!-- Quantidade -->
+                <div class="col-md-6">
+                  <div class="panel h-100">
+                    <label class="field-label" for="qtyInput">
+                      Quantidade
+                    </label>
 
+                    <div class="stepper" data-stepper>
+                      <button
+                        type="button"
+                        data-dir="down"
+                        aria-label="Diminuir quantidade"
+                      >
+                        −
+                      </button>
 
-              <!-- Quantidade -->
-              <div class="col-md-6">
+                      <input
+                        type="number"
+                        id="qtyInput"
+                        value="1"
+                        min="1"
+                        required
+                      />
 
-                <div class="panel h-100">
-
-                  <label class="field-label" for="qtyInput">
-                    Quantidade
-                  </label>
-
-
-                  <div class="stepper" data-stepper>
-
-                    <button type="button" data-dir="down">
-                      −
-                    </button>
-
-
-                    <input type="number" id="qtyInput" value="1" min="1" required>
-
-
-                    <button type="button" data-dir="up">
-                      +
-                    </button>
-
+                      <button
+                        type="button"
+                        data-dir="up"
+                        aria-label="Aumentar quantidade"
+                      >
+                        +
+                      </button>
+                    </div>
                   </div>
-
                 </div>
 
-              </div>
+                <!-- Motivo -->
+                <div class="col-md-6">
+                  <div class="panel h-100">
+                    <label
+                      class="field-label"
+                      for="motivoSelect"
+                      id="motivoLabel"
+                    >
+                      Motivo da saída
+                    </label>
 
+                    <select class="form-select-app" id="motivoSelect" required>
+                      <option value="Venda (Checkout)">Venda (Checkout)</option>
 
-              <!-- Motivo -->
-              <div class="col-md-6">
+                      <option value="Transferência entre lojas">
+                        Transferência entre lojas
+                      </option>
 
-                <div class="panel h-100">
+                      <option value="Produto com falha">
+                        Produto com falha
+                      </option>
 
-                  <label class="field-label" for="motivoSelect" id="motivoLabel">
-                    Motivo da saída
-                  </label>
+                      <option value="Ajuste de inventário">
+                        Ajuste de inventário
+                      </option>
 
-
-                  <select class="form-select-app" id="motivoSelect" required>
-
-                    <option value="Venda (Checkout)">
-                      Venda (Checkout)
-                    </option>
-
-                    <option value="Transferência entre lojas">
-                      Transferência entre lojas
-                    </option>
-
-                    <option value="Produto com falha">
-                      Produto com falha
-                    </option>
-
-                    <option value="Ajuste de inventário">
-                      Ajuste de inventário
-                    </option>
-
-                    <option value="Devolução ao fornecedor">
-                      Devolução ao fornecedor
-                    </option>
-
-                  </select>
-
+                      <option value="Devolução ao fornecedor">
+                        Devolução ao fornecedor
+                      </option>
+                    </select>
+                  </div>
                 </div>
-
               </div>
 
-            </div>
-
-
-            <!-- ===========================================
+              <!-- ===========================================
                  DESTINO / ORIGEM
                  =========================================== -->
 
-            <div class="panel mb-3">
+              <div class="panel mb-3">
+                <label class="field-label" for="destinoInput" id="destinoLabel">
+                  Destino / cliente
+                </label>
 
-              <label class="field-label" for="destinoInput" id="destinoLabel">
-                Destino / cliente
-              </label>
+                <div class="input-icon-wrap">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <circle cx="12" cy="8" r="3.6" />
 
-
-              <div class="input-icon-wrap">
-
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8">
-
-                  <circle cx="12" cy="8" r="3.6" />
-
-                  <path d="
+                    <path
+                      d="
                       M4.5 20
                       c1-4 4-6.2 7.5-6.2
                       s6.5 2.2 7.5 6.2
-                    " />
+                    "
+                    />
+                  </svg>
 
-                </svg>
-
-
-                <input class="form-control-app" id="destinoInput" type="text"
-                  placeholder="Nome do cliente, fornecedor, loja destino ou ID">
-
+                  <input
+                    class="form-control-app"
+                    id="destinoInput"
+                    type="text"
+                    placeholder="Nome do cliente, fornecedor, loja destino ou ID"
+                  />
+                </div>
               </div>
 
-            </div>
-
-
-            <!-- ===========================================
+              <!-- ===========================================
                  ÚLTIMAS MOVIMENTAÇÕES
                  =========================================== -->
 
-            <div class="panel">
+              <section class="panel" aria-labelledby="panel-heading-2">
+                <header class="panel-header">
+                  <h2 class="panel-title" id="panel-heading-2">
+                    Últimas movimentações
+                  </h2>
 
-              <div class="panel-header">
+                  <span class="badge-app badge-success">
+                    Sync status: active
+                  </span>
+                </header>
 
-                <div class="panel-title">
-                  Últimas movimentações
-                </div>
+                <div class="table-responsive">
+                  <table class="table-app">
+                    <caption class="visually-hidden">
+                      Últimas movimentações
+                    </caption>
 
+                    <thead>
+                      <tr>
+                        <th scope="col">Data</th>
 
-                <span class="badge-app badge-success">
-                  Sync status: active
-                </span>
+                        <th scope="col">SKU</th>
 
-              </div>
+                        <th scope="col">Qtd</th>
 
+                        <th scope="col">Tipo</th>
+                      </tr>
+                    </thead>
 
-              <div class="table-responsive">
-
-                <table class="table-app">
-
-                  <thead>
-
-                    <tr>
-
-                      <th>
-                        Data
-                      </th>
-
-                      <th>
-                        SKU
-                      </th>
-
-                      <th>
-                        Qtd
-                      </th>
-
-                      <th>
-                        Tipo
-                      </th>
-
-                    </tr>
-
-                  </thead>
-
-
-                  <tbody>
-
-                    <!--
+                    <tbody>
+                      <!--
                       O integration.js preenche
                       automaticamente esta tabela.
                     -->
 
-                    <tr>
-
-                      <td colspan="4" class="cell-muted text-center">
-                        Carregando movimentações...
-                      </td>
-
-                    </tr>
-
-                  </tbody>
-
-                </table>
-
-              </div>
-
+                      <tr>
+                        <td colspan="4" class="cell-muted text-center">
+                          Carregando movimentações...
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+              </section>
             </div>
 
-          </div>
-
-
-          <!-- =============================================
+            <!-- =============================================
                PAINEL LATERAL
                ============================================= -->
 
-          <div class="col-lg-4">
-
-            <div class="panel">
-
-
-              <!-- Imagem ilustrativa -->
-              <div class="product-shot mb-3">
-
-                <svg viewBox="0 0 200 120" xmlns="http://www.w3.org/2000/svg">
-
-                  <path fill="#f2f0ea" opacity="0.9" d="
+            <div class="col-lg-4">
+              <section class="panel" aria-labelledby="selectedProductName">
+                <!-- Imagem ilustrativa -->
+                <div class="product-shot mb-3">
+                  <svg
+                    viewBox="0 0 200 120"
+                    xmlns="http://www.w3.org/2000/svg"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path
+                      fill="#f2f0ea"
+                      opacity="0.9"
+                      d="
                       M8 78
                       c14-6 30-9 44-19
                       12-9 20-22 34-27
@@ -372,10 +340,13 @@
                       H22
                       c-9 0-16-4-16-9
                       0-1 1-2 2-3z
-                    " />
+                    "
+                    />
 
-
-                  <path fill="#0a0a0c" opacity="0.5" d="
+                    <path
+                      fill="#0a0a0c"
+                      opacity="0.5"
+                      d="
                       M8 78
                       c14-6 30-9 44-19
                       3 4 7 8 12 11
@@ -383,152 +354,130 @@
                       H22
                       c-9 0-16-4-16-9
                       0-1 1-2 2-3z
-                    " />
-
-                </svg>
-
-              </div>
-
-
-              <h3 id="selectedProductName" class="font-display" style="
-                  font-size: 1.1rem;
-                  margin-bottom: 2px;
-                ">
-                Produto selecionado
-              </h3>
-
-
-              <p id="selectedProductMeta" class="text-muted small mb-3">
-                Selecione um produto para registrar
-                a movimentação.
-              </p>
-
-
-              <!-- Estoque -->
-              <div class="row g-2 mb-3">
-
-
-                <div class="col-6">
-
-                  <div class="panel" style="
-                      background: var(--panel-2);
-                      padding: 12px;
-                    ">
-
-                    <div class="field-label mb-1">
-                      Estoque atual
-                    </div>
-
-
-                    <div class="font-display" id="currentStockValue" style="
-                        font-size: 1.5rem;
-                        font-weight: 700;
-                      ">
-                      —
-
-                      <span style="
-                          font-size: .8rem;
-                          color: var(--text-muted);
-                          font-family: var(--font-body);
-                        ">
-                        un
-                      </span>
-
-                    </div>
-
-                  </div>
-
+                    "
+                    />
+                  </svg>
                 </div>
 
+                <h3
+                  id="selectedProductName"
+                  class="font-display"
+                  style="font-size: 1.1rem; margin-bottom: 2px"
+                >
+                  Produto selecionado
+                </h3>
 
-                <div class="col-6">
-
-                  <div class="panel" style="
-                      background: var(--panel-2);
-                      padding: 12px;
-                    ">
-
-                    <div class="field-label mb-1">
-                      Pós-operacional
-                    </div>
-
-
-                    <div class="font-display" id="postOpValue" style="
-                        font-size: 1.5rem;
-                        font-weight: 700;
-                        color: var(--accent);
-                      ">
-                      —
-
-                      <span style="
-                          font-size: .8rem;
-                          color: var(--text-muted);
-                          font-family: var(--font-body);
-                        ">
-                        un
-                      </span>
-
-                    </div>
-
-                  </div>
-
-                </div>
-
-              </div>
-
-
-              <!-- Aviso -->
-              <div class="d-flex gap-2 p-2" id="warnBox" style="
-                  background: var(--warning-soft);
-                  border: 1px solid rgba(240, 180, 41, .3);
-                  border-radius: var(--radius-sm);
-                ">
-
-                <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8"
-                  style="
-                    color: var(--warning);
-                    flex-shrink: 0;
-                  ">
-
-                  <path d="M12 3 2 20h20z" />
-
-                  <path d="M12 9.5v4.5M12 17h.01" />
-
-                </svg>
-
-
-                <p class="small text-muted m-0">
-                  Esta operação removerá os itens
-                  do inventário físico.
+                <p id="selectedProductMeta" class="text-muted small mb-3">
+                  Selecione um produto para registrar a movimentação.
                 </p>
 
-              </div>
+                <!-- Estoque -->
+                <div class="row g-2 mb-3">
+                  <div class="col-6">
+                    <div
+                      class="panel"
+                      style="background: var(--panel-2); padding: 12px"
+                    >
+                      <div class="field-label mb-1">Estoque atual</div>
 
+                      <div
+                        class="font-display"
+                        id="currentStockValue"
+                        style="font-size: 1.5rem; font-weight: 700"
+                      >
+                        —
+
+                        <span
+                          style="
+                            font-size: 0.8rem;
+                            color: var(--text-muted);
+                            font-family: var(--font-body);
+                          "
+                        >
+                          un
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="col-6">
+                    <div
+                      class="panel"
+                      style="background: var(--panel-2); padding: 12px"
+                    >
+                      <div class="field-label mb-1">Pós-operacional</div>
+
+                      <div
+                        class="font-display"
+                        id="postOpValue"
+                        style="
+                          font-size: 1.5rem;
+                          font-weight: 700;
+                          color: var(--accent);
+                        "
+                      >
+                        —
+
+                        <span
+                          style="
+                            font-size: 0.8rem;
+                            color: var(--text-muted);
+                            font-family: var(--font-body);
+                          "
+                        >
+                          un
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <!-- Aviso -->
+                <div
+                  class="d-flex gap-2 p-2"
+                  id="warnBox"
+                  style="
+                    background: var(--warning-soft);
+                    border: 1px solid rgba(240, 180, 41, 0.3);
+                    border-radius: var(--radius-sm);
+                  "
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    width="18"
+                    height="18"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="1.8"
+                    style="color: var(--warning); flex-shrink: 0"
+                    aria-hidden="true"
+                    focusable="false"
+                  >
+                    <path d="M12 3 2 20h20z" />
+
+                    <path d="M12 9.5v4.5M12 17h.01" />
+                  </svg>
+
+                  <p class="small text-muted m-0">
+                    Esta operação removerá os itens do inventário físico.
+                  </p>
+                </div>
+              </section>
             </div>
-
           </div>
-
-        </div>
-
-      </form>
-
+        </form>
+      </main>
     </div>
 
-  </div>
-
-
-  
-  <!-- =====================================================
+    <!-- =====================================================
        SCRIPTS
        ===================================================== -->
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/layout/icons.js"></script>
-  <script src="assets/js/layout/layout.js"></script>
-  <script src="assets/js/app.js"></script>
-  <script src="assets/js/integration/core.js"></script>
-  <script src="assets/js/integration/movimentacao.js"></script>
-
-</body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/layout/icons.js"></script>
+    <script src="assets/js/layout/layout.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/integration/core.js"></script>
+    <script src="assets/js/integration/movimentacao.js"></script>
+  </body>
 </html>

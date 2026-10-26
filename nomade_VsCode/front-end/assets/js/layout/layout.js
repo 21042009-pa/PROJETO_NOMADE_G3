@@ -5,12 +5,27 @@
    ========================================================= */
 
 const NOMADE_NAV = [
-  { key: "dashboard", href: "dashboard.html", label: "Painel de Controle", icon: "grid" },
+  {
+    key: "dashboard",
+    href: "dashboard.html",
+    label: "Painel de Controle",
+    icon: "grid",
+  },
   { key: "estoque", href: "estoque.html", label: "Inventário", icon: "box" },
   { key: "produtos", href: "produtos.html", label: "Produtos", icon: "cart" },
-  { key: "movimentacao", href: "movimentacao.html", label: "Entrada &amp; Saída", icon: "scan" },
+  {
+    key: "movimentacao",
+    href: "movimentacao.html",
+    label: "Entrada &amp; Saída",
+    icon: "scan",
+  },
   { key: "usuarios", href: "usuarios.html", label: "Usuários", icon: "users" },
-  { key: "relatorios", href: "relatorios.html", label: "Relatórios", icon: "doc" },
+  {
+    key: "relatorios",
+    href: "relatorios.html",
+    label: "Relatórios",
+    icon: "doc",
+  },
 ];
 
 function nomadeBrandMark() {
@@ -21,11 +36,13 @@ function nomadeBrandMark() {
 }
 
 function nomadeBuildSidebar(active) {
-  const links = NOMADE_NAV.map((item) => `
-    <a href="${item.href}" class="nav-link-app${item.key === active ? " active" : ""}">
+  const links = NOMADE_NAV.map(
+    (item) => `
+    <a href="${item.href}" class="nav-link-app${item.key === active ? " active" : ""}"${item.key === active ? ' aria-current="page"' : ""}>
       ${NOMADE_ICONS[item.icon]}
       <span>${item.label}</span>
-    </a>`).join("");
+    </a>`,
+  ).join("");
 
   return `
     <aside class="sidebar" id="nomadeSidebar" aria-hidden="true">
@@ -86,11 +103,11 @@ function nomadeBuildTopbar(options = {}, active = "") {
 
       <div class="search-field">
         ${NOMADE_ICONS.search}
-        <input type="search" id="globalSearch" placeholder="${placeholder}" autocomplete="off">
+        <input type="search" id="globalSearch" placeholder="${placeholder}" aria-label="${placeholder}" autocomplete="off">
       </div>
 
       <span class="status-pill">
-        <span class="status-dot"></span>
+        <span class="status-dot" aria-hidden="true"></span>
         Sistema Online
       </span>
 
@@ -112,7 +129,7 @@ function nomadeBuildTopbar(options = {}, active = "") {
             aria-controls="userDropdown"
             aria-expanded="false"
           >
-            <div class="avatar">U</div>
+            <div class="avatar" aria-hidden="true">U</div>
             <div class="user-meta">
               <div class="name">Usuário</div>
               <div class="role">—</div>

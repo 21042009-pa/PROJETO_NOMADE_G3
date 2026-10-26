@@ -1,0 +1,27 @@
+/* Nômade — estilos específicos: Support. */
+
+/* =========================================================
+   Página de suporte
+   ========================================================= */
+.support-page {
+  min-height: calc(100vh - 72px);
+  display: grid;
+  place-items: center;
+  padding: 32px;
+}
+
+.support-message {
+  font-family: var(--font-display);
+  font-size: clamp(4rem, 14vw, 11rem);
+  font-weight: 700;
+  line-height: 0.9;
+  letter-spacing: -0.055em;
+  text-align: center;
+  color: var(--accent);
+  text-wrap: balance;
+}
+
+html[data-theme="light"] .support-message {
+  color: #0000ff;
+  text-shadow: 0 16px 42px rgba(0, 0, 255, 0.12);
+}

@@ -1,346 +1,278 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
 
-<head>
-  <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Gestão de Estoque — Nômade</title>
 
-  <title>
-    Gestão de Estoque — Nômade
-  </title>
+    <!-- Fontes -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
 
-  <!-- Fontes -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&amp;family=Inter:wght@400;500;600;700&amp;display=swap"
+      rel="stylesheet"
+    />
 
-  <link
-    href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;600;700&family=Inter:wght@400;500;600;700&display=swap"
-    rel="stylesheet">
+    <!-- Bootstrap -->
+    <link
+      href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css"
+      rel="stylesheet"
+    />
 
-  <!-- Bootstrap -->
-  <link href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/css/bootstrap.min.css" rel="stylesheet">
+    <!-- CSS do projeto -->
+    <link rel="stylesheet" href="assets/css/style.css" />
+    <script src="assets/js/theme.js"></script>
+  </head>
 
-  <!-- CSS do projeto -->
-  <link rel="stylesheet" href="assets/css/style.css">
-  <script src="assets/js/theme.js"></script>
-</head>
-
-
-<body>
-
-  <!-- =====================================================
+  <body>
+    <!-- =====================================================
        ESTRUTURA PRINCIPAL
        ===================================================== -->
 
-  <div class="app-shell" id="app-shell">
-
-    <div class="content">
-
-
-      <!-- =================================================
+    <div class="app-shell" id="app-shell">
+      <main class="content">
+        <!-- =================================================
            BREADCRUMB
            ================================================= -->
 
-      <div class="breadcrumb-app">
+        <nav class="breadcrumb-app" aria-label="Trilha de navegação">
+          <ol class="breadcrumb-list">
+            <li><a href="dashboard.html">Administração</a></li>
+            <li><a href="produtos.html">Produtos</a></li>
+            <li aria-current="page">
+              <span class="current">Visão de estoque</span>
+            </li>
+          </ol>
+        </nav>
 
-        Admin / Produtos /
-
-        <span class="current">
-          Visão de estoque
-        </span>
-
-      </div>
-
-
-      <!-- =================================================
+        <!-- =================================================
            CABEÇALHO
            ================================================= -->
 
-      <div class="page-head">
+        <header class="page-head">
+          <div>
+            <h1>Gestão de Estoque</h1>
 
-        <div>
+            <p>
+              Consulte, filtre e rastreie todos os itens ativos no inventário.
+            </p>
+          </div>
 
-          <h1>
-            Gestão de Estoque
-          </h1>
+          <!-- Novo produto -->
+          <a href="produtos.html#cadastro" class="btn-accent">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2.1"
+              aria-hidden="true"
+              focusable="false"
+            >
+              <path d="M12 5v14M5 12h14" />
+            </svg>
 
-          <p>
-            Consulte, filtre e rastreie todos os
-            itens ativos no inventário.
-          </p>
+            Adicionar produto
+          </a>
+        </header>
 
-        </div>
-
-
-        <!-- Novo produto -->
-        <a href="produtos.html#cadastro" class="btn-accent">
-
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.1">
-            <path d="M12 5v14M5 12h14" />
-          </svg>
-
-          Adicionar produto
-
-        </a>
-
-      </div>
-
-
-      <!-- =================================================
+        <!-- =================================================
            INDICADORES
            ================================================= -->
 
-      <div class="row g-3 mb-4">
+        <div class="row g-3 mb-4">
+          <!-- Total de produtos -->
+          <div class="col-6 col-lg-3">
+            <article class="metric-card">
+              <span class="metric-label"> Produtos cadastrados </span>
 
-
-        <!-- Total de produtos -->
-        <div class="col-6 col-lg-3">
-
-          <div class="metric-card">
-
-            <div class="metric-label">
-              Produtos cadastrados
-            </div>
-
-            <div class="metric-value" id="totalProducts" style="font-size: 1.4rem">
-              —
-            </div>
-
+              <p
+                class="metric-value"
+                id="totalProducts"
+                style="font-size: 1.4rem"
+              >
+                —
+              </p>
+            </article>
           </div>
 
-        </div>
+          <!-- Total em estoque -->
+          <div class="col-6 col-lg-3">
+            <article class="metric-card">
+              <span class="metric-label"> Unidades em estoque </span>
 
-
-        <!-- Total em estoque -->
-        <div class="col-6 col-lg-3">
-
-          <div class="metric-card">
-
-            <div class="metric-label">
-              Unidades em estoque
-            </div>
-
-            <div class="metric-value" id="totalStock" style="font-size: 1.4rem">
-              —
-            </div>
-
+              <p class="metric-value" id="totalStock" style="font-size: 1.4rem">
+                —
+              </p>
+            </article>
           </div>
 
-        </div>
+          <!-- Estoque baixo -->
+          <div class="col-6 col-lg-3">
+            <article class="metric-card">
+              <span class="metric-label"> Estoque baixo </span>
 
-
-        <!-- Estoque baixo -->
-        <div class="col-6 col-lg-3">
-
-          <div class="metric-card">
-
-            <div class="metric-label">
-              Estoque baixo
-            </div>
-
-            <div class="metric-value" id="lowStock" style="
-                font-size: 1.4rem;
-                color: var(--warning);
-              ">
-              —
-            </div>
-
+              <p
+                class="metric-value"
+                id="lowStock"
+                style="font-size: 1.4rem; color: var(--warning)"
+              >
+                —
+              </p>
+            </article>
           </div>
 
-        </div>
+          <!-- Reposição crítica -->
+          <div class="col-6 col-lg-3">
+            <article class="metric-card">
+              <span class="metric-label"> Reposição crítica </span>
 
-
-        <!-- Reposição crítica -->
-        <div class="col-6 col-lg-3">
-
-          <div class="metric-card">
-
-            <div class="metric-label">
-              Reposição crítica
-            </div>
-
-            <div class="metric-value" id="criticalStock" style="
-                font-size: 1.4rem;
-                color: var(--danger);
-              ">
-              —
-            </div>
-
+              <p
+                class="metric-value"
+                id="criticalStock"
+                style="font-size: 1.4rem; color: var(--danger)"
+              >
+                —
+              </p>
+            </article>
           </div>
-
         </div>
 
-      </div>
-
-
-      <!-- =================================================
+        <!-- =================================================
            PAINEL DO ESTOQUE
            ================================================= -->
 
-      <div class="panel">
+        <section class="panel" aria-labelledby="stockHeading">
+          <h2 class="panel-title" id="stockHeading">Produtos em estoque</h2>
 
-
-        <!-- ===============================================
+          <!-- ===============================================
              FERRAMENTAS
              =============================================== -->
 
-        <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3">
+          <div
+            class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-3"
+          >
+            <!-- Abas -->
+            <div class="pill-tabs" role="group" aria-label="Filtros de estoque">
+              <button type="button" class="active" aria-pressed="true">
+                Todos os itens
+              </button>
 
+              <button type="button" aria-pressed="false">Novidades</button>
 
-          <!-- Abas -->
-          <div class="pill-tabs">
-
-            <button type="button" class="active">
-              Todos os itens
-            </button>
-
-
-            <button type="button">
-              Novidades
-            </button>
-
-
-            <button type="button">
-              Arquivo
-            </button>
-
-          </div>
-
-
-          <!-- Pesquisa e filtros -->
-          <div class="d-flex align-items-center gap-2">
-
-
-            <!-- Pesquisa -->
-            <div class="input-icon-wrap" style="width: 240px">
-
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9">
-
-                <circle cx="10.5" cy="10.5" r="6.5" />
-
-                <path d="M20 20l-4.3-4.3" />
-
-              </svg>
-
-
-              <input class="form-control-app" id="filterInput" type="search"
-                placeholder="Filtrar por nome, código, lote...">
-
+              <button type="button" aria-pressed="false">Arquivo</button>
             </div>
 
+            <!-- Pesquisa e filtros -->
+            <div class="d-flex align-items-center gap-2">
+              <!-- Pesquisa -->
+              <div class="input-icon-wrap" style="width: 240px">
+                <svg
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.9"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <circle cx="10.5" cy="10.5" r="6.5" />
 
-            <!-- Filtros -->
-            <button class="btn-ghost" type="button">
+                  <path d="M20 20l-4.3-4.3" />
+                </svg>
 
-              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="1.8">
+                <input
+                  class="form-control-app"
+                  id="filterInput"
+                  type="search"
+                  placeholder="Filtrar por nome, código, lote..."
+                  aria-label="Filtrar produtos em estoque"
+                />
+              </div>
 
-                <path d="M4 5h16l-6.2 7.2V19l-3.6 2v-8.8z" />
+              <!-- Filtros -->
+              <button class="btn-ghost" type="button">
+                <svg
+                  viewBox="0 0 24 24"
+                  width="16"
+                  height="16"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="1.8"
+                  aria-hidden="true"
+                  focusable="false"
+                >
+                  <path d="M4 5h16l-6.2 7.2V19l-3.6 2v-8.8z" />
+                </svg>
 
-              </svg>
-
-              Filtros
-
-            </button>
-
+                Filtros
+              </button>
+            </div>
           </div>
 
-        </div>
-
-
-        <!-- ===============================================
+          <!-- ===============================================
              CONTAGEM
              =============================================== -->
 
-        <p class="text-muted small mb-2" id="stockCount">
-          Carregando produtos...
-        </p>
+          <p class="text-muted small mb-2" id="stockCount" aria-live="polite">
+            Carregando produtos...
+          </p>
 
-
-        <!-- ===============================================
+          <!-- ===============================================
              TABELA
              =============================================== -->
 
-        <div class="table-responsive">
+          <div class="table-responsive">
+            <table class="table-app" id="stockTable">
+              <caption class="visually-hidden">
+                Produtos em estoque
+              </caption>
 
-          <table class="table-app" id="stockTable">
+              <thead>
+                <tr>
+                  <th scope="col">Nome</th>
 
-            <thead>
+                  <th scope="col">Código</th>
 
-              <tr>
+                  <th scope="col">Fornecedor</th>
 
-                <th>
-                  Nome
-                </th>
+                  <th scope="col">Lote</th>
 
-                <th>
-                  Código
-                </th>
+                  <th scope="col">Modelo</th>
 
-                <th>
-                  Fornecedor
-                </th>
+                  <th scope="col">Cor</th>
 
-                <th>
-                  Lote
-                </th>
+                  <th scope="col">Estoque</th>
+                </tr>
+              </thead>
 
-                <th>
-                  Modelo
-                </th>
-
-                <th>
-                  Cor
-                </th>
-
-                <th>
-                  Estoque
-                </th>
-
-              </tr>
-
-            </thead>
-
-
-            <tbody>
-
-              <!--
+              <tbody>
+                <!--
                 O integration.js preencherá
                 automaticamente esta tabela.
               -->
 
-              <tr>
-
-                <td colspan="7" class="cell-muted text-center">
-                  Carregando estoque...
-                </td>
-
-              </tr>
-
-            </tbody>
-
-          </table>
-
-        </div>
-
-      </div>
-
+                <tr>
+                  <td colspan="7" class="cell-muted text-center">
+                    Carregando estoque...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </section>
+      </main>
     </div>
 
-  </div>
-
-
-  
-  <!-- =====================================================
+    <!-- =====================================================
        SCRIPTS
        ===================================================== -->
 
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
-  <script src="assets/js/layout/icons.js"></script>
-  <script src="assets/js/layout/layout.js"></script>
-  <script src="assets/js/app.js"></script>
-  <script src="assets/js/integration/core.js"></script>
-  <script src="assets/js/integration/estoque.js"></script>
-
-</body>
-
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap/5.3.3/js/bootstrap.bundle.min.js"></script>
+    <script src="assets/js/layout/icons.js"></script>
+    <script src="assets/js/layout/layout.js"></script>
+    <script src="assets/js/app.js"></script>
+    <script src="assets/js/integration/core.js"></script>
+    <script src="assets/js/integration/estoque.js"></script>
+  </body>
 </html>

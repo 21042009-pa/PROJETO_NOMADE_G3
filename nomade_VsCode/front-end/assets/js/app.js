@@ -10,7 +10,6 @@
    - Formulários de demonstração
    ========================================================= */
 
-
 // ==========================================================
 // TOAST / NOTIFICAÇÕES
 // ==========================================================
@@ -28,33 +27,24 @@ function nomadeToast(message, tone = "success") {
     document.body.appendChild(toast);
   }
 
-
   // Define o ícone de acordo com o tipo da mensagem
-  const icon =
-    tone === "success"
-      ? NOMADE_ICONS.check
-      : NOMADE_ICONS.spark;
-
+  const icon = tone === "success" ? NOMADE_ICONS.check : NOMADE_ICONS.spark;
 
   toast.innerHTML = `
     ${icon}
     <span>${message}</span>
   `;
 
-
   // Exibe o toast
   toast.classList.add("show");
 
-
   // Reinicia o tempo caso outro toast já estivesse aberto
   clearTimeout(toast._t);
-
 
   toast._t = setTimeout(() => {
     toast.classList.remove("show");
   }, 2600);
 }
-
 
 // ==========================================================
 // STEPPER DE QUANTIDADE
@@ -62,255 +52,139 @@ function nomadeToast(message, tone = "success") {
 // ==========================================================
 
 function nomadeInitSteppers() {
-  const steppers =
-    document.querySelectorAll("[data-stepper]");
-
+  const steppers = document.querySelectorAll("[data-stepper]");
 
   steppers.forEach((wrapper) => {
-    const input =
-      wrapper.querySelector("input");
-
+    const input = wrapper.querySelector("input");
 
     // Se não existir input, ignora
     if (!input) {
       return;
     }
 
+    const min = parseInt(input.min || "0", 10);
 
-    const min =
-      parseInt(
-        input.min || "0",
-        10
-      );
-
-
-    const buttons =
-      wrapper.querySelectorAll("button");
-
+    const buttons = wrapper.querySelectorAll("button");
 
     buttons.forEach((button) => {
-      button.addEventListener(
-        "click",
-        () => {
+      button.addEventListener("click", () => {
+        let value = parseInt(input.value || "0", 10);
 
-          let value =
-            parseInt(
-              input.value || "0",
-              10
-            );
-
-
-          if (button.dataset.dir === "up") {
-            value++;
-          } else {
-            value =
-              Math.max(
-                min,
-                value - 1
-              );
-          }
-
-
-          input.value = value;
-
-
-          // Dispara evento para outros scripts
-          input.dispatchEvent(
-            new Event(
-              "change",
-              {
-                bubbles: true,
-              }
-            )
-          );
+        if (button.dataset.dir === "up") {
+          value++;
+        } else {
+          value = Math.max(min, value - 1);
         }
-      );
+
+        input.value = value;
+
+        // Dispara evento para outros scripts
+        input.dispatchEvent(
+          new Event("change", {
+            bubbles: true,
+          }),
+        );
+      });
     });
   });
 }
-
 
 // ==========================================================
 // FILTRO DE TABELA
 // ==========================================================
 
-function nomadeInitTableFilter(
-  inputId,
-  tableSelector
-) {
+function nomadeInitTableFilter(inputId, tableSelector) {
+  const input = document.getElementById(inputId);
 
-  const input =
-    document.getElementById(
-      inputId
-    );
+  const table = document.querySelector(tableSelector);
 
-
-  const table =
-    document.querySelector(
-      tableSelector
-    );
-
-
-  if (
-    !input ||
-    !table
-  ) {
+  if (!input || !table) {
     return;
   }
 
+  input.addEventListener("input", () => {
+    const term = input.value.trim().toLowerCase();
 
-  input.addEventListener(
-    "input",
-    () => {
+    const rows = table.querySelectorAll("tbody tr");
 
-      const term =
-        input.value
-          .trim()
-          .toLowerCase();
+    rows.forEach((row) => {
+      const text = row.textContent.toLowerCase();
 
+      const found = text.includes(term);
 
-      const rows =
-        table.querySelectorAll(
-          "tbody tr"
-        );
-
-
-      rows.forEach((row) => {
-        const text =
-          row.textContent
-            .toLowerCase();
-
-
-        const found =
-          text.includes(term);
-
-
-        row.style.display =
-          found
-            ? ""
-            : "none";
-      });
-    }
-  );
+      row.style.display = found ? "" : "none";
+    });
+  });
 }
-
 
 // ==========================================================
 // ABAS TIPO PILL
 // ==========================================================
 
 function nomadeInitPillTabs() {
-  const groups =
-    document.querySelectorAll(
-      ".pill-tabs"
-    );
-
+  const groups = document.querySelectorAll(".pill-tabs");
 
   groups.forEach((group) => {
-    const buttons =
-      group.querySelectorAll(
-        "button"
-      );
-
+    const buttons = group.querySelectorAll("button");
 
     buttons.forEach((button) => {
-      button.addEventListener(
-        "click",
-        () => {
+      button.addEventListener("click", () => {
+        // Remove o active de todos
+        buttons.forEach((item) => {
+          item.classList.remove("active");
+        });
 
-          // Remove o active de todos
-          buttons.forEach(
-            (item) => {
-              item.classList.remove(
-                "active"
-              );
-            }
-          );
-
-
-          // Adiciona no selecionado
-          button.classList.add(
-            "active"
-          );
-        }
-      );
+        // Adiciona no selecionado
+        button.classList.add("active");
+      });
     });
   });
 }
-
 
 // ==========================================================
 // GRÁFICO DE BARRAS
 // ==========================================================
 
-function nomadeRenderBarChart(
-  containerId,
-  data
-) {
-
-  const container =
-    document.getElementById(
-      containerId
-    );
-
+function nomadeRenderBarChart(containerId, data) {
+  const container = document.getElementById(containerId);
 
   if (!container) {
     return;
   }
 
+  container.setAttribute("role", "img");
 
   // Caso não existam dados
-  if (
-    !Array.isArray(data) ||
-    data.length === 0
-  ) {
-
+  if (!Array.isArray(data) || data.length === 0) {
     container.innerHTML = "";
+    container.setAttribute(
+      "aria-label",
+      "Gráfico de barras sem dados disponíveis",
+    );
     return;
   }
 
+  const chartDescription = data
+    .map((item) => `${item.label}: ${Number(item.value) || 0}`)
+    .join("; ");
+  container.setAttribute(
+    "aria-label",
+    `Gráfico de barras. ${chartDescription}`,
+  );
 
-  const max =
-    Math.max(
-      ...data.map(
-        (item) =>
-          Number(item.value) || 0
-      )
-    );
+  const max = Math.max(...data.map((item) => Number(item.value) || 0));
 
+  const peakIndex = data.findIndex((item) => Number(item.value) === max);
 
-  const peakIndex =
-    data.findIndex(
-      (item) =>
-        Number(item.value) === max
-    );
+  container.innerHTML = data
+    .map((item, index) => {
+      const value = Number(item.value) || 0;
 
+      const height = max > 0 ? Math.max(6, (value / max) * 100) : 6;
 
-  container.innerHTML =
-    data
-      .map(
-        (item, index) => {
+      const peakClass = index === peakIndex ? " is-peak" : "";
 
-          const value =
-            Number(item.value) || 0;
-
-
-          const height =
-            max > 0
-              ? Math.max(
-                6,
-                (value / max) * 100
-              )
-              : 6;
-
-
-          const peakClass =
-            index === peakIndex
-              ? " is-peak"
-              : "";
-
-
-          return `
+      return `
             <div class="bar-col${peakClass}">
 
               <div
@@ -324,53 +198,45 @@ function nomadeRenderBarChart(
 
             </div>
           `;
-        }
-      )
-      .join("");
+    })
+    .join("");
 }
-
 
 // ==========================================================
 // GRÁFICO DONUT
 // ==========================================================
 
-function nomadeRenderDonut(
-  wrapId,
-  centerValue,
-  centerLabel,
-  segments
-) {
-
-  const wrapper =
-    document.getElementById(
-      wrapId
-    );
-
+function nomadeRenderDonut(wrapId, centerValue, centerLabel, segments) {
+  const wrapper = document.getElementById(wrapId);
 
   if (!wrapper) {
     return;
   }
 
+  wrapper.setAttribute("role", "img");
 
   // Caso não existam segmentos
-  if (
-    !Array.isArray(segments) ||
-    segments.length === 0
-  ) {
-
+  if (!Array.isArray(segments) || segments.length === 0) {
     wrapper.innerHTML = "";
+    wrapper.setAttribute(
+      "aria-label",
+      "Gráfico de distribuição sem dados disponíveis",
+    );
     return;
   }
 
+  const total = segments.reduce(
+    (sum, segment) => sum + (Number(segment.value) || 0),
+    0,
+  );
 
-  const total =
-    segments.reduce(
-      (sum, segment) =>
-        sum +
-        (Number(segment.value) || 0),
-      0
-    );
-
+  const chartDescription = segments
+    .map((segment) => `${segment.value} ${segment.label || "itens"}`)
+    .join("; ");
+  wrapper.setAttribute(
+    "aria-label",
+    `Gráfico de distribuição: ${centerValue} ${centerLabel}. ${chartDescription}`,
+  );
 
   // Evita divisão por zero
   if (total <= 0) {
@@ -395,42 +261,25 @@ function nomadeRenderDonut(
     return;
   }
 
-
   let accumulated = 0;
 
+  const stops = segments
+    .map((segment) => {
+      const value = Number(segment.value) || 0;
 
-  const stops =
-    segments
-      .map((segment) => {
+      const start = (accumulated / total) * 360;
 
-        const value =
-          Number(
-            segment.value
-          ) || 0;
+      accumulated += value;
 
+      const end = (accumulated / total) * 360;
 
-        const start =
-          (accumulated / total) *
-          360;
-
-
-        accumulated += value;
-
-
-        const end =
-          (accumulated / total) *
-          360;
-
-
-        return `
+      return `
           ${segment.color}
           ${start}deg
           ${end}deg
         `.trim();
-
-      })
-      .join(", ");
-
+    })
+    .join(", ");
 
   wrapper.innerHTML = `
     <div
@@ -457,66 +306,38 @@ function nomadeRenderDonut(
   `;
 }
 
-
 // ==========================================================
 // FORMULÁRIO DE DEMONSTRAÇÃO
 // ==========================================================
 
-function nomadeBindDemoForm(
-  formId,
-  message
-) {
-
-  const form =
-    document.getElementById(
-      formId
-    );
-
+function nomadeBindDemoForm(formId, message) {
+  const form = document.getElementById(formId);
 
   if (!form) {
     return;
   }
 
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
 
-  form.addEventListener(
-    "submit",
-    (event) => {
-
-      event.preventDefault();
-
-
-      // Validação padrão do HTML
-      if (!form.checkValidity()) {
-
-        form.reportValidity();
-        return;
-
-      }
-
-
-      nomadeToast(
-        message ||
-        "Salvo com sucesso."
-      );
-
-
-      form.reset();
+    // Validação padrão do HTML
+    if (!form.checkValidity()) {
+      form.reportValidity();
+      return;
     }
-  );
-}
 
+    nomadeToast(message || "Salvo com sucesso.");
+
+    form.reset();
+  });
+}
 
 // ==========================================================
 // INICIALIZAÇÃO
 // ==========================================================
 
-document.addEventListener(
-  "DOMContentLoaded",
-  () => {
+document.addEventListener("DOMContentLoaded", () => {
+  nomadeInitSteppers();
 
-    nomadeInitSteppers();
-
-    nomadeInitPillTabs();
-
-  }
-);
+  nomadeInitPillTabs();
+});

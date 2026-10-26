@@ -13,6 +13,27 @@ python3 -m http.server 5500
 
 Depois acesse `http://localhost:5500`.
 
+## Organização CSS
+
+`assets/css/style.css` concentra tokens de tema, layout e componentes compartilhados. Regras exclusivas ficam em `assets/css/pages/` e são carregadas apenas pelas páginas que as utilizam:
+
+```text
+assets/css/
+├── style.css                 # base, tema e componentes compartilhados
+└── pages/
+    ├── login.css             # tela de autenticação
+    ├── charts.css            # gráficos compartilhados por dashboard e relatórios
+    ├── dashboard.css         # alertas específicos do painel
+    ├── product-media.css     # imagens e área de upload de produtos
+    └── support.css           # composição visual da página de suporte
+```
+
+As páginas de produtos e movimentação compartilham `product-media.css`; dashboard e relatórios compartilham `charts.css`. Os demais módulos específicos são incluídos apenas onde são utilizados.
+
+## Semântica e acessibilidade
+
+As páginas usam landmarks (`main`, `header`, `nav`), títulos em hierarquia, `section` nomeadas por seus títulos, rótulos ligados aos campos e tabelas com legenda e cabeçalhos de coluna. Componentes injetados por JavaScript devem manter os mesmos padrões; gráficos são expostos como imagens nomeadas com uma descrição dos dados.
+
 ## Estrutura JavaScript
 
 ```text
@@ -57,7 +78,6 @@ Para testar o cadastro/login, inicie primeiro o servidor Node do back-end e conf
 - O menu principal é um painel hambúrguer (off-canvas) em desktop e mobile.
 - `Configurações` não aparece no menu lateral.
 - Clique no usuário no canto superior direito para abrir `Configurações` ou `Sair`.
-
 
 ## Tema claro
 
