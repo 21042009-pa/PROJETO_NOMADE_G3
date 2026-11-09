@@ -54,22 +54,45 @@ function bindCustomizeUser() {
   if (!modalEl || !form || form.dataset.bound) return;
   form.dataset.bound = "1";
 
+  // Somente o gerente pode renomear outro usuário; o back-end também reforça isso.
+  function souGerente() {
+    const cargo = currentUser()?.cargo || "";
+    return cargo.trim().toLocaleLowerCase("pt-BR") === "gerente";
+  }
+
   // abre o modal com os dados da linha clicada
   modalEl.addEventListener("show.bs.modal", (event) => {
-    const linha = event.relatedTarget && event.relatedTarget.closest("tr");
+    const botao = event.relatedTarget;
+    const linha = botao && botao.closest("tr");
     if (!linha) return;
     const celulas = linha.querySelectorAll("td");
-    document.getElementById("cUsuario").value = linha
-      .querySelector(".cell-strong")
-      .textContent.trim();
+    form.dataset.userId = botao.dataset.id || "";
+    const campoNome = document.getElementById("cUsuario");
+    campoNome.value = linha.querySelector(".cell-strong").textContent.trim();
+    campoNome.readOnly = !souGerente();
     document.getElementById("cFuncao").value = celulas[1].textContent.trim();
     document.getElementById("cAcesso").value = celulas[2].textContent.trim();
   });
 
-  form.addEventListener("submit", (event) => {
+  form.addEventListener("submit", async (event) => {
     event.preventDefault();
-    bootstrap.Modal.getOrCreateInstance(modalEl).hide();
-    nomadeToast("Usuário atualizado com sucesso.");
+    const id = form.dataset.userId;
+    if (!id) return;
+
+    const campoNome = document.getElementById("cUsuario");
+    const cargo = document.getElementById("cFuncao").value;
+    const setor = document.getElementById("cAcesso").value.trim();
+    const dados = { cargo, setor };
+    if (souGerente()) dados.nome = campoNome.value.trim();
+
+    try {
+      await nomadeApi(`/usuarios/${id}`, jsonRequest("PUT", dados));
+      bootstrap.Modal.getOrCreateInstance(modalEl).hide();
+      nomadeToast("Usuário atualizado com sucesso.");
+      await renderUsers();
+    } catch (error) {
+      showError(error.message);
+    }
   });
 }
 
@@ -99,7 +122,7 @@ async function renderUsers() {
           <td class="cell-muted">—</td>
           <td class="text-end">
             <button type="button" class="btn-ghost me-2" style="padding:4px 10px;font-size:.78rem"
-              data-bs-toggle="modal" data-bs-target="#customizeUserModal">Personalizar usuário</button>
+              data-bs-toggle="modal" data-bs-target="#customizeUserModal" data-id="${user.id_usuario}">Personalizar usuário</button>
             ${rowActions(user.id_usuario, "/usuarios")}
           </td>
         </tr>`,
