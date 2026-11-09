@@ -55,18 +55,14 @@ Com o back-end rodando, acesse `http://localhost:3000` diretamente no navegador 
 
 Se preferir servir o front-end separadamente (ex: usando a extensão Live Server do VS Code), sirva a pasta `front-end` numa porta diferente da 3000, como a 5500 (veja a seção [Como abrir](#como-abrir) abaixo) — os scripts de integração detectam a porta automaticamente e direcionam as chamadas para a API em `localhost:3000`.
 
-### 6. Criar o primeiro usuário
+### 6. Primeiro login
 
-O cadastro público (tela de login, link "Criar conta") sempre cria um usuário com cargo **Operador**, que tem acesso limitado. Para ter um usuário **Gerente** (acesso total) logo de início:
+O `schema.sql` já cria um usuário **Gerente** padrão para o primeiro acesso:
 
-1. Cadastre-se normalmente pelo site.
-2. No MySQL, promova esse usuário a Gerente:
+- Login: `admin`
+- Senha: `admin123`
 
-```sql
-UPDATE db_nomades_g3.tbl_usuario SET cargo = 'Gerente' WHERE login = 'seu_login_aqui';
-```
-
-Depois disso, faça login novamente com esse usuário — ele já estará com acesso de Gerente.
+Troque essa senha pela tela de Configurações assim que entrar. Para criar outros usuários, use o cadastro público (tela de login, link "Criar conta") — ele sempre cria com cargo **Operador**; só um Gerente logado consegue atribuir outro cargo, pela tela de Usuários.
 
 ## Como abrir
 

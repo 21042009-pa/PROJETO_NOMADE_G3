@@ -55,3 +55,10 @@ CREATE TABLE IF NOT EXISTS tbl_movimentacao_estoque (
   observacao VARCHAR(255),
   FOREIGN KEY (id_produto) REFERENCES tbl_produto(id_produto)
 );
+
+-- Usuário Gerente padrão para o primeiro acesso.
+-- Login: admin | Senha: admin123
+-- Troque a senha pela tela de Configurações assim que entrar.
+INSERT INTO tbl_usuario (nome, login, senha, cargo, setor)
+SELECT 'Administrador', 'admin', 'sha256:240be518fabd2724ddb6f04eeb1da5967448d7e831c08c8fa822809f74c720a9', 'Gerente', 'Administração'
+WHERE NOT EXISTS (SELECT 1 FROM tbl_usuario WHERE login = 'admin');
