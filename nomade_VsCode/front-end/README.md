@@ -38,8 +38,6 @@ cd ../Back-end
 cp .env.example .env
 ```
 
-O arquivo `.env` **não é versionado no Git** — cada pessoa precisa criar o seu. Por padrão ele já aponta para `DB_HOST=localhost` e `DB_NAME=db_nomades_g3`, então normalmente não precisa alterar nada, a não ser que seu MySQL tenha usuário/senha diferentes de `root`/vazio.
-
 ### 4. Instalar as dependências e subir o back-end
 
 Ainda dentro de `Back-end`:
