@@ -10,7 +10,6 @@ class FornecedorController {
       res.status(erro.status || 500).json({
         sucesso: false,
         mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
       });
     }
   }
@@ -24,7 +23,6 @@ class FornecedorController {
       res.status(erro.status || 500).json({
         sucesso: false,
         mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
       });
     }
   }
@@ -42,7 +40,6 @@ class FornecedorController {
       res.status(erro.status || 500).json({
         sucesso: false,
         mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
       });
     }
   }
@@ -61,7 +58,6 @@ class FornecedorController {
       res.status(erro.status || 500).json({
         sucesso: false,
         mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
       });
     }
   }
@@ -77,7 +73,6 @@ class FornecedorController {
       res.status(erro.status || 500).json({
         sucesso: false,
         mensagem: erro.message || erro.mensagem || "Erro interno do servidor",
-        erro: erro.stack || erro,
       });
     }
   }
