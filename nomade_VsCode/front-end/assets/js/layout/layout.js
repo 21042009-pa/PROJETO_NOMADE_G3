@@ -34,7 +34,10 @@ function nomadeBrandMark() {
 }
 
 function nomadeBuildSidebar(active) {
-  const links = NOMADE_NAV.map(
+  const itensVisiveis = NOMADE_NAV.filter(
+    (item) => typeof nomadeTemAcesso !== "function" || nomadeTemAcesso(item.key),
+  );
+  const links = itensVisiveis.map(
     (item) => `
     <a href="${item.href}" class="nav-link-app${item.key === active ? " active" : ""}"${item.key === active ? ' aria-current="page"' : ""}>
       ${NOMADE_ICONS[item.icon]}
