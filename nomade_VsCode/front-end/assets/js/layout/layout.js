@@ -29,7 +29,7 @@ const NOMADE_NAV = [
 ];
 
 function nomadeBrandMark() {
-  return `<img class="logo-nomade-sidebar" src="assets/img/logo-nomade.png"
+  return `<img class="logo-nomade-sidebar" src="assets/img/logo_nomade.png"
                alt="NÔMADE" width="190" height="123" />`;
 }
 
