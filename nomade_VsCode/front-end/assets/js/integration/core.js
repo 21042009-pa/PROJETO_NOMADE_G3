@@ -17,6 +17,19 @@ function currentToken() {
   return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY) || null;
 }
 
+// Módulos que cada cargo NÃO pode acessar. Cargos fora desta lista (ex: Gerente)
+// têm acesso a tudo. Mantido alinhado com as regras de permissão do back-end.
+const NOMADE_MODULOS_RESTRITOS = {
+  Operador: ["usuarios", "produtos"],
+  Analista: ["usuarios", "produtos", "movimentacao"],
+};
+
+function nomadeTemAcesso(modulo) {
+  const cargo = String(currentUser()?.cargo || "").trim();
+  const restritos = NOMADE_MODULOS_RESTRITOS[cargo] || [];
+  return !restritos.includes(modulo);
+}
+
 // URLs de imagens devem apontar somente para arquivos enviados ao back-end.
 function nomadeImagemUrl(nome) {
   if (!/^[a-zA-Z0-9_-]+\.(jpg|jpeg|png|webp)$/i.test(String(nome || ""))) return "";
@@ -105,6 +118,13 @@ async function nomadeApi(path, options = {}) {
 
   if (!response.ok) {
     const backendMessage = data.mensagem || data.message;
+
+    // Sessão expirada/inválida: desloga e manda para o login uma única vez,
+    // em vez de repetir o toast a cada chamada da sincronização em tempo real.
+    if (response.status === 401 && currentUser()) {
+      clearSession();
+      window.location.href = "index.html";
+    }
 
     if (backendMessage) {
       throw new Error(backendMessage);
@@ -195,6 +215,10 @@ function bindLogout() {
 
 function nomadeInitInternalPage(active, searchPlaceholder) {
   if (!requireLogin()) return false;
+  if (!nomadeTemAcesso(active)) {
+    window.location.href = "dashboard.html";
+    return false;
+  }
   if (typeof nomadeMountShell !== "function") {
     console.error("layout.js não foi carregado antes do script da página.");
     return false;
