@@ -2,6 +2,74 @@
 
 Front-end estático em HTML, CSS e JavaScript, integrado à API do projeto Nômade.
 
+## Como rodar o projeto do zero
+
+Guia para quem ainda não tem o ambiente configurado na máquina.
+
+### 1. Pré-requisitos
+
+Instale, se ainda não tiver:
+
+- [Node.js](https://nodejs.org/) (versão 18 ou superior)
+- [MySQL](https://dev.mysql.com/downloads/mysql/) (ou um gerenciador como XAMPP/MAMP com MySQL incluso)
+
+Confirme que o Node está instalado:
+
+```bash
+node -v
+```
+
+### 2. Criar o banco de dados
+
+Com o MySQL rodando na sua máquina, execute o script `schema.sql` que está na pasta `Back-end`. Ele cria o banco `db_nomades_g3` e todas as tabelas usadas pelo sistema.
+
+```bash
+mysql -u root -p < ../Back-end/schema.sql
+```
+
+(ajuste `-u root` para o seu usuário do MySQL; remova `-p` se não tiver senha configurada)
+
+### 3. Configurar as variáveis de ambiente do back-end
+
+Dentro da pasta `Back-end`, copie o arquivo de exemplo e ajuste se necessário:
+
+```bash
+cd ../Back-end
+cp .env.example .env
+```
+
+O arquivo `.env` **não é versionado no Git** — cada pessoa precisa criar o seu. Por padrão ele já aponta para `DB_HOST=localhost` e `DB_NAME=db_nomades_g3`, então normalmente não precisa alterar nada, a não ser que seu MySQL tenha usuário/senha diferentes de `root`/vazio.
+
+### 4. Instalar as dependências e subir o back-end
+
+Ainda dentro de `Back-end`:
+
+```bash
+npm install
+npm run dev
+```
+
+Se aparecer `Conectado ao MySQL com sucesso!` e `Servidor rodando na porta 3000`, o back-end está no ar.
+
+### 5. Abrir o front-end
+
+Com o back-end rodando, acesse `http://localhost:3000` diretamente no navegador (o próprio Express já serve os arquivos do front-end).
+
+Se preferir servir o front-end separadamente (ex: usando a extensão Live Server do VS Code), sirva a pasta `front-end` numa porta diferente da 3000, como a 5500 (veja a seção [Como abrir](#como-abrir) abaixo) — os scripts de integração detectam a porta automaticamente e direcionam as chamadas para a API em `localhost:3000`.
+
+### 6. Criar o primeiro usuário
+
+O cadastro público (tela de login, link "Criar conta") sempre cria um usuário com cargo **Operador**, que tem acesso limitado. Para ter um usuário **Gerente** (acesso total) logo de início:
+
+1. Cadastre-se normalmente pelo site.
+2. No MySQL, promova esse usuário a Gerente:
+
+```sql
+UPDATE db_nomades_g3.tbl_usuario SET cargo = 'Gerente' WHERE login = 'seu_login_aqui';
+```
+
+Depois disso, faça login novamente com esse usuário — ele já estará com acesso de Gerente.
+
 ## Como abrir
 
 A API deve estar executando (por padrão em `http://localhost:3000` quando os HTMLs são abertos via `file://`).
