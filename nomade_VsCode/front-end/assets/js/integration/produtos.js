@@ -3,8 +3,11 @@
 let productFormBound = false;
 let productDeleteBound = false;
 let productImageActionsBound = false;
+let productEditActionsBound = false;
 let productImagePreviewUrl = null;
 let productCache = { fornecedores: [], categorias: [], lotes: [] };
+let productList = [];
+let productEditId = null;
 
 const cadastroTipos = {
   fornecedor: {
@@ -85,14 +88,57 @@ function atualizarDicaCadastro(tipo) {
   }
 }
 
-function obterRelacionamento(tipo) {
+function obterRelacionamento(tipo, exigirExistente = false) {
   const info = cadastroTipos[tipo];
   const nome = document.getElementById(info.input)?.value.trim() || "";
   if (!nome) throw new Error(`Informe ${info.label}.`);
   const encontrado = registroExistente(tipo, nome);
+  if (!encontrado && exigirExistente) {
+    throw new Error(`Selecione um ${info.label} já cadastrado (a edição não cria novos).`);
+  }
   return encontrado
     ? { [info.key]: encontrado[info.key] }
     : { [info.fieldNovo]: nome };
+}
+
+// Preenche o formulário de cadastro com os dados de um produto existente,
+// trocando o formulário para "modo edição" (PUT em vez de POST).
+function entrarModoEdicao(produto) {
+  productEditId = produto.id_produto;
+
+  document.getElementById("pNome").value = produto.nome || "";
+  document.getElementById("pCodigo").value = produto.codigo_produto || "";
+  document.getElementById("pModelo").value = produto.modelo || "";
+  document.getElementById("pValidade").value = produto.data_validade || "";
+  document.getElementById("pDescricao").value = produto.descricao || "";
+  document.getElementById("pCor").value = produto.cor || "";
+
+  const fornecedor = productCache.fornecedores.find((f) => f.id_fornecedor === produto.id_fornecedor);
+  const categoria = productCache.categorias.find((c) => c.id_categoria === produto.id_categoria);
+  const lote = productCache.lotes.find((l) => l.id_lote === produto.id_lote);
+  document.getElementById("pFornecedor").value = fornecedor ? fornecedor.nome : "";
+  document.getElementById("pCategoria").value = categoria ? categoria.nome_categoria : "";
+  document.getElementById("pLote").value = lote ? lote.codigo_lote : "";
+
+  // A quantidade em estoque só muda pela tela de Entrada/Saída, não por aqui.
+  const quantidade = document.getElementById("pQuantidade");
+  quantidade.value = "";
+  quantidade.disabled = true;
+
+  ["fornecedor", "categoria", "lote"].forEach(atualizarDicaCadastro);
+
+  document.getElementById("editModeProductName").textContent = produto.nome || "este produto";
+  document.getElementById("editModeBanner").hidden = false;
+  document.getElementById("productSubmitBtnLabel").textContent = "Salvar alterações";
+
+  document.getElementById("productForm").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function sairModoEdicao() {
+  productEditId = null;
+  document.getElementById("editModeBanner").hidden = true;
+  document.getElementById("productSubmitBtnLabel").textContent = "Salvar produto";
+  document.getElementById("productForm").reset();
 }
 
 function validarArquivoImagem(arquivo) {
@@ -194,12 +240,22 @@ function bindProductForm() {
   });
   document.getElementById("pCusto")?.addEventListener("input", recalcMargin);
   document.getElementById("pVenda")?.addEventListener("input", recalcMargin);
+  document.getElementById("cancelEditBtn")?.addEventListener("click", () => {
+    sairModoEdicao();
+  });
+
   form.addEventListener("reset", () => {
     // O evento reset dispara antes de os campos serem efetivamente limpos.
+    const estavaEditando = productEditId !== null;
+    productEditId = null;
     queueMicrotask(() => {
       ["fornecedor", "categoria", "lote"].forEach(atualizarDicaCadastro);
       recalcMargin();
       limparPreviewImagem();
+      if (estavaEditando) {
+        document.getElementById("editModeBanner").hidden = true;
+        document.getElementById("productSubmitBtnLabel").textContent = "Salvar produto";
+      }
     });
   });
 
@@ -212,12 +268,10 @@ function bindProductForm() {
     const button = form.querySelector('button[type="submit"]');
     if (button?.disabled) return;
 
+    const editando = productEditId !== null;
+
     try {
-      const body = {
-        ...obterRelacionamento("fornecedor"),
-        ...obterRelacionamento("categoria"),
-        ...obterRelacionamento("lote"),
-        quantidade_atual: Number(document.getElementById("pQuantidade").value || 0),
+      const camposComuns = {
         nome: document.getElementById("pNome").value.trim(),
         descricao: document.getElementById("pDescricao").value.trim(),
         modelo: document.getElementById("pModelo").value.trim(),
@@ -225,6 +279,20 @@ function bindProductForm() {
         codigo_produto: document.getElementById("pCodigo").value.trim(),
         cor: document.getElementById("pCor").value.trim(),
       };
+      const body = editando
+        ? {
+            ...obterRelacionamento("fornecedor", true),
+            ...obterRelacionamento("categoria", true),
+            ...obterRelacionamento("lote", true),
+            ...camposComuns,
+          }
+        : {
+            ...obterRelacionamento("fornecedor"),
+            ...obterRelacionamento("categoria"),
+            ...obterRelacionamento("lote"),
+            quantidade_atual: Number(document.getElementById("pQuantidade").value || 0),
+            ...camposComuns,
+          };
       const dados = new FormData();
       Object.entries(body).forEach(([chave, valor]) => {
         if (valor !== null && valor !== undefined) dados.append(chave, String(valor));
@@ -236,8 +304,14 @@ function bindProductForm() {
       }
       if (button) button.disabled = true;
       // Não defina Content-Type manualmente; o navegador cria o boundary multipart.
-      await nomadeApi("/produtos", { method: "POST", body: dados });
-      nomadeToast("Produto e novos cadastros salvos com sucesso.");
+      if (editando) {
+        await nomadeApi(`/produtos/${productEditId}`, { method: "PUT", body: dados });
+        nomadeToast("Produto atualizado com sucesso.");
+      } else {
+        await nomadeApi("/produtos", { method: "POST", body: dados });
+        nomadeToast("Produto e novos cadastros salvos com sucesso.");
+      }
+      productEditId = null;
       form.reset();
       await renderProducts();
     } catch (error) {
@@ -321,6 +395,20 @@ function bindCatalogImageActions() {
   });
 }
 
+function bindCatalogEditActions() {
+  const tabela = document.getElementById("catalogTable");
+  if (!tabela || productEditActionsBound) return;
+  productEditActionsBound = true;
+
+  tabela.addEventListener("click", (evento) => {
+    const botao = evento.target.closest(".btn-editar-produto");
+    if (!botao) return;
+    const produto = productList.find((p) => String(p.id_produto) === botao.dataset.id);
+    if (!produto) return;
+    entrarModoEdicao(produto);
+  });
+}
+
 async function renderProducts() {
   try {
     const [produtos, fornecedores, categorias, lotes] = await Promise.all([
@@ -330,6 +418,7 @@ async function renderProducts() {
       nomadeApi("/lotes"),
     ]);
     productCache = { fornecedores, categorias, lotes };
+    productList = produtos;
     const supplierById = Object.fromEntries(fornecedores.map((f) => [f.id_fornecedor, f.nome]));
     const lotById = Object.fromEntries(lotes.map((l) => [l.id_lote, l]));
     const tbody = document.querySelector("#catalogTable tbody");
@@ -351,6 +440,7 @@ async function renderProducts() {
               : `<span class="cell-muted">Sem imagem</span>`}</td>
             <td>
               <span class="product-image-actions">
+                <button type="button" class="btn-ghost btn-editar-produto" data-id="${id}">Editar</button>
                 <button type="button" class="btn-ghost btn-trocar-imagem" data-id="${id}">${imagemUrl ? "Trocar foto" : "Adicionar foto"}</button>
                 ${imagemUrl ? `<button type="button" class="btn-ghost btn-remover-imagem" data-id="${id}">Remover foto</button>` : ""}
                 ${rowActions(id, "/produtos")}
@@ -366,6 +456,7 @@ async function renderProducts() {
     bindProductForm();
     bindCadastroDelete();
     bindCatalogImageActions();
+    bindCatalogEditActions();
     bindDeleteButtons(document, renderProducts);
   } catch (erro) {
     showError(erro.message);

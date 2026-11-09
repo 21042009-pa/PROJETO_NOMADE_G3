@@ -135,6 +135,11 @@
                 Cadastro de produto
               </h2>
 
+              <div class="panel mb-3 d-flex align-items-center justify-content-between gap-2" id="editModeBanner" hidden role="status" style="padding:10px 16px">
+                <span>Editando <strong id="editModeProductName"></strong>.</span>
+                <button type="button" class="btn-ghost" id="cancelEditBtn" style="padding:2px 10px;font-size:.78rem">Cancelar edição</button>
+              </div>
+
               <!-- ===========================================
                  INFORMAÇÕES BÁSICAS
                  =========================================== -->
@@ -409,7 +414,7 @@
                  =========================================== -->
 
               <div class="d-flex gap-2">
-                <button type="submit" class="btn-accent">
+                <button type="submit" class="btn-accent" id="productSubmitBtn">
                   <svg
                     viewBox="0 0 24 24"
                     fill="none"
@@ -425,7 +430,7 @@
                     <path d="M7 21v-7h10v7M7 3v5h8" />
                   </svg>
 
-                  Salvar produto
+                  <span id="productSubmitBtnLabel">Salvar produto</span>
                 </button>
 
                 <button type="reset" class="btn-ghost">Cancelar</button>

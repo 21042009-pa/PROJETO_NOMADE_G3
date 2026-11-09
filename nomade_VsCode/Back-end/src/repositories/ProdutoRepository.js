@@ -131,6 +131,22 @@ class ProdutoRepository {
         }
       }
 
+      // Cada produto tem seu próprio lote: reaproveitar o lote de outro produto
+      // juntaria o estoque dos dois, então isso é bloqueado aqui.
+      if (idLote !== null) {
+        const [produtosDoLote] = await conn.query(
+          "SELECT id_produto FROM tbl_produto WHERE id_lote = ? LIMIT 1",
+          [idLote],
+        );
+        if (produtosDoLote.length) {
+          const erro = new Error(
+            "Este lote já pertence a outro produto. Use um código de lote diferente, ou edite o produto existente para reabastecê-lo.",
+          );
+          erro.status = 409;
+          throw erro;
+        }
+      }
+
       const [resultado] = await conn.query("INSERT INTO tbl_produto SET ?", [{
         id_fornecedor: fornecedor.id,
         id_categoria: categoria.id,
@@ -163,6 +179,22 @@ class ProdutoRepository {
   }
 
   async atualizarProduto(id, dadosDoProduto) {
+    // Cada produto tem seu próprio lote: bloqueia trocar para um lote que já
+    // pertence a outro produto (juntaria o estoque dos dois).
+    if (dadosDoProduto.id_lote !== undefined && dadosDoProduto.id_lote !== null) {
+      const [produtosDoLote] = await pool.query(
+        "SELECT id_produto FROM tbl_produto WHERE id_lote = ? AND id_produto <> ? LIMIT 1",
+        [dadosDoProduto.id_lote, id],
+      );
+      if (produtosDoLote.length) {
+        const erro = new Error(
+          "Este lote já pertence a outro produto. Use um código de lote diferente, ou edite o produto existente para reabastecê-lo.",
+        );
+        erro.status = 409;
+        throw erro;
+      }
+    }
+
     const camposProduto = [];
     const valoresProduto = [];
     for (const [key, value] of Object.entries(dadosDoProduto)) {
