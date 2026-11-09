@@ -108,11 +108,14 @@ function initLogin() {
         jsonRequest("POST", { login, senha }),
       );
       sessionStorage.setItem(SESSION_KEY, JSON.stringify(data.usuario));
+      sessionStorage.setItem(TOKEN_KEY, data.token);
 
       if (lembrar) {
         localStorage.setItem(SESSION_KEY, JSON.stringify(data.usuario));
+        localStorage.setItem(TOKEN_KEY, data.token);
       } else {
         localStorage.removeItem(SESSION_KEY);
+        localStorage.removeItem(TOKEN_KEY);
       }
 
       window.location.href = "dashboard.html";
