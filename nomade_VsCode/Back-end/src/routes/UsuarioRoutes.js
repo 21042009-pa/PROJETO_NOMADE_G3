@@ -9,10 +9,10 @@ router.post("/", autenticarSeHouverToken, UsuarioController.cadastrarUsuario);
 
 // As demais rotas de usuários exigem uma sessão válida.
 router.use(autenticar);
-router.post("/logout", somenteGerente, UsuarioController.logout);
-router.get("/", somenteGerente, UsuarioController.listarUsuarios);
-router.put("/:id/senha", somenteGerente, UsuarioController.alterarSenha);
-router.get("/:id", somenteGerente, UsuarioController.buscarUsuarioPorId);
+router.post("/logout", UsuarioController.logout);
+router.get("/", UsuarioController.listarUsuarios);
+router.put("/:id/senha", somenteProprioUsuario, UsuarioController.alterarSenha);
+router.get("/:id", UsuarioController.buscarUsuarioPorId);
 router.put("/:id", somenteGerente, UsuarioController.atualizarUsuario);
 router.delete("/:id", somenteGerente, UsuarioController.deletarUsuario);
 
