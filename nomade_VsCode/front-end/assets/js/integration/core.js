@@ -11,6 +11,11 @@ const API_ORIGIN = "http://localhost:3000";
 const NOMADE_API = window.location.port === "3000" ? "" : API_ORIGIN;
 
 const SESSION_KEY = "nomade_usuario";
+const TOKEN_KEY = "nomade_token";
+
+function currentToken() {
+  return sessionStorage.getItem(TOKEN_KEY) || localStorage.getItem(TOKEN_KEY) || null;
+}
 
 // URLs de imagens devem apontar somente para arquivos enviados ao back-end.
 function nomadeImagemUrl(nome) {
@@ -73,6 +78,11 @@ function escHtml(value) {
 
 async function nomadeApi(path, options = {}) {
   let response;
+
+  const token = currentToken();
+  if (token) {
+    options.headers = { ...(options.headers || {}), Authorization: `Bearer ${token}` };
+  }
 
   try {
     response = await fetch(`${NOMADE_API}${path}`, options);
@@ -145,6 +155,8 @@ function currentUser() {
 function clearSession() {
   sessionStorage.removeItem(SESSION_KEY);
   localStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(TOKEN_KEY);
+  localStorage.removeItem(TOKEN_KEY);
 }
 
 function requireLogin() {
